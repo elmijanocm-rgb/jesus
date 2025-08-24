@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verificar Cajas</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .box { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .highlight { background-color: yellow; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Verificación de Cajas en localStorage</h1>
+    <div id="result"></div>
+    
+    <script>
+        const result = document.getElementById('result');
+        
+        try {
+            const saved = localStorage.getItem('userCreatedBoxes');
+            if (saved) {
+                const boxes = JSON.parse(saved);
+                result.innerHTML += `<div class="box"><strong>Total de cajas:</strong> ${boxes.length}</div>`;
+                
+                result.innerHTML += '<div class="box"><strong>Lista de todas las cajas:</strong><ul>';
+                boxes.forEach((box, index) => {
+                    const nombre = box.nombre;
+                    const contienePalet = nombre.toLowerCase().includes('palet');
+                    const contienePale = nombre.toLowerCase().includes('pale');
+                    const contieneMercancia = nombre.toLowerCase().includes('mercancia');
+                    
+                    const className = (contienePalet || contienePale || contieneMercancia) ? 'highlight' : '';
+                    result.innerHTML += `<li class="${className}">${index + 1}. "${nombre}" `;
+                    
+                    if (contienePalet) result.innerHTML += '[CONTIENE PALET] ';
+                    if (contienePale) result.innerHTML += '[CONTIENE PALE] ';
+                    if (contieneMercancia) result.innerHTML += '[CONTIENE MERCANCIA] ';
+                    
+                    result.innerHTML += '</li>';
+                });
+                result.innerHTML += '</ul></div>';
+                
+                // Buscar específicamente
+                const cajaPalet = boxes.find(box => box.nombre.toLowerCase().includes('palet'));
+                if (cajaPalet) {
+                    result.innerHTML += `<div class="box highlight"><strong>✅ CAJA CON 'palet' ENCONTRADA:</strong> "${cajaPalet.nombre}"</div>`;
+                } else {
+                    result.innerHTML += '<div class="box"><strong>❌ NO se encontró caja con "palet"</strong></div>';
+                }
+                
+                const cajaPale = boxes.find(box => box.nombre.toLowerCase().includes('pale'));
+                if (cajaPale) {
+                    result.innerHTML += `<div class="box highlight"><strong>✅ CAJA CON 'pale' ENCONTRADA:</strong> "${cajaPale.nombre}"</div>`;
+                } else {
+                    result.innerHTML += '<div class="box"><strong>❌ NO se encontró caja con "pale"</strong></div>';
+                }
+                
+                const cajaMercancia = boxes.find(box => box.nombre.toLowerCase().includes('mercancia'));
+                if (cajaMercancia) {
+                    result.innerHTML += `<div class="box highlight"><strong>✅ CAJA CON 'mercancia' ENCONTRADA:</strong> "${cajaMercancia.nombre}"</div>`;
+                } else {
+                    result.innerHTML += '<div class="box"><strong>❌ NO se encontró caja con "mercancia"</strong></div>';
+                }
+                
+            } else {
+                result.innerHTML += '<div class="box"><strong>❌ No hay datos en localStorage</strong></div>';
+            }
+            
+        } catch (error) {
+            result.innerHTML += `<div class="box"><strong>Error:</strong> ${error.message}</div>`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Orden de Columnas</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .highlight { background-color: yellow; font-weight: bold; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Debug del Orden de Columnas</h1>
+    <div id="output"></div>
+    
+    <script>
+        const output = document.getElementById('output');
+        
+        function addSection(title, content) {
+            output.innerHTML += `<div class="debug-section"><h3>${title}</h3>${content}</div>`;
+        }
+        
+        // 1. Verificar localStorage
+        const saved = localStorage.getItem('userCreatedBoxes');
+        if (saved) {
+            const boxes = JSON.parse(saved);
+            let boxesContent = '<ul>';
+            boxes.forEach((box, index) => {
+                const containsPalet = box.nombre.toLowerCase().includes('palet');
+                const style = containsPalet ? 'class="highlight"' : '';
+                boxesContent += `<li ${style}>${index + 1}. ${box.nombre} ${containsPalet ? '(CONTIENE PALET)' : ''}</li>`;
+            });
+            boxesContent += '</ul>';
+            addSection('Cajas en localStorage', boxesContent);
+            
+            // 2. Simular la lógica de ordenamiento
+            const cajaPalet = boxes.find(box => box.nombre.toLowerCase().includes('palet'));
+            
+            if (cajaPalet) {
+                addSection('Caja de Palet Encontrada', `<span class="success">✅ ${cajaPalet.nombre}</span>`);
+                
+                // 3. Simular el orden de headers
+                let headerOrder = ['Fecha/Hora', 'Total'];
+                headerOrder.push(cajaPalet.nombre + ' (DESPUÉS DE TOTAL)');
+                
+                boxes.forEach(box => {
+                    if (box.nombre !== cajaPalet.nombre) {
+                        headerOrder.push(box.nombre);
+                    }
+                });
+                
+                let headerContent = '<ol>';
+                headerOrder.forEach((header, index) => {
+                    const isTarget = header.includes('(DESPUÉS DE TOTAL)');
+                    const style = isTarget ? 'class="highlight"' : '';
+                    headerContent += `<li ${style}>${header}</li>`;
+                });
+                headerContent += '</ol>';
+                addSection('Orden Esperado de Headers', headerContent);
+                
+            } else {
+                addSection('Caja de Palet', '<span class="error">❌ No se encontró ninguna caja con "palet"</span>');
+            }
+            
+        } else {
+            addSection('localStorage', '<span class="error">❌ No hay datos en localStorage</span>');
+        }
+        
+        // 4. Verificar el DOM actual
+        setTimeout(() => {
+            const actualHeaders = document.querySelectorAll('#conteos .data-table thead th');
+            if (actualHeaders.length > 0) {
+                let actualContent = '<ol>';
+                actualHeaders.forEach((th, index) => {
+                    const text = th.textContent;
+                    const isPalet = text.toLowerCase().includes('palet');
+                    const isAfterTotal = index === 2; // Debería estar en posición 2 (después de Fecha y Total)
+                    const style = isPalet && isAfterTotal ? 'class="success"' : (isPalet ? 'class="error"' : '');
+                    actualContent += `<li ${style}>${text} ${isPalet ? (isAfterTotal ? '(CORRECTO)' : '(POSICIÓN INCORRECTA)') : ''}</li>`;
+                });
+                actualContent += '</ol>';
+                addSection('Headers Actuales en el DOM', actualContent);
+            } else {
+                addSection('Headers Actuales', '<span class="error">❌ No se encontraron headers en el DOM</span>');
+            }
+        }, 1000);
+        
+    </script>
+</body>
+</html>

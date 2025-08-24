@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Cajas</title>
+</head>
+<body>
+    <h1>Debug de Cajas Guardadas</h1>
+    <div id="output"></div>
+    
+    <script>
+        const output = document.getElementById('output');
+        
+        // Verificar localStorage
+        const saved = localStorage.getItem('userCreatedBoxes');
+        output.innerHTML += '<h2>Contenido de localStorage:</h2>';
+        output.innerHTML += '<pre>' + (saved || 'No hay datos') + '</pre>';
+        
+        if (saved) {
+            const boxes = JSON.parse(saved);
+            output.innerHTML += '<h2>Cajas encontradas:</h2>';
+            boxes.forEach((box, index) => {
+                output.innerHTML += `<p><strong>${index + 1}.</strong> ${box.nombre}</p>`;
+                
+                // Verificar si contiene 'palet'
+                const containsPalet = box.nombre.toLowerCase().includes('palet');
+                const containsPale = box.nombre.toLowerCase().includes('pale');
+                const containsMercancia = box.nombre.toLowerCase().includes('mercancia');
+                
+                if (containsPalet || containsPale || containsMercancia) {
+                    output.innerHTML += `<p style="color: green;">  → Contiene: palet=${containsPalet}, pale=${containsPale}, mercancia=${containsMercancia}</p>`;
+                }
+            });
+            
+            // Buscar la caja específica (nueva búsqueda)
+            const cajaPalet = boxes.find(box => 
+                box.nombre.toLowerCase().includes('palet')
+            );
+            
+            output.innerHTML += '<h2>Resultado de búsqueda (nueva lógica):</h2>';
+            if (cajaPalet) {
+                output.innerHTML += `<p style="color: green;">✅ Encontrada caja con 'palet': ${cajaPalet.nombre}</p>`;
+            } else {
+                output.innerHTML += '<p style="color: red;">❌ No se encontró caja con "palet"</p>';
+            }
+            
+            // Buscar la caja específica (búsqueda anterior)
+            const cajaPaleMercancia = boxes.find(box => 
+                box.nombre.toLowerCase().includes('pale') && box.nombre.toLowerCase().includes('mercancia')
+            );
+            
+            output.innerHTML += '<h2>Resultado de búsqueda (lógica anterior):</h2>';
+            if (cajaPaleMercancia) {
+                output.innerHTML += `<p style="color: green;">✅ Encontrada: ${cajaPaleMercancia.nombre}</p>`;
+            } else {
+                output.innerHTML += '<p style="color: red;">❌ No se encontró caja con "pale" y "mercancia"</p>';
+            }
+        }
+    </script>
+</body>
+</html>
