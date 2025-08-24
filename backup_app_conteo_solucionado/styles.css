@@ -462,11 +462,16 @@ body {
 .subtotal-row {
     background-color: #e8f5e9;
     font-weight: 600;
+    color: #d32f2f;
 }
 
 .total-row {
     background-color: #c8e6c9;
     font-weight: 700;
+}
+
+.bloque-completado {
+    background-color: #ffebee !important;
 }
 
 .table-actions {

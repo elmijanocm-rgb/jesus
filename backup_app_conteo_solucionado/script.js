@@ -86,11 +86,9 @@ function agregarConteoAlHistorial() {
     userCreatedBoxes.forEach(box => {
         box.cantidad = 0;
     });
-    saveUserBoxes();
+    saveUserCreatedBoxes();
     
     // Actualizar las pantallas
-    displayUserBoxesInHome();
-    updateTotalBoxes();
     displayHistorialConteos();
 }
 
@@ -117,10 +115,12 @@ function displayHistorialConteos() {
     const cajasNormalesArray = todasLasCajasArray;
     const cajasPaletArray = [];
     
-    // Variables para subtotales (solo cajas normales)
+    // Variables para subtotales (bloques independientes de 4 filas)
     let subtotalesPorCaja = {};
     let subtotalGeneral = 0;
     let contadorFilas = 0;
+    let bloqueActual = []; // Array para almacenar el bloque actual de 4 filas
+    let numeroBloque = 0; // Contador de bloques completados
     
     // Variables para total general (solo cajas normales)
     let totalesPorCaja = {};
@@ -161,13 +161,19 @@ function displayHistorialConteos() {
         // Agregar columna Total después de Fecha
         cellsHTML += `<td><strong>${totalCajasNormales}</strong></td>`;
         
+        // Crear objeto para almacenar los datos de esta fila
+        let datosFilaActual = {
+            totalCajasNormales: totalCajasNormales,
+            cajas: {}
+        };
+        
         // Agregar celdas para userCreatedBoxes en el mismo orden que los headers
         userCreatedBoxes.forEach(box => {
             const cantidad = (conteo.cajas && conteo.cajas[box.nombre]) || 0;
             cellsHTML += `<td>${cantidad}</td>`;
             
-            // Acumular en subtotales y totales
-            subtotalesPorCaja[box.nombre] += cantidad;
+            // Guardar en datos de la fila y acumular en totales generales
+            datosFilaActual.cajas[box.nombre] = cantidad;
             totalesPorCaja[box.nombre] += cantidad;
         });
         
@@ -176,10 +182,15 @@ function displayHistorialConteos() {
             const cantidad = (conteo.cajas && conteo.cajas[box.nombre]) || 0;
             cellsHTML += `<td>${cantidad}</td>`;
             
-            // Acumular en subtotales y totales
-            subtotalesPorCaja[box.nombre] += cantidad;
+            // Guardar en datos de la fila y acumular en totales generales
+            datosFilaActual.cajas[box.nombre] = cantidad;
             totalesPorCaja[box.nombre] += cantidad;
         });
+        
+        // Agregar la fila actual al bloque actual
+        bloqueActual.push(datosFilaActual);
+        
+        contadorFilas++;
         
         // Agregar celdas para palets (separadas)
         cajasPaletArray.forEach(nombreCaja => {
@@ -192,7 +203,6 @@ function displayHistorialConteos() {
         });
         
         // Acumular totales generales (solo cajas normales)
-        subtotalGeneral += totalCajasNormales;
         totalGeneral += totalCajasNormales;
         
         row.innerHTML = cellsHTML;
@@ -213,41 +223,132 @@ function displayHistorialConteos() {
         
         tbody.appendChild(row);
         
-        contadorFilas++;
-        
-        // Agregar subtotal cada 4 filas
-        if (contadorFilas % 4 === 0 || index === historialConteos.length - 1) {
+        // Verificar si completamos un bloque de 4 filas
+        if (bloqueActual.length === 4) {
+            numeroBloque++;
+            
+            // Calcular subtotales para el bloque actual
+            let subtotalGeneralCalculado = 0;
+            let subtotalesPorCajaCalculados = {};
+            
+            // Inicializar subtotales
+            userCreatedBoxes.forEach(box => {
+                subtotalesPorCajaCalculados[box.nombre] = 0;
+            });
+            defaultBoxes.forEach(box => {
+                subtotalesPorCajaCalculados[box.nombre] = 0;
+            });
+            
+            for (let i = 0; i < bloqueActual.length; i++) {
+                const fila = bloqueActual[i];
+                subtotalGeneralCalculado += fila.totalCajasNormales;
+                
+                userCreatedBoxes.forEach(box => {
+                    subtotalesPorCajaCalculados[box.nombre] += fila.cajas[box.nombre] || 0;
+                });
+                
+                defaultBoxes.forEach(box => {
+                    subtotalesPorCajaCalculados[box.nombre] += fila.cajas[box.nombre] || 0;
+                });
+            }
+            
+            // Crear fila de subtotal
             const subtotalRow = document.createElement('tr');
             subtotalRow.className = 'subtotal-row';
             
-            let subtotalHTML = '<td><strong>Subtotal</strong></td>';
+            let subtotalHTML = `<td><strong>SUBTOTAL - Bloque ${numeroBloque} (CERRADO)</strong></td>`;
             
             // Agregar columna Total después de Fecha
-            subtotalHTML += `<td><strong>${subtotalGeneral}</strong></td>`;
+            subtotalHTML += `<td><strong>${subtotalGeneralCalculado}</strong></td>`;
             
             // Agregar userCreatedBoxes en el mismo orden que los headers
             userCreatedBoxes.forEach(box => {
-                subtotalHTML += `<td><strong>${subtotalesPorCaja[box.nombre] || 0}</strong></td>`;
+                subtotalHTML += `<td><strong>${subtotalesPorCajaCalculados[box.nombre] || 0}</strong></td>`;
             });
             
             // Agregar defaultBoxes en el mismo orden que los headers
             defaultBoxes.forEach(box => {
-                subtotalHTML += `<td><strong>${subtotalesPorCaja[box.nombre] || 0}</strong></td>`;
+                subtotalHTML += `<td><strong>${subtotalesPorCajaCalculados[box.nombre] || 0}</strong></td>`;
             });
-            
+
+            // Agregar columnas de palets (vacías en subtotal)
+            cajasPaletArray.forEach(nombreCaja => {
+                subtotalHTML += `<td></td>`;
+            });
+
             subtotalRow.innerHTML = subtotalHTML;
             tbody.appendChild(subtotalRow);
             
-            // Resetear subtotales
-            cajasNormalesArray.forEach(nombreCaja => {
-                subtotalesPorCaja[nombreCaja] = 0;
-            });
-            cajasPaletArray.forEach(nombreCaja => {
-                subtotalesPalets[nombreCaja] = 0;
-            });
-            subtotalGeneral = 0;
+            // Agregar clase de bloque completado a las últimas 4 filas
+            const todasLasFilas = tbody.querySelectorAll('tr:not(.subtotal-row):not(.total-row)');
+            const inicioBloque = Math.max(0, todasLasFilas.length - 4);
+            for (let i = inicioBloque; i < todasLasFilas.length; i++) {
+                if (todasLasFilas[i]) {
+                    todasLasFilas[i].classList.add('bloque-completado');
+                }
+            }
+            
+            // Resetear el bloque actual para empezar de cero
+            bloqueActual = [];
         }
+        
+        // Esta lógica se movió arriba para manejar bloques independientes
     });
+    
+    // Agregar subtotal final si quedan filas sin agrupar (no múltiplo de 4)
+    if (bloqueActual.length > 0) {
+        const subtotalRow = document.createElement('tr');
+        subtotalRow.className = 'subtotal-row';
+        
+        let subtotalHTML = `<td><strong>SUBTOTAL - Filas Restantes (${bloqueActual.length})</strong></td>`;
+        
+        // Calcular subtotales solo de las filas restantes
+        let subtotalGeneralCalculado = 0;
+        let subtotalesPorCajaCalculados = {};
+        
+        // Inicializar subtotales
+        userCreatedBoxes.forEach(box => {
+            subtotalesPorCajaCalculados[box.nombre] = 0;
+        });
+        defaultBoxes.forEach(box => {
+            subtotalesPorCajaCalculados[box.nombre] = 0;
+        });
+        
+        // Sumar todas las filas restantes que están en bloqueActual
+        for (let i = 0; i < bloqueActual.length; i++) {
+            const fila = bloqueActual[i];
+            subtotalGeneralCalculado += fila.totalCajasNormales;
+            
+            userCreatedBoxes.forEach(box => {
+                subtotalesPorCajaCalculados[box.nombre] += fila.cajas[box.nombre] || 0;
+            });
+            
+            defaultBoxes.forEach(box => {
+                subtotalesPorCajaCalculados[box.nombre] += fila.cajas[box.nombre] || 0;
+            });
+        }
+        
+        // Agregar columna Total después de Fecha
+        subtotalHTML += `<td><strong>${subtotalGeneralCalculado}</strong></td>`;
+        
+        // Agregar userCreatedBoxes en el mismo orden que los headers
+        userCreatedBoxes.forEach(box => {
+            subtotalHTML += `<td><strong>${subtotalesPorCajaCalculados[box.nombre] || 0}</strong></td>`;
+        });
+        
+        // Agregar defaultBoxes en el mismo orden que los headers
+        defaultBoxes.forEach(box => {
+            subtotalHTML += `<td><strong>${subtotalesPorCajaCalculados[box.nombre] || 0}</strong></td>`;
+        });
+
+        // Agregar columnas de palets (vacías en subtotal)
+        cajasPaletArray.forEach(nombreCaja => {
+            subtotalHTML += `<td></td>`;
+        });
+
+        subtotalRow.innerHTML = subtotalHTML;
+        tbody.appendChild(subtotalRow);
+    }
     
     // Agregar fila de total general
     const totalRow = document.createElement('tr');
@@ -267,7 +368,12 @@ function displayHistorialConteos() {
     defaultBoxes.forEach(box => {
         totalHTML += `<td><strong>${totalesPorCaja[box.nombre] || 0}</strong></td>`;
     });
-    
+
+    // Agregar columnas de palets con sus totales
+    cajasPaletArray.forEach(nombreCaja => {
+        totalHTML += `<td><strong>${totalesPalets[nombreCaja] || 0}</strong></td>`;
+    });
+
     totalRow.innerHTML = totalHTML;
     tbody.appendChild(totalRow);
     
@@ -491,7 +597,7 @@ function exportarHistorialPDF() {
     const cajasPaletArray = [];
     
     // Preparar encabezados con orden específico: Total, caja de palet, demás cajas
-    const cajaPaleMercancia = todasLasCajas.find(box => 
+    let cajaPaleMercancia = todasLasCajas.find(box => 
         box.nombre.toLowerCase().includes('palet') || 
         box.nombre.toLowerCase().includes('mercancia')
     );
@@ -554,7 +660,7 @@ function exportarHistorialPDF() {
         fila.push(totalCajasNormales.toString());
         
         // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
-        const cajaPaleMercancia = todasLasCajas.find(box => 
+        cajaPaleMercancia = todasLasCajas.find(box => 
             box.nombre.toLowerCase().includes('palet') || 
             box.nombre.toLowerCase().includes('mercancia')
         );
@@ -597,7 +703,7 @@ function exportarHistorialPDF() {
             filaSubtotal.push(subtotalGeneral.toString());
             
             // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
-            const cajaPaleMercancia = todasLasCajas.find(box => 
+            cajaPaleMercancia = todasLasCajas.find(box => 
                 box.nombre.toLowerCase().includes('palet') || 
                 box.nombre.toLowerCase().includes('mercancia')
             );
@@ -634,7 +740,7 @@ function exportarHistorialPDF() {
     filaTotalGeneral.push(totalGeneral.toString());
     
     // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
-        const cajaPaleMercancia = todasLasCajas.find(box => 
+        cajaPaleMercancia = todasLasCajas.find(box => 
             box.nombre.toLowerCase().includes('palet') || 
             box.nombre.toLowerCase().includes('mercancia')
         );
@@ -783,6 +889,8 @@ function initializeApp() {
     loadUserCreatedBoxes();
     loadHistorialConteos();
     loadRegistrosArchivados();
+    displayHistorialConteos();
+    updateHistorialHeaders();
 }
 
 // Inicializar la aplicación cuando se carga la página
