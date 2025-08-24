@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Solucionar Orden de Palet Mercancia</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .step { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
+        .btn-primary { background-color: #007bff; color: white; border: none; }
+        .btn-success { background-color: #28a745; color: white; border: none; }
+        .btn-danger { background-color: #dc3545; color: white; border: none; }
+        pre { background-color: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Solucionar Orden de Palet Mercancia</h1>
+    
+    <div class="step info">
+        <h3>Paso 1: Verificar Estado Actual</h3>
+        <button class="btn-primary" onclick="checkCurrentState()">Verificar Estado</button>
+        <div id="current-state"></div>
+    </div>
+    
+    <div class="step info">
+        <h3>Paso 2: Crear Caja Palet Mercancia</h3>
+        <button class="btn-success" onclick="createPaletBox()">Crear Caja</button>
+        <div id="create-result"></div>
+    </div>
+    
+    <div class="step info">
+        <h3>Paso 3: Verificar Solución</h3>
+        <button class="btn-primary" onclick="testSolution()">Probar Solución</button>
+        <div id="test-result"></div>
+    </div>
+    
+    <div class="step info">
+        <h3>Paso 4: Ir a la Aplicación</h3>
+        <button class="btn-success" onclick="goToApp()">Abrir Aplicación</button>
+    </div>
+    
+    <script>
+        function log(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const className = type === 'success' ? 'success' : (type === 'error' ? 'error' : 'info');
+            container.innerHTML += `<div class="${className}">${message}</div>`;
+        }
+        
+        function checkCurrentState() {
+            const container = document.getElementById('current-state');
+            container.innerHTML = '';
+            
+            // Verificar localStorage
+            const saved = localStorage.getItem('userCreatedBoxes');
+            if (!saved) {
+                log('current-state', '❌ No hay cajas en localStorage', 'error');
+                return;
+            }
+            
+            const boxes = JSON.parse(saved);
+            log('current-state', `📦 Total de cajas: ${boxes.length}`, 'info');
+            
+            // Mostrar todas las cajas
+            boxes.forEach((box, index) => {
+                log('current-state', `${index + 1}. "${box.nombre}"`, 'info');
+            });
+            
+            // Buscar caja palet
+            const paletBox = boxes.find(box => 
+                box.nombre.toLowerCase().includes('palet') || 
+                box.nombre.toLowerCase().includes('mercancia')
+            );
+            
+            if (paletBox) {
+                log('current-state', `✅ Caja palet encontrada: "${paletBox.nombre}"`, 'success');
+            } else {
+                log('current-state', '❌ No se encontró caja palet', 'error');
+            }
+        }
+        
+        function createPaletBox() {
+            const container = document.getElementById('create-result');
+            container.innerHTML = '';
+            
+            // Obtener cajas existentes
+            let boxes = [];
+            const saved = localStorage.getItem('userCreatedBoxes');
+            if (saved) {
+                boxes = JSON.parse(saved);
+            }
+            
+            // Verificar si ya existe
+            const exists = boxes.find(box => 
+                box.nombre.toLowerCase().includes('palet') || 
+                box.nombre.toLowerCase().includes('mercancia')
+            );
+            
+            if (exists) {
+                log('create-result', `✅ Ya existe una caja palet: "${exists.nombre}"`, 'success');
+                return;
+            }
+            
+            // Crear la caja
+            const paletBox = {
+                nombre: 'Palet Mercancia',
+                color: '#ff6b6b',
+                imagen: 'box',
+                cantidad: 0
+            };
+            
+            boxes.push(paletBox);
+            localStorage.setItem('userCreatedBoxes', JSON.stringify(boxes));
+            
+            log('create-result', '✅ Caja "Palet Mercancia" creada exitosamente', 'success');
+            log('create-result', `Total de cajas ahora: ${boxes.length}`, 'info');
+            
+            // Verificar que se puede encontrar
+            const found = boxes.find(box => 
+                box.nombre.toLowerCase().includes('palet') || 
+                box.nombre.toLowerCase().includes('mercancia')
+            );
+            
+            if (found) {
+                log('create-result', `✅ Verificación exitosa: "${found.nombre}"`, 'success');
+            } else {
+                log('create-result', '❌ Error en la verificación', 'error');
+            }
+        }
+        
+        function testSolution() {
+            const container = document.getElementById('test-result');
+            container.innerHTML = '';
+            
+            // Simular la lógica de updateHistorialHeaders
+            const saved = localStorage.getItem('userCreatedBoxes');
+            if (!saved) {
+                log('test-result', '❌ No hay cajas para probar', 'error');
+                return;
+            }
+            
+            const boxes = JSON.parse(saved);
+            
+            // Simular la búsqueda de caja palet
+            const cajaPaleMercancia = boxes.find(box => 
+                box.nombre.toLowerCase().includes('palet') || 
+                box.nombre.toLowerCase().includes('mercancia')
+            );
+            
+            log('test-result', '🧪 Simulando lógica de headers...', 'info');
+            
+            // Simular creación de headers
+            let headersHTML = '<th>Fecha/Hora</th><th>Total</th>';
+            
+            if (cajaPaleMercancia) {
+                headersHTML += `<th>${cajaPaleMercancia.nombre}</th>`;
+                log('test-result', `✅ Palet agregado en posición 3: "${cajaPaleMercancia.nombre}"`, 'success');
+            } else {
+                log('test-result', '❌ No se encontró caja palet', 'error');
+            }
+            
+            // Agregar demás cajas
+            boxes.forEach(box => {
+                if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
+                    headersHTML += `<th>${box.nombre}</th>`;
+                }
+            });
+            
+            log('test-result', '📋 Headers simulados:', 'info');
+            log('test-result', `<pre>${headersHTML}</pre>`, 'info');
+            
+            // Verificar orden
+            const headers = headersHTML.match(/<th>([^<]+)<\/th>/g);
+            if (headers) {
+                log('test-result', '📊 Orden de columnas:', 'info');
+                headers.forEach((header, index) => {
+                    const name = header.replace(/<\/?th>/g, '');
+                    log('test-result', `${index + 1}. ${name}`, 'info');
+                });
+                
+                if (headers[2] && headers[2].includes('Palet')) {
+                    log('test-result', '✅ ¡Palet Mercancia está en la posición correcta (3)!', 'success');
+                } else {
+                    log('test-result', '❌ Palet Mercancia no está en la posición 3', 'error');
+                }
+            }
+        }
+        
+        function goToApp() {
+            window.open('/', '_blank');
+        }
+        
+        // Auto-verificar al cargar
+        window.onload = function() {
+            checkCurrentState();
+        };
+    </script>
+</body>
+</html>

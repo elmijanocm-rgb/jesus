@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Estado Actual</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .highlight { background-color: yellow; font-weight: bold; }
+        .error { color: red; }
+        .success { color: green; }
+        button { padding: 10px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Test del Estado Actual</h1>
+    
+    <button onclick="checkLocalStorage()">1. Verificar localStorage</button>
+    <button onclick="testSearch()">2. Probar búsqueda</button>
+    <button onclick="createTestBox()">3. Crear caja de prueba</button>
+    <button onclick="clearStorage()">4. Limpiar localStorage</button>
+    
+    <div id="output"></div>
+    
+    <script>
+        const output = document.getElementById('output');
+        
+        function log(message, type = 'info') {
+            const className = type === 'error' ? 'error' : (type === 'success' ? 'success' : '');
+            output.innerHTML += `<div class="section ${className}">${message}</div>`;
+        }
+        
+        function checkLocalStorage() {
+            output.innerHTML = '';
+            log('<h3>Verificando localStorage...</h3>');
+            
+            const saved = localStorage.getItem('userCreatedBoxes');
+            if (saved) {
+                const boxes = JSON.parse(saved);
+                log(`Total de cajas: ${boxes.length}`, 'success');
+                
+                boxes.forEach((box, index) => {
+                    const nombre = box.nombre;
+                    const contienePalet = nombre.toLowerCase().includes('palet');
+                    const contieneMercancia = nombre.toLowerCase().includes('mercancia');
+                    
+                    let message = `${index + 1}. "${nombre}"`;
+                    if (contienePalet || contieneMercancia) {
+                        message += ' <span class="highlight">[COINCIDE]</span>';
+                    }
+                    
+                    log(message);
+                });
+                
+                // Probar la nueva lógica de búsqueda
+                const cajaPalet = boxes.find(box => 
+                    box.nombre.toLowerCase().includes('palet') || 
+                    box.nombre.toLowerCase().includes('mercancia')
+                );
+                
+                if (cajaPalet) {
+                    log(`✅ CAJA ENCONTRADA con nueva lógica: "${cajaPalet.nombre}"`, 'success');
+                } else {
+                    log('❌ NO se encontró caja con nueva lógica', 'error');
+                }
+                
+            } else {
+                log('❌ No hay datos en localStorage', 'error');
+            }
+        }
+        
+        function testSearch() {
+            output.innerHTML = '';
+            log('<h3>Probando diferentes búsquedas...</h3>');
+            
+            const saved = localStorage.getItem('userCreatedBoxes');
+            if (saved) {
+                const boxes = JSON.parse(saved);
+                
+                // Buscar por 'palet'
+                const palet1 = boxes.find(box => box.nombre.toLowerCase().includes('palet'));
+                log(`Búsqueda 'palet': ${palet1 ? palet1.nombre : 'NO ENCONTRADA'}`);
+                
+                // Buscar por 'mercancia'
+                const palet2 = boxes.find(box => box.nombre.toLowerCase().includes('mercancia'));
+                log(`Búsqueda 'mercancia': ${palet2 ? palet2.nombre : 'NO ENCONTRADA'}`);
+                
+                // Buscar por 'pale'
+                const palet3 = boxes.find(box => box.nombre.toLowerCase().includes('pale'));
+                log(`Búsqueda 'pale': ${palet3 ? palet3.nombre : 'NO ENCONTRADA'}`);
+                
+                // Nueva lógica combinada
+                const palet4 = boxes.find(box => 
+                    box.nombre.toLowerCase().includes('palet') || 
+                    box.nombre.toLowerCase().includes('mercancia')
+                );
+                log(`Nueva lógica (palet OR mercancia): ${palet4 ? palet4.nombre : 'NO ENCONTRADA'}`, palet4 ? 'success' : 'error');
+                
+            } else {
+                log('❌ No hay datos en localStorage', 'error');
+            }
+        }
+        
+        function createTestBox() {
+            output.innerHTML = '';
+            log('<h3>Creando caja de prueba...</h3>');
+            
+            const testBox = {
+                nombre: 'Palet Mercancia',
+                color: '#ff0000',
+                imagen: 'box'
+            };
+            
+            let boxes = [];
+            const saved = localStorage.getItem('userCreatedBoxes');
+            if (saved) {
+                boxes = JSON.parse(saved);
+            }
+            
+            // Verificar si ya existe
+            const exists = boxes.find(box => box.nombre === testBox.nombre);
+            if (exists) {
+                log('La caja "Palet Mercancia" ya existe', 'error');
+            } else {
+                boxes.push(testBox);
+                localStorage.setItem('userCreatedBoxes', JSON.stringify(boxes));
+                log('✅ Caja "Palet Mercancia" creada exitosamente', 'success');
+            }
+        }
+        
+        function clearStorage() {
+            localStorage.removeItem('userCreatedBoxes');
+            log('localStorage limpiado', 'success');
+        }
+        
+        // Auto-ejecutar verificación al cargar
+        window.onload = function() {
+            checkLocalStorage();
+        };
+    </script>
+</body>
+</html>

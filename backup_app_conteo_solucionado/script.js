@@ -960,13 +960,15 @@ function displayHistorialConteos() {
         // Agregar columna Total después de Fecha
         cellsHTML += `<td><strong>${totalCajasNormales}</strong></td>`;
         
-        // Buscar la caja de palet (cualquier caja que contenga 'palet') y agregarla primero
+        // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
         const cajaPaleMercancia = todasLasCajas.find(box => 
-            box.nombre.toLowerCase().includes('palet')
+            box.nombre.toLowerCase().includes('palet') || 
+            box.nombre.toLowerCase().includes('mercancia')
         );
         
         if (index === 0) {
             console.log('🎯 En displayHistorialConteos - Caja de palet encontrada:', cajaPaleMercancia ? cajaPaleMercancia.nombre : 'NINGUNA');
+            console.log('🔄 Cells HTML antes de agregar palet:', cellsHTML);
         }
         
         // Agregar PALE DE MERCANCIA inmediatamente después de Total
@@ -975,12 +977,17 @@ function displayHistorialConteos() {
             cellsHTML += `<td>${cantidad}</td>`;
             
             if (index === 0) {
-                console.log('✅ Agregada celda de palet después de Total en fila de datos');
+                console.log('✅ Agregada celda de palet después de Total en fila de datos:', cajaPaleMercancia.nombre, 'cantidad:', cantidad);
+                console.log('🔄 Cells HTML después de agregar palet:', cellsHTML);
             }
             
             // Acumular en subtotales y totales
             subtotalesPorCaja[cajaPaleMercancia.nombre] += cantidad;
             totalesPorCaja[cajaPaleMercancia.nombre] += cantidad;
+        } else {
+            if (index === 0) {
+                console.log('❌ No se encontró caja palet para agregar en fila de datos');
+            }
         }
         
         // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
@@ -1039,10 +1046,11 @@ function displayHistorialConteos() {
             // Agregar columna Total después de Fecha
             subtotalHTML += `<td><strong>${subtotalGeneral}</strong></td>`;
             
-            // Buscar la caja de palet (cualquier caja que contenga 'palet') y agregarla primero
-            const cajaPaleMercancia = todasLasCajas.find(box => 
-                box.nombre.toLowerCase().includes('palet')
-            );
+            // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
+        const cajaPaleMercancia = todasLasCajas.find(box => 
+            box.nombre.toLowerCase().includes('palet') || 
+            box.nombre.toLowerCase().includes('mercancia')
+        );
             
             // Agregar PALE DE MERCANCIA inmediatamente después de Total
             if (cajaPaleMercancia) {
@@ -1079,10 +1087,11 @@ function displayHistorialConteos() {
     // Agregar columna Total después de Fecha
     totalHTML += `<td><strong>${totalGeneral}</strong></td>`;
     
-    // Buscar la caja de palet (cualquier caja que contenga 'palet') y agregarla primero
-    const cajaPaleMercancia = todasLasCajas.find(box => 
-        box.nombre.toLowerCase().includes('palet')
-    );
+    // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
+        const cajaPaleMercancia = todasLasCajas.find(box => 
+            box.nombre.toLowerCase().includes('palet') || 
+            box.nombre.toLowerCase().includes('mercancia')
+        );
     
     // Agregar PALE DE MERCANCIA inmediatamente después de Total
     if (cajaPaleMercancia) {
@@ -1123,17 +1132,25 @@ function updateHistorialHeaders() {
     // Agregar columna Total después de Fecha
     headersHTML += '<th>Total</th>';
     
-    // Buscar la caja de palet (cualquier caja que contenga 'palet') y ponerla primero
+    // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
     const cajaPaleMercancia = todasLasCajas.find(box => 
-        box.nombre.toLowerCase().includes('palet')
+        box.nombre.toLowerCase().includes('palet') || 
+        box.nombre.toLowerCase().includes('mercancia')
     );
     
     console.log('🎯 Caja de palet encontrada:', cajaPaleMercancia ? cajaPaleMercancia.nombre : 'NINGUNA');
+    console.log('🔍 Búsqueda actualizada: buscando palet OR mercancia');
+    console.log('📦 Todas las cajas disponibles:', todasLasCajas.map(box => `"${box.nombre}"`));
+    
+    console.log('🔄 Headers HTML antes de agregar palet:', headersHTML);
     
     // Agregar PALE DE MERCANCIA inmediatamente después de Total
     if (cajaPaleMercancia) {
         headersHTML += `<th>${cajaPaleMercancia.nombre}</th>`;
-        console.log('✅ Agregada caja de palet después de Total');
+        console.log('✅ Agregada caja de palet después de Total:', cajaPaleMercancia.nombre);
+        console.log('🔄 Headers HTML después de agregar palet:', headersHTML);
+    } else {
+        console.log('❌ No se encontró caja palet para agregar');
     }
     
     // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
@@ -1343,7 +1360,8 @@ function exportarHistorialPDF() {
     
     // Preparar encabezados con orden específico: Total, caja de palet, demás cajas
     const cajaPaleMercancia = todasLasCajas.find(box => 
-        box.nombre.toLowerCase().includes('palet')
+        box.nombre.toLowerCase().includes('palet') || 
+        box.nombre.toLowerCase().includes('mercancia')
     );
     
     let headersOrdenados = ['Fecha/Hora', 'Total'];
@@ -1403,9 +1421,10 @@ function exportarHistorialPDF() {
         // Agregar columna Total después de Fecha
         fila.push(totalCajasNormales.toString());
         
-        // Buscar la caja de palet (cualquier caja que contenga 'palet') y agregarla primero
+        // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
         const cajaPaleMercancia = todasLasCajas.find(box => 
-            box.nombre.toLowerCase().includes('palet')
+            box.nombre.toLowerCase().includes('palet') || 
+            box.nombre.toLowerCase().includes('mercancia')
         );
         
         // Agregar PALE DE MERCANCIA inmediatamente después de Total
@@ -1445,9 +1464,10 @@ function exportarHistorialPDF() {
             // Agregar subtotal general en segunda posición
             filaSubtotal.push(subtotalGeneral.toString());
             
-            // Buscar la caja de palet (cualquier caja que contenga 'palet') y agregarla primero
+            // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
             const cajaPaleMercancia = todasLasCajas.find(box => 
-                box.nombre.toLowerCase().includes('palet')
+                box.nombre.toLowerCase().includes('palet') || 
+                box.nombre.toLowerCase().includes('mercancia')
             );
             
             // Agregar PALE DE MERCANCIA inmediatamente después de Total
@@ -1481,10 +1501,11 @@ function exportarHistorialPDF() {
     // Agregar total general en segunda posición
     filaTotalGeneral.push(totalGeneral.toString());
     
-    // Buscar la caja de palet (cualquier caja que contenga 'palet') y agregarla primero
-    const cajaPaleMercancia = todasLasCajas.find(box => 
-        box.nombre.toLowerCase().includes('palet')
-    );
+    // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
+        const cajaPaleMercancia = todasLasCajas.find(box => 
+            box.nombre.toLowerCase().includes('palet') || 
+            box.nombre.toLowerCase().includes('mercancia')
+        );
     
     // Agregar PALE DE MERCANCIA inmediatamente después de Total
     if (cajaPaleMercancia) {
