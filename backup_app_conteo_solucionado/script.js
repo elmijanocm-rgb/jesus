@@ -253,14 +253,12 @@ function editUserBox(box) {
         const newType = editor.querySelector('.edit-type-input').value.trim();
         
         if (!newName) {
-            alert('Por favor, ingresa un nombre para la caja.');
             return;
         }
         
         // Verificar que el nuevo nombre no exista ya (excepto si es el mismo)
         const existingBox = userCreatedBoxes.find(b => b.nombre.toLowerCase() === newName.toLowerCase() && b !== box);
         if (existingBox) {
-            alert('Ya existe una caja con ese nombre. Por favor, elige otro nombre.');
             return;
         }
         
@@ -283,26 +281,6 @@ function editUserBox(box) {
     
     // Eliminar caja
     editor.querySelector('.delete-box').addEventListener('click', function() {
-        if (confirm(`¿Estás seguro de que quieres eliminar la caja "${box.nombre}"? Esta acción no se puede deshacer.`)) {
-            const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
-            
-            if (boxIndex !== -1) {
-                userCreatedBoxes.splice(boxIndex, 1);
-                saveUserBoxes();
-                displayUserBoxesInAdmin();
-                displayUserBoxesInHome();
-                updateTotalBoxes();
-                alert('Caja eliminada exitosamente');
-            }
-            
-            closeEditor();
-        }
-    });
-}
-
-// Función para eliminar una caja creada por el usuario
-function deleteUserBox(box) {
-    if (confirm(`¿Estás seguro de que quieres eliminar la caja "${box.nombre}"?`)) {
         const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
         
         if (boxIndex !== -1) {
@@ -311,8 +289,22 @@ function deleteUserBox(box) {
             displayUserBoxesInAdmin();
             displayUserBoxesInHome();
             updateTotalBoxes();
-            alert('Caja eliminada exitosamente');
         }
+        
+        closeEditor();
+    });
+}
+
+// Función para eliminar una caja creada por el usuario
+function deleteUserBox(box) {
+    const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
+    
+    if (boxIndex !== -1) {
+        userCreatedBoxes.splice(boxIndex, 1);
+        saveUserBoxes();
+        displayUserBoxesInAdmin();
+        displayUserBoxesInHome();
+        updateTotalBoxes();
     }
 }
 
@@ -321,38 +313,31 @@ function eliminarCaja(nombreCaja) {
     console.log('eliminarCaja llamada con:', nombreCaja);
     console.log('Cajas antes:', userCreatedBoxes.length);
     
-    if (confirm('¿Eliminar la caja "' + nombreCaja + '"?')) {
-        // Buscar y eliminar la caja
-        for (let i = 0; i < userCreatedBoxes.length; i++) {
-            if (userCreatedBoxes[i].nombre === nombreCaja) {
-                console.log('Caja encontrada en índice:', i);
-                userCreatedBoxes.splice(i, 1);
-                break;
-            }
+    // Buscar y eliminar la caja
+    for (let i = 0; i < userCreatedBoxes.length; i++) {
+        if (userCreatedBoxes[i].nombre === nombreCaja) {
+            console.log('Caja encontrada en índice:', i);
+            userCreatedBoxes.splice(i, 1);
+            break;
         }
-        
-        console.log('Cajas después:', userCreatedBoxes.length);
-        
-        // Guardar y actualizar
-        localStorage.setItem('userCreatedBoxes', JSON.stringify(userCreatedBoxes));
-        displayUserBoxesInAdmin();
-        displayUserBoxesInHome();
-        updateTotalBoxes();
-        
-        alert('¡Caja eliminada!');
     }
+    
+    console.log('Cajas después:', userCreatedBoxes.length);
+    
+    // Guardar y actualizar
+    localStorage.setItem('userCreatedBoxes', JSON.stringify(userCreatedBoxes));
+    displayUserBoxesInAdmin();
+    displayUserBoxesInHome();
+    updateTotalBoxes();
 }
 
 // Función para borrar TODAS las cajas creadas
 function borrarTodasLasCajas() {
-    if (confirm('¿Estás seguro de que quieres BORRAR TODAS las cajas creadas? Esta acción no se puede deshacer.')) {
-        userCreatedBoxes = [];
-        localStorage.setItem('userCreatedBoxes', JSON.stringify(userCreatedBoxes));
-        displayUserBoxesInAdmin();
-        displayUserBoxesInHome();
-        updateTotalBoxes();
-        alert('¡Todas las cajas han sido eliminadas!');
-    }
+    userCreatedBoxes = [];
+    localStorage.setItem('userCreatedBoxes', JSON.stringify(userCreatedBoxes));
+    displayUserBoxesInAdmin();
+    displayUserBoxesInHome();
+    updateTotalBoxes();
 }
 
 // Función para mostrar las cajas creadas por el usuario en la pantalla de inicio
@@ -479,15 +464,12 @@ function calculateTotalBoxes() {
 
 // Función simulada para exportar PDF
 function exportToPDF() {
-    alert('Funcionalidad de exportación a PDF - En desarrollo');
+    // Funcionalidad de exportación a PDF - En desarrollo
 }
 
 // Función para archivar y limpiar
 function archiveAndClean() {
-    if (confirm('¿Estás seguro de que deseas archivar y limpiar los conteos actuales?')) {
-        // Aquí iría la lógica para archivar
-        alert('Conteos archivados y limpiados correctamente.');
-    }
+    // Aquí iría la lógica para archivar
 }
 
 // Función para agregar nueva caja
@@ -506,8 +488,6 @@ function addNewBox() {
         updateHomeScreen();
         displayUserBoxesInHome();
         displayUserBoxesInAdmin();
-        
-        alert('Caja agregada correctamente.');
     }
 }
 
@@ -560,7 +540,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Datos del formulario:', { nombre, tipo, useImage, imageFile, colorValue });
             
             if (!nombre) {
-                alert('Por favor ingresa un nombre para el contenedor.');
                 return;
             }
             
@@ -593,8 +572,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('use-color').checked = true;
                     document.getElementById('use-image').checked = false;
                     document.getElementById('imagen-contenedor').disabled = true;
-                    
-                    alert('Contenedor creado exitosamente!');
                 };
                 reader.readAsDataURL(imageFile);
             } else {
@@ -626,8 +603,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('use-color').checked = true;
                 document.getElementById('use-image').checked = false;
                 document.getElementById('imagen-contenedor').disabled = true;
-                
-                alert('Contenedor creado exitosamente!');
             }
         });
     }
@@ -803,20 +778,16 @@ document.addEventListener('DOMContentLoaded', function() {
         deleteBoxButtons.forEach(button => {
             if (button.querySelector('.fa-trash')) {
                 button.addEventListener('click', function() {
-                    if (confirm('¿Estás seguro de que deseas eliminar esta caja?')) {
-                        const boxDetail = this.closest('.box-detail');
-                        const boxName = boxDetail.querySelector('.box-header h3').textContent;
-                        
-                        // Eliminar la caja del array
-                        userCreatedBoxes = userCreatedBoxes.filter(box => box.nombre !== boxName);
-                        saveUserBoxes();
-                        
-                        boxDetail.remove();
-                        displayUserBoxesInHome();
-                        updateTotalBoxes();
-                        
-                        alert('Caja eliminada correctamente.');
-                    }
+                    const boxDetail = this.closest('.box-detail');
+                    const boxName = boxDetail.querySelector('.box-header h3').textContent;
+                    
+                    // Eliminar la caja del array
+                    userCreatedBoxes = userCreatedBoxes.filter(box => box.nombre !== boxName);
+                    saveUserBoxes();
+                    
+                    boxDetail.remove();
+                    displayUserBoxesInHome();
+                    updateTotalBoxes();
                 });
             }
         });
@@ -866,14 +837,12 @@ function saveHistorialConteos() {
 // Función para agregar el conteo actual al historial
 function agregarConteoAlHistorial() {
     if (userCreatedBoxes.length === 0) {
-        alert('No hay cajas creadas para agregar al conteo.');
         return;
     }
     
     // Verificar si hay cantidades para contar
     const totalCantidad = userCreatedBoxes.reduce((total, box) => total + (box.cantidad || 0), 0);
     if (totalCantidad === 0) {
-        alert('No hay cantidades para agregar al historial.');
         return;
     }
     
@@ -917,8 +886,6 @@ function agregarConteoAlHistorial() {
     displayUserBoxesInHome();
     updateTotalBoxes();
     displayHistorialConteos();
-    
-    alert('Conteo agregado al historial y cantidades reseteadas.');
 }
 
 // Función para mostrar el historial de conteos
@@ -1137,11 +1104,8 @@ function saveRegistrosArchivados() {
 // Función principal para archivar y limpiar el historial
 function archivarYLimpiarHistorial() {
     if (historialConteos.length === 0) {
-        alert('No hay conteos en el historial para archivar.');
         return;
     }
-    
-    if (confirm('¿Estás seguro de que deseas archivar todos los conteos actuales y limpiar el historial? Esta acción no se puede deshacer.')) {
         // Crear el registro archivado con la fecha actual
         const ahora = new Date();
         const fechaArchivo = ahora.toLocaleDateString('es-ES', { 
@@ -1189,9 +1153,6 @@ function archivarYLimpiarHistorial() {
         // Actualizar las pantallas
         displayHistorialConteos();
         displayRegistrosArchivados();
-        
-        alert('Historial archivado exitosamente y conteos actuales limpiados.');
-    }
 }
 
 // Función para mostrar los registros archivados
@@ -1266,7 +1227,7 @@ function verDetalleRegistro(index) {
     
     mensaje += `\nConteos individuales: ${registro.conteos.length} registros`;
     
-    alert(mensaje);
+    console.log(mensaje);
 }
 
 // Función para eliminar un registro archivado específico
@@ -1274,24 +1235,19 @@ function eliminarRegistroArchivado(index) {
     const registro = registrosArchivados[index];
     if (!registro) return;
     
-    if (confirm(`¿Estás seguro de que deseas eliminar el registro archivado del ${registro.fechaArchivo}? Esta acción no se puede deshacer.`)) {
-        // Eliminar el registro del array
-        registrosArchivados.splice(index, 1);
-        
-        // Guardar los cambios en localStorage
-        saveRegistrosArchivados();
-        
-        // Actualizar la visualización
-        displayRegistrosArchivados();
-        
-        alert('Registro eliminado exitosamente.');
-    }
+    // Eliminar el registro del array
+    registrosArchivados.splice(index, 1);
+    
+    // Guardar los cambios en localStorage
+    saveRegistrosArchivados();
+    
+    // Actualizar la visualización
+    displayRegistrosArchivados();
 }
 
 // Función para exportar historial a PDF
 function exportarHistorialPDF() {
     if (historialConteos.length === 0) {
-        alert('No hay conteos en el historial para exportar.');
         return;
     }
     
@@ -1492,7 +1448,6 @@ function exportarHistorialPDF() {
 // Función para exportar registros archivados a PDF
 function exportarRegistrosPDF() {
     if (registrosArchivados.length === 0) {
-        alert('No hay registros archivados para exportar.');
         return;
     }
     
