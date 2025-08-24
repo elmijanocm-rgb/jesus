@@ -402,20 +402,17 @@ function displayUserBoxesInHome() {
         
         countBtn.addEventListener('click', function() {
             const currentValue = parseInt(counterValue.textContent);
-            const newValue = prompt(`Ingresa la cantidad para ${box.nombre}:`, currentValue);
+            const finalValue = currentValue + 1; // Incrementar automáticamente
             
-            if (newValue !== null && !isNaN(newValue) && parseInt(newValue) >= 0) {
-                const finalValue = parseInt(newValue);
-                counterValue.textContent = finalValue;
-                
-                // Actualizar en el array
-                const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
-                if (boxIndex !== -1) {
-                    userCreatedBoxes[boxIndex].cantidad = finalValue;
-                    saveUserBoxes();
-                }
-                updateTotalBoxes();
+            counterValue.textContent = finalValue;
+            
+            // Actualizar en el array
+            const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
+            if (boxIndex !== -1) {
+                userCreatedBoxes[boxIndex].cantidad = finalValue;
+                saveUserBoxes();
             }
+            updateTotalBoxes();
         });
         
 
@@ -477,17 +474,19 @@ function archiveAndClean() {
 
 // Función para agregar nueva caja
 function addNewBox() {
-    const boxName = prompt('Ingresa el nombre de la nueva caja:');
-    if (boxName && boxName.trim() !== '') {
-        const newBox = {
-            nombre: boxName.trim(),
-            cantidad: 0,
-            imagen: null,
-            color: '#f0f0f0'
-        };
-        
-        userCreatedBoxes.push(newBox);
-        saveUserBoxes();
+    // Generar nombre automático basado en el número de cajas
+    const boxCount = userCreatedBoxes.length + 1;
+    const boxName = `Caja ${boxCount}`;
+    
+    const newBox = {
+        nombre: boxName,
+        cantidad: 0,
+        imagen: null,
+        color: '#f0f0f0'
+    };
+    
+    userCreatedBoxes.push(newBox);
+    saveUserBoxes();
         updateHomeScreen();
         displayUserBoxesInHome();
         displayUserBoxesInAdmin();
