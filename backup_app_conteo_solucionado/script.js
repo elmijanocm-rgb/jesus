@@ -19,6 +19,9 @@ function loadUserBoxes() {
     } else {
         console.log('No hay datos guardados en localStorage');
     }
+    
+    // Actualizar headers del historial después de cargar las cajas
+    updateHistorialHeaders();
 }
 
 // Cargar las cajas al iniciar
@@ -890,8 +893,12 @@ function agregarConteoAlHistorial() {
 
 // Función para mostrar el historial de conteos
 function displayHistorialConteos() {
+    console.log('🔧 displayHistorialConteos ejecutándose...');
     const tbody = document.querySelector('#conteos .data-table tbody');
-    if (!tbody) return;
+    if (!tbody) {
+        console.log('❌ No se encontró tbody');
+        return;
+    }
     
     // Limpiar contenido existente
     tbody.innerHTML = '';
@@ -901,12 +908,13 @@ function displayHistorialConteos() {
         return;
     }
     
-    // Separar cajas normales de palets
-    const cajasNormales = userCreatedBoxes.filter(box => !box.nombre.toLowerCase().includes('palet'));
-    const cajasPalet = userCreatedBoxes.filter(box => box.nombre.toLowerCase().includes('palet'));
+    // Usar todas las cajas juntas sin separar
+    const todasLasCajas = userCreatedBoxes;
+    const todasLasCajasArray = todasLasCajas.map(box => box.nombre);
     
-    const cajasNormalesArray = cajasNormales.map(box => box.nombre);
-    const cajasPaletArray = cajasPalet.map(box => box.nombre);
+    // Mantener arrays vacíos para compatibilidad
+    const cajasNormalesArray = todasLasCajasArray;
+    const cajasPaletArray = [];
     
     // Variables para subtotales (solo cajas normales)
     let subtotalesPorCaja = {};
@@ -952,14 +960,39 @@ function displayHistorialConteos() {
         // Agregar columna Total después de Fecha
         cellsHTML += `<td><strong>${totalCajasNormales}</strong></td>`;
         
-        // Agregar celdas para cada tipo de caja normal
-        cajasNormalesArray.forEach(nombreCaja => {
-            const cantidad = (conteo.cajas && conteo.cajas[nombreCaja]) || 0;
+        // Buscar la caja de palet (cualquier caja que contenga 'palet') y agregarla primero
+        const cajaPaleMercancia = todasLasCajas.find(box => 
+            box.nombre.toLowerCase().includes('palet')
+        );
+        
+        if (index === 0) {
+            console.log('🎯 En displayHistorialConteos - Caja de palet encontrada:', cajaPaleMercancia ? cajaPaleMercancia.nombre : 'NINGUNA');
+        }
+        
+        // Agregar PALE DE MERCANCIA inmediatamente después de Total
+        if (cajaPaleMercancia) {
+            const cantidad = (conteo.cajas && conteo.cajas[cajaPaleMercancia.nombre]) || 0;
             cellsHTML += `<td>${cantidad}</td>`;
             
-            // Acumular en subtotales y totales (solo cajas normales)
-            subtotalesPorCaja[nombreCaja] += cantidad;
-            totalesPorCaja[nombreCaja] += cantidad;
+            if (index === 0) {
+                console.log('✅ Agregada celda de palet después de Total en fila de datos');
+            }
+            
+            // Acumular en subtotales y totales
+            subtotalesPorCaja[cajaPaleMercancia.nombre] += cantidad;
+            totalesPorCaja[cajaPaleMercancia.nombre] += cantidad;
+        }
+        
+        // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
+        todasLasCajas.forEach(box => {
+            if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
+                const cantidad = (conteo.cajas && conteo.cajas[box.nombre]) || 0;
+                cellsHTML += `<td>${cantidad}</td>`;
+                
+                // Acumular en subtotales y totales
+                subtotalesPorCaja[box.nombre] += cantidad;
+                totalesPorCaja[box.nombre] += cantidad;
+            }
         });
         
         // Agregar celdas para palets (separadas)
@@ -1006,14 +1039,21 @@ function displayHistorialConteos() {
             // Agregar columna Total después de Fecha
             subtotalHTML += `<td><strong>${subtotalGeneral}</strong></td>`;
             
-            // Subtotales para cajas normales
-            cajasNormalesArray.forEach(nombreCaja => {
-                subtotalHTML += `<td><strong>${subtotalesPorCaja[nombreCaja]}</strong></td>`;
-            });
+            // Buscar la caja de palet (cualquier caja que contenga 'palet') y agregarla primero
+            const cajaPaleMercancia = todasLasCajas.find(box => 
+                box.nombre.toLowerCase().includes('palet')
+            );
             
-            // Subtotales para palets (mostrar pero no sumar al total general)
-            cajasPaletArray.forEach(nombreCaja => {
-                subtotalHTML += `<td><strong>${subtotalesPalets[nombreCaja]}</strong></td>`;
+            // Agregar PALE DE MERCANCIA inmediatamente después de Total
+            if (cajaPaleMercancia) {
+                subtotalHTML += `<td><strong>${subtotalesPorCaja[cajaPaleMercancia.nombre] || 0}</strong></td>`;
+            }
+            
+            // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
+            todasLasCajas.forEach(box => {
+                if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
+                    subtotalHTML += `<td><strong>${subtotalesPorCaja[box.nombre] || 0}</strong></td>`;
+                }
             });
             
             subtotalRow.innerHTML = subtotalHTML;
@@ -1039,14 +1079,21 @@ function displayHistorialConteos() {
     // Agregar columna Total después de Fecha
     totalHTML += `<td><strong>${totalGeneral}</strong></td>`;
     
-    // Totales para cajas normales
-    cajasNormalesArray.forEach(nombreCaja => {
-        totalHTML += `<td><strong>${totalesPorCaja[nombreCaja]}</strong></td>`;
-    });
+    // Buscar la caja de palet (cualquier caja que contenga 'palet') y agregarla primero
+    const cajaPaleMercancia = todasLasCajas.find(box => 
+        box.nombre.toLowerCase().includes('palet')
+    );
     
-    // Totales para palets (separados)
-    cajasPaletArray.forEach(nombreCaja => {
-        totalHTML += `<td><strong>${totalesPalets[nombreCaja]}</strong></td>`;
+    // Agregar PALE DE MERCANCIA inmediatamente después de Total
+    if (cajaPaleMercancia) {
+        totalHTML += `<td><strong>${totalesPorCaja[cajaPaleMercancia.nombre] || 0}</strong></td>`;
+    }
+    
+    // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
+    todasLasCajas.forEach(box => {
+        if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
+            totalHTML += `<td><strong>${totalesPorCaja[box.nombre] || 0}</strong></td>`;
+        }
     });
     
     totalRow.innerHTML = totalHTML;
@@ -1058,12 +1105,17 @@ function displayHistorialConteos() {
 
 // Función para actualizar los encabezados de la tabla del historial
 function updateHistorialHeaders() {
+    console.log('🔧 updateHistorialHeaders ejecutándose...');
     const thead = document.querySelector('#conteos .data-table thead tr');
-    if (!thead) return;
+    if (!thead) {
+        console.log('❌ No se encontró thead');
+        return;
+    }
     
-    // Separar cajas normales de palets
-    const cajasNormales = userCreatedBoxes.filter(box => !box.nombre.toLowerCase().includes('palet'));
-    const cajasPalet = userCreatedBoxes.filter(box => box.nombre.toLowerCase().includes('palet'));
+    // Usar todas las cajas juntas sin separar
+    const todasLasCajas = userCreatedBoxes;
+    console.log('📦 Total de cajas disponibles:', todasLasCajas.length);
+    console.log('📦 Cajas:', todasLasCajas.map(box => box.nombre));
     
     // Crear encabezados dinámicamente
     let headersHTML = '<th>Fecha/Hora</th>';
@@ -1071,17 +1123,29 @@ function updateHistorialHeaders() {
     // Agregar columna Total después de Fecha
     headersHTML += '<th>Total</th>';
     
-    // Encabezados para cajas normales
-    cajasNormales.forEach(box => {
-        headersHTML += `<th>${box.nombre}</th>`;
+    // Buscar la caja de palet (cualquier caja que contenga 'palet') y ponerla primero
+    const cajaPaleMercancia = todasLasCajas.find(box => 
+        box.nombre.toLowerCase().includes('palet')
+    );
+    
+    console.log('🎯 Caja de palet encontrada:', cajaPaleMercancia ? cajaPaleMercancia.nombre : 'NINGUNA');
+    
+    // Agregar PALE DE MERCANCIA inmediatamente después de Total
+    if (cajaPaleMercancia) {
+        headersHTML += `<th>${cajaPaleMercancia.nombre}</th>`;
+        console.log('✅ Agregada caja de palet después de Total');
+    }
+    
+    // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
+    todasLasCajas.forEach(box => {
+        if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
+            headersHTML += `<th>${box.nombre}</th>`;
+        }
     });
     
-    // Encabezados para palets (separados)
-    cajasPalet.forEach(box => {
-        headersHTML += `<th style="background-color: #f0f8ff;">${box.nombre}</th>`;
-    });
-    
+    console.log('📋 Headers HTML final:', headersHTML);
     thead.innerHTML = headersHTML;
+    console.log('✅ updateHistorialHeaders completado');
 }
 
 // Array para almacenar los registros archivados
@@ -1269,15 +1333,34 @@ function exportarHistorialPDF() {
     doc.setFontSize(10);
     doc.text(`Generado el: ${fechaGeneracion}`, 20, 30);
     
-    // Separar cajas normales de palets (igual que en pantalla)
-    const cajasNormales = userCreatedBoxes.filter(box => !box.nombre.toLowerCase().includes('palet'));
-    const cajasPalet = userCreatedBoxes.filter(box => box.nombre.toLowerCase().includes('palet'));
+    // Usar todas las cajas juntas sin separar
+    const todasLasCajas = userCreatedBoxes;
+    const todasLasCajasArray = todasLasCajas.map(box => box.nombre);
     
-    const cajasNormalesArray = cajasNormales.map(box => box.nombre);
-    const cajasPaletArray = cajasPalet.map(box => box.nombre);
+    // Mantener arrays para compatibilidad
+    const cajasNormalesArray = todasLasCajasArray;
+    const cajasPaletArray = [];
     
-    // Preparar encabezados (igual que en pantalla)
-    const headers = ['Fecha/Hora', 'Total', ...cajasNormalesArray, ...cajasPaletArray];
+    // Preparar encabezados con orden específico: Total, caja de palet, demás cajas
+    const cajaPaleMercancia = todasLasCajas.find(box => 
+        box.nombre.toLowerCase().includes('palet')
+    );
+    
+    let headersOrdenados = ['Fecha/Hora', 'Total'];
+    
+    // Agregar PALE DE MERCANCIA inmediatamente después de Total
+    if (cajaPaleMercancia) {
+        headersOrdenados.push(cajaPaleMercancia.nombre);
+    }
+    
+    // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
+    todasLasCajas.forEach(box => {
+        if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
+            headersOrdenados.push(box.nombre);
+        }
+    });
+    
+    const headers = headersOrdenados;
     const data = [];
     
     // Variables para subtotales (igual que en pantalla)
@@ -1320,24 +1403,31 @@ function exportarHistorialPDF() {
         // Agregar columna Total después de Fecha
         fila.push(totalCajasNormales.toString());
         
-        // Agregar celdas para cajas normales
-        cajasNormalesArray.forEach(nombreCaja => {
-            const cantidad = (conteo.cajas && conteo.cajas[nombreCaja]) || 0;
+        // Buscar la caja de palet (cualquier caja que contenga 'palet') y agregarla primero
+        const cajaPaleMercancia = todasLasCajas.find(box => 
+            box.nombre.toLowerCase().includes('palet')
+        );
+        
+        // Agregar PALE DE MERCANCIA inmediatamente después de Total
+        if (cajaPaleMercancia) {
+            const cantidad = (conteo.cajas && conteo.cajas[cajaPaleMercancia.nombre]) || 0;
             fila.push(cantidad.toString());
             
             // Acumular en subtotales y totales
-            subtotalesPorCaja[nombreCaja] += cantidad;
-            totalesPorCaja[nombreCaja] += cantidad;
-        });
+            subtotalesPorCaja[cajaPaleMercancia.nombre] += cantidad;
+            totalesPorCaja[cajaPaleMercancia.nombre] += cantidad;
+        }
         
-        // Agregar celdas para palets
-        cajasPaletArray.forEach(nombreCaja => {
-            const cantidad = (conteo.cajas && conteo.cajas[nombreCaja]) || 0;
-            fila.push(cantidad.toString());
-            
-            // Acumular solo en totales de palets
-            subtotalesPalets[nombreCaja] += cantidad;
-            totalesPalets[nombreCaja] += cantidad;
+        // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
+        todasLasCajas.forEach(box => {
+            if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
+                const cantidad = (conteo.cajas && conteo.cajas[box.nombre]) || 0;
+                fila.push(cantidad.toString());
+                
+                // Acumular en subtotales y totales
+                subtotalesPorCaja[box.nombre] += cantidad;
+                totalesPorCaja[box.nombre] += cantidad;
+            }
         });
         
         // Acumular totales generales (solo cajas normales)
@@ -1355,14 +1445,21 @@ function exportarHistorialPDF() {
             // Agregar subtotal general en segunda posición
             filaSubtotal.push(subtotalGeneral.toString());
             
-            // Subtotales de cajas normales
-            cajasNormalesArray.forEach(nombreCaja => {
-                filaSubtotal.push(subtotalesPorCaja[nombreCaja].toString());
-            });
+            // Buscar la caja de palet (cualquier caja que contenga 'palet') y agregarla primero
+            const cajaPaleMercancia = todasLasCajas.find(box => 
+                box.nombre.toLowerCase().includes('palet')
+            );
             
-            // Subtotales de palets
-            cajasPaletArray.forEach(nombreCaja => {
-                filaSubtotal.push(subtotalesPalets[nombreCaja].toString());
+            // Agregar PALE DE MERCANCIA inmediatamente después de Total
+            if (cajaPaleMercancia) {
+                filaSubtotal.push((subtotalesPorCaja[cajaPaleMercancia.nombre] || 0).toString());
+            }
+            
+            // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
+            todasLasCajas.forEach(box => {
+                if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
+                    filaSubtotal.push((subtotalesPorCaja[box.nombre] || 0).toString());
+                }
             });
             
             data.push(filaSubtotal);
@@ -1384,14 +1481,21 @@ function exportarHistorialPDF() {
     // Agregar total general en segunda posición
     filaTotalGeneral.push(totalGeneral.toString());
     
-    // Totales de cajas normales
-    cajasNormalesArray.forEach(nombreCaja => {
-        filaTotalGeneral.push(totalesPorCaja[nombreCaja].toString());
-    });
+    // Buscar la caja de palet (cualquier caja que contenga 'palet') y agregarla primero
+    const cajaPaleMercancia = todasLasCajas.find(box => 
+        box.nombre.toLowerCase().includes('palet')
+    );
     
-    // Totales de palets
-    cajasPaletArray.forEach(nombreCaja => {
-        filaTotalGeneral.push(totalesPalets[nombreCaja].toString());
+    // Agregar PALE DE MERCANCIA inmediatamente después de Total
+    if (cajaPaleMercancia) {
+        filaTotalGeneral.push((totalesPorCaja[cajaPaleMercancia.nombre] || 0).toString());
+    }
+    
+    // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
+    todasLasCajas.forEach(box => {
+        if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
+            filaTotalGeneral.push((totalesPorCaja[box.nombre] || 0).toString());
+        }
     });
     
     data.push(filaTotalGeneral);
