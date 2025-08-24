@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test localStorage</title>
+</head>
+<body>
+    <h1>Prueba de localStorage</h1>
+    <button onclick="guardarDatos()">Guardar Datos de Prueba</button>
+    <button onclick="cargarDatos()">Cargar Datos</button>
+    <button onclick="limpiarDatos()">Limpiar Datos</button>
+    <div id="resultado"></div>
+
+    <script>
+        function guardarDatos() {
+            const datosTest = [
+                {nombre: "Caja Test 1", cantidad: 5, color: "#ff0000"},
+                {nombre: "Caja Test 2", cantidad: 10, color: "#00ff00"}
+            ];
+            
+            localStorage.setItem('userCreatedBoxes', JSON.stringify(datosTest));
+            console.log('Datos guardados:', datosTest);
+            document.getElementById('resultado').innerHTML = '<p style="color: green;">Datos guardados correctamente</p>';
+        }
+        
+        function cargarDatos() {
+            const datos = localStorage.getItem('userCreatedBoxes');
+            console.log('Datos cargados:', datos);
+            
+            if (datos) {
+                const parsed = JSON.parse(datos);
+                document.getElementById('resultado').innerHTML = '<p style="color: blue;">Datos encontrados: ' + JSON.stringify(parsed, null, 2) + '</p>';
+            } else {
+                document.getElementById('resultado').innerHTML = '<p style="color: red;">No se encontraron datos</p>';
+            }
+        }
+        
+        function limpiarDatos() {
+            localStorage.removeItem('userCreatedBoxes');
+            console.log('Datos eliminados');
+            document.getElementById('resultado').innerHTML = '<p style="color: orange;">Datos eliminados</p>';
+        }
+        
+        // Cargar automáticamente al iniciar
+        window.onload = function() {
+            cargarDatos();
+        }
+    </script>
+</body>
+</html>
