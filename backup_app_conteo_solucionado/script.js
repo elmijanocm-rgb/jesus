@@ -1,6 +1,31 @@
 // Array para almacenar el historial de conteos
 let historialConteos = [];
 
+// Arrays para almacenar las cajas creadas por el usuario y las cajas por defecto
+let userCreatedBoxes = [];
+let defaultBoxes = [
+    { nombre: 'IFCO', cantidad: 0 },
+    { nombre: 'CVG', cantidad: 0 },
+    { nombre: 'CVP', cantidad: 0 },
+    { nombre: 'CRG', cantidad: 0 },
+    { nombre: 'CRP', cantidad: 0 },
+    { nombre: 'CVGB', cantidad: 0 },
+    { nombre: 'CAP', cantidad: 0 }
+];
+
+// Función para cargar las cajas del usuario desde localStorage
+function loadUserCreatedBoxes() {
+    const saved = localStorage.getItem('userCreatedBoxes');
+    if (saved) {
+        userCreatedBoxes = JSON.parse(saved);
+    }
+}
+
+// Función para guardar las cajas del usuario en localStorage
+function saveUserCreatedBoxes() {
+    localStorage.setItem('userCreatedBoxes', JSON.stringify(userCreatedBoxes));
+}
+
 // Función para cargar el historial desde localStorage
 function loadHistorialConteos() {
     const saved = localStorage.getItem('historialConteos');
@@ -71,7 +96,7 @@ function agregarConteoAlHistorial() {
 
 // Función para mostrar el historial de conteos
 function displayHistorialConteos() {
-    const tbody = document.querySelector('#historial-table tbody');
+    const tbody = document.querySelector('#conteos .data-table tbody');
     if (!tbody) {
         return;
     }
@@ -84,8 +109,8 @@ function displayHistorialConteos() {
         return;
     }
     
-    // Usar todas las cajas juntas sin separar
-    const todasLasCajas = userCreatedBoxes;
+    // Usar todas las cajas en el mismo orden que los headers
+    const todasLasCajas = [...userCreatedBoxes, ...defaultBoxes];
     const todasLasCajasArray = todasLasCajas.map(box => box.nombre);
     
     // Mantener arrays vacíos para compatibilidad
@@ -136,46 +161,24 @@ function displayHistorialConteos() {
         // Agregar columna Total después de Fecha
         cellsHTML += `<td><strong>${totalCajasNormales}</strong></td>`;
         
-        // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
-        const cajaPaleMercancia = todasLasCajas.find(box => 
-            box.nombre.toLowerCase().includes('palet') || 
-            box.nombre.toLowerCase().includes('mercancia')
-        );
-        
-        if (index === 0) {
-            console.log('🎯 En displayHistorialConteos - Caja de palet encontrada:', cajaPaleMercancia ? cajaPaleMercancia.nombre : 'NINGUNA');
-            console.log('🔄 Cells HTML antes de agregar palet:', cellsHTML);
-        }
-        
-        // Agregar PALE DE MERCANCIA inmediatamente después de Total
-        if (cajaPaleMercancia) {
-            const cantidad = (conteo.cajas && conteo.cajas[cajaPaleMercancia.nombre]) || 0;
+        // Agregar celdas para userCreatedBoxes en el mismo orden que los headers
+        userCreatedBoxes.forEach(box => {
+            const cantidad = (conteo.cajas && conteo.cajas[box.nombre]) || 0;
             cellsHTML += `<td>${cantidad}</td>`;
             
-            if (index === 0) {
-                console.log('✅ Agregada celda de palet después de Total en fila de datos:', cajaPaleMercancia.nombre, 'cantidad:', cantidad);
-                console.log('🔄 Cells HTML después de agregar palet:', cellsHTML);
-            }
+            // Acumular en subtotales y totales
+            subtotalesPorCaja[box.nombre] += cantidad;
+            totalesPorCaja[box.nombre] += cantidad;
+        });
+        
+        // Agregar celdas para defaultBoxes en el mismo orden que los headers
+        defaultBoxes.forEach(box => {
+            const cantidad = (conteo.cajas && conteo.cajas[box.nombre]) || 0;
+            cellsHTML += `<td>${cantidad}</td>`;
             
             // Acumular en subtotales y totales
-            subtotalesPorCaja[cajaPaleMercancia.nombre] += cantidad;
-            totalesPorCaja[cajaPaleMercancia.nombre] += cantidad;
-        } else {
-            if (index === 0) {
-                console.log('❌ No se encontró caja palet para agregar en fila de datos');
-            }
-        }
-        
-        // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
-        todasLasCajas.forEach(box => {
-            if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
-                const cantidad = (conteo.cajas && conteo.cajas[box.nombre]) || 0;
-                cellsHTML += `<td>${cantidad}</td>`;
-                
-                // Acumular en subtotales y totales
-                subtotalesPorCaja[box.nombre] += cantidad;
-                totalesPorCaja[box.nombre] += cantidad;
-            }
+            subtotalesPorCaja[box.nombre] += cantidad;
+            totalesPorCaja[box.nombre] += cantidad;
         });
         
         // Agregar celdas para palets (separadas)
@@ -222,22 +225,14 @@ function displayHistorialConteos() {
             // Agregar columna Total después de Fecha
             subtotalHTML += `<td><strong>${subtotalGeneral}</strong></td>`;
             
-            // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
-        const cajaPaleMercancia = todasLasCajas.find(box => 
-            box.nombre.toLowerCase().includes('palet') || 
-            box.nombre.toLowerCase().includes('mercancia')
-        );
+            // Agregar userCreatedBoxes en el mismo orden que los headers
+            userCreatedBoxes.forEach(box => {
+                subtotalHTML += `<td><strong>${subtotalesPorCaja[box.nombre] || 0}</strong></td>`;
+            });
             
-            // Agregar PALE DE MERCANCIA inmediatamente después de Total
-            if (cajaPaleMercancia) {
-                subtotalHTML += `<td><strong>${subtotalesPorCaja[cajaPaleMercancia.nombre] || 0}</strong></td>`;
-            }
-            
-            // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
-            todasLasCajas.forEach(box => {
-                if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
-                    subtotalHTML += `<td><strong>${subtotalesPorCaja[box.nombre] || 0}</strong></td>`;
-                }
+            // Agregar defaultBoxes en el mismo orden que los headers
+            defaultBoxes.forEach(box => {
+                subtotalHTML += `<td><strong>${subtotalesPorCaja[box.nombre] || 0}</strong></td>`;
             });
             
             subtotalRow.innerHTML = subtotalHTML;
@@ -263,22 +258,14 @@ function displayHistorialConteos() {
     // Agregar columna Total después de Fecha
     totalHTML += `<td><strong>${totalGeneral}</strong></td>`;
     
-    // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
-        const cajaPaleMercancia = todasLasCajas.find(box => 
-            box.nombre.toLowerCase().includes('palet') || 
-            box.nombre.toLowerCase().includes('mercancia')
-        );
+    // Agregar userCreatedBoxes en el mismo orden que los headers
+    userCreatedBoxes.forEach(box => {
+        totalHTML += `<td><strong>${totalesPorCaja[box.nombre] || 0}</strong></td>`;
+    });
     
-    // Agregar PALE DE MERCANCIA inmediatamente después de Total
-    if (cajaPaleMercancia) {
-        totalHTML += `<td><strong>${totalesPorCaja[cajaPaleMercancia.nombre] || 0}</strong></td>`;
-    }
-    
-    // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
-    todasLasCajas.forEach(box => {
-        if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
-            totalHTML += `<td><strong>${totalesPorCaja[box.nombre] || 0}</strong></td>`;
-        }
+    // Agregar defaultBoxes en el mismo orden que los headers
+    defaultBoxes.forEach(box => {
+        totalHTML += `<td><strong>${totalesPorCaja[box.nombre] || 0}</strong></td>`;
     });
     
     totalRow.innerHTML = totalHTML;
@@ -290,36 +277,22 @@ function displayHistorialConteos() {
 
 // Función para actualizar los encabezados de la tabla del historial
 function updateHistorialHeaders() {
-    const thead = document.querySelector('#historial-table thead tr');
+    const thead = document.querySelector('#conteos .data-table thead tr');
     if (!thead) {
         return;
     }
 
-    const todasLasCajas = [...userCreatedBoxes, ...defaultBoxes];
-
-    const cajaPaleMercancia = todasLasCajas.find(box => 
-        box.nombre.toLowerCase().includes('palet') || 
-        box.nombre.toLowerCase().includes('mercancia')
-    );
-
-    let headersHTML = '<th>Fecha</th><th>Hora</th>';
+    let headersHTML = '<th>Fecha/Hora</th><th>Total</th>';
     
+    // Agregar userCreatedBoxes primero
     userCreatedBoxes.forEach(box => {
-        if (box.nombre.toLowerCase().includes('palet') || box.nombre.toLowerCase().includes('mercancia')) {
-            return;
-        }
         headersHTML += `<th>${box.nombre}</th>`;
     });
     
+    // Agregar defaultBoxes en el orden especificado
     defaultBoxes.forEach(box => {
         headersHTML += `<th>${box.nombre}</th>`;
     });
-    
-    headersHTML += '<th>Total</th>';
-    
-    if (cajaPaleMercancia) {
-        headersHTML += `<th>${cajaPaleMercancia.nombre}</th>`;
-    }
     
     thead.innerHTML = headersHTML;
 }
@@ -804,3 +777,13 @@ function exportarRegistrosPDF() {
     // Guardar el PDF
     doc.save(`registros-archivados-${new Date().toISOString().split('T')[0]}.pdf`);
 }
+
+// Función de inicialización
+function initializeApp() {
+    loadUserCreatedBoxes();
+    loadHistorialConteos();
+    loadRegistrosArchivados();
+}
+
+// Inicializar la aplicación cuando se carga la página
+document.addEventListener('DOMContentLoaded', initializeApp);
