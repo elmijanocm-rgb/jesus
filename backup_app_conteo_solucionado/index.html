@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App de Conteo de Cajas</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Aplicación para conteo de cajas y palets">
+    <meta name="theme-color" content="#007bff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Conteo">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <main class="content">
+            <!-- Página 1: Resumen del Conteo -->
+            <section id="resumen" class="page active">
+                <div class="header">
+                    <div class="header-top">
+                        <h1><i class="fas fa-box"></i> Cuenta de Cajas</h1>
+                    </div>
+                    <nav class="main-nav">
+                        <div class="nav-item active" data-page="resumen">
+                            <i class="fas fa-home"></i>
+                            <span>Inicio</span>
+                        </div>
+                        <div class="nav-item" data-page="conteos">
+                            <i class="fas fa-history"></i>
+                            <span>Conteos</span>
+                        </div>
+                        <div class="nav-item" data-page="registros">
+                            <i class="fas fa-archive"></i>
+                            <span>Registros</span>
+                        </div>
+                        <div class="nav-item" data-page="administrar">
+                            <i class="fas fa-cog"></i>
+                            <span>Crear Caja</span>
+                        </div>
+                    </nav>
+                </div>
+                <div class="card">
+                    <h2>Resumen del Conteo</h2>
+                    <div class="summary-info">
+                        <div class="summary-item">
+                            <span class="label">Total de Cajas:</span>
+                            <span class="value" id="total-cajas">6</span>
+                        </div>
+                    </div>
+                    <button class="btn primary-btn" id="agregar-conteo-btn"><i class="fas fa-plus"></i> Agregar Conteo</button>
+                </div>
+
+                <div class="card">
+                    <h2>Tipos de Caja</h2>
+                    <div class="box-types">
+                        <!-- Las cajas creadas por el usuario aparecerán aquí dinámicamente -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Página 2: Crear Caja -->
+            <section id="administrar" class="page">
+                <div class="header">
+                    <div class="header-top">
+                        <h1><i class="fas fa-box"></i> Cuenta de Cajas</h1>
+                        <div class="header-actions">
+                            <button class="btn primary-btn" id="agregar-contenedor-btn"><i class="fas fa-plus"></i> Agregar Cajas</button>
+                        </div>
+                    </div>
+                    <nav class="main-nav">
+                        <div class="nav-item" data-page="resumen">
+                            <i class="fas fa-home"></i>
+                            <span>Inicio</span>
+                        </div>
+                        <div class="nav-item" data-page="conteos">
+                            <i class="fas fa-history"></i>
+                            <span>Conteos</span>
+                        </div>
+                        <div class="nav-item" data-page="registros">
+                            <i class="fas fa-archive"></i>
+                            <span>Registros</span>
+                        </div>
+                        <div class="nav-item active" data-page="administrar">
+                            <i class="fas fa-cog"></i>
+                            <span>Crear Caja</span>
+                        </div>
+                    </nav>
+                </div>
+                <h2 class="section-title">Crear Caja</h2>
+                
+                <!-- Formulario para agregar nuevo contenedor -->
+                <div class="card" id="nuevo-contenedor-form" style="display: none;">
+                    <h3>Agregar Nuevo Contenedor</h3>
+                    <div class="form-container">
+                        <div class="form-group">
+                            <label for="nombre-contenedor">Nombre del Contenedor</label>
+                            <input type="text" id="nombre-contenedor" placeholder="Ej: Caja Verde Grande">
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo-contenedor">Tipo de caja</label>
+                            <input type="text" id="tipo-contenedor" placeholder="Ej: Juego, Película, Libro...">
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcion-contenedor">Descripción/Medidas</label>
+                            <input type="text" id="descripcion-contenedor" placeholder="Ej: 45X30">
+                        </div>
+                        <div class="form-group">
+                            <label for="peso-tara">Peso para la tara (Kg)</label>
+                            <input type="text" id="peso-tara" placeholder="Ej: 1.5">
+                        </div>
+                        <div class="form-group">
+                            <label>Imagen del Contenedor</label>
+                            <div class="image-selection">
+                                <div class="image-option-group">
+                                    <input type="radio" id="use-color" name="image-type" value="color" checked>
+                                    <label for="use-color">Usar color predefinido</label>
+                                    <select id="color-contenedor">
+                                        <option value="green-box">Verde</option>
+                                        <option value="green-small-box">Verde Claro</option>
+                                        <option value="red-box">Rojo</option>
+                                        <option value="red-small-box">Rojo Claro</option>
+                                        <option value="blue-box">Azul</option>
+                                        <option value="ifco-box">Gris</option>
+                                    </select>
+                                </div>
+                                <div class="image-option-group">
+                                    <input type="radio" id="use-image" name="image-type" value="image">
+                                    <label for="use-image">Subir imagen personalizada</label>
+                                    <input type="file" id="imagen-contenedor" accept="image/*" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn outline-btn" id="cancelar-contenedor">Cancelar</button>
+                            <button class="btn primary-btn" id="guardar-contenedor">Guardar Contenedor</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Las cajas creadas por el usuario aparecerán aquí dinámicamente -->
+            </section>
+
+            <!-- Página 3: Historial de Conteos -->
+            <section id="conteos" class="page">
+                <div class="header">
+                    <div class="header-top">
+                        <h1><i class="fas fa-history"></i> Historial de Conteos</h1>
+                    </div>
+                    <nav class="main-nav">
+                        <div class="nav-item" data-page="resumen">
+                            <i class="fas fa-home"></i>
+                            <span>Inicio</span>
+                        </div>
+                        <div class="nav-item active" data-page="conteos">
+                            <i class="fas fa-history"></i>
+                            <span>Conteos</span>
+                        </div>
+                        <div class="nav-item" data-page="registros">
+                            <i class="fas fa-archive"></i>
+                            <span>Registros</span>
+                        </div>
+                        <div class="nav-item" data-page="administrar">
+                            <i class="fas fa-cog"></i>
+                            <span>Crear Caja</span>
+                        </div>
+                    </nav>
+                </div>
+                <div class="card">
+                    <p class="info-text">Aquí puedes ver tus conteos guardados.</p>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>CVG</th>
+                                    <th>CVP</th>
+                                    <th>CRG</th>
+                                    <th>CRP</th>
+                                    <th>CVGB</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>16/08 23:27</td>
+                                    <td>4</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>2</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>16/08 23:27</td>
+                                    <td>6</td>
+                                    <td>0</td>
+                                    <td>2</td>
+                                    <td>2</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>16/08 23:26</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>16/08 23:26</td>
+                                    <td>0</td>
+                                    <td>2</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr class="subtotal-row">
+                                    <td>Subtotal</td>
+                                    <td>2</td>
+                                    <td>4</td>
+                                    <td>6</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                    <td>16</td>
+                                </tr>
+                                <tr>
+                                    <td>16/08 23:26</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>3</td>
+                                    <td>0</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td>16/08 23:26</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>16/08 23:26</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>3</td>
+                                    <td>1</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>16/08 23:26</td>
+                                    <td>2</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr class="subtotal-row">
+                                    <td>Subtotal</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td>3</td>
+                                    <td>7</td>
+                                    <td>2</td>
+                                    <td>17</td>
+                                </tr>
+                                <tr>
+                                    <td>16/08 22:26</td>
+                                    <td>2</td>
+                                    <td>4</td>
+                                    <td>3</td>
+                                    <td>3</td>
+                                    <td>0</td>
+                                    <td>12</td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td>Total General</td>
+                                    <td>6</td>
+                                    <td>11</td>
+                                    <td>14</td>
+                                    <td>12</td>
+                                    <td>2</td>
+                                    <td>45</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-actions">
+                        <button class="btn outline-btn" id="exportar-historial-pdf-btn"><i class="fas fa-file-export"></i> Exportar a PDF</button>
+                        <button class="btn danger-btn" id="archivar-limpiar-btn"><i class="fas fa-archive"></i> Archivar y Limpiar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Página 4: Registros Archivados -->
+            <section id="registros" class="page">
+                <div class="header">
+                    <div class="header-top">
+                        <h1><i class="fas fa-box"></i> Cuenta de Cajas</h1>
+                        <div class="header-actions">
+                            <button class="btn outline-btn" id="exportar-registros-pdf-btn"><i class="fas fa-file-export"></i> Exportar a PDF</button>
+                        </div>
+                    </div>
+                    <nav class="main-nav">
+                        <div class="nav-item" data-page="resumen">
+                            <i class="fas fa-home"></i>
+                            <span>Inicio</span>
+                        </div>
+                        <div class="nav-item" data-page="conteos">
+                            <i class="fas fa-history"></i>
+                            <span>Conteos</span>
+                        </div>
+                        <div class="nav-item active" data-page="registros">
+                            <i class="fas fa-archive"></i>
+                            <span>Registros</span>
+                        </div>
+                        <div class="nav-item" data-page="administrar">
+                            <i class="fas fa-cog"></i>
+                            <span>Crear Caja</span>
+                        </div>
+                    </nav>
+                </div>
+                <div class="card">
+                    <h2>Registros Archivados</h2>
+                    
+                    <div class="archived-info">
+                        <h3>Historial de Totales</h3>
+                        <p>Estos son los resultados totales de los históricos que has archivado.</p>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha Archivo</th>
+                                    <th>CVG</th>
+                                    <th>CVP</th>
+                                    <th>CRG</th>
+                                    <th>CRP</th>
+                                    <th>CVGB</th>
+                                    <th>CAP</th>
+                                    <th>IFCO</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>16/08/23 22:27</td>
+                                    <td>5</td>
+                                    <td>11</td>
+                                    <td>14</td>
+                                    <td>12</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>
+                                        <button class="btn small-btn"><i class="fas fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registrado exitosamente:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Error al registrar Service Worker:', error);
+                    });
+            });
+        }
+        
+        // Detectar si la app puede ser instalada
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            console.log('PWA puede ser instalada');
+        });
+        
+        // Función para mostrar prompt de instalación (opcional)
+        function mostrarInstallPrompt() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Usuario aceptó instalar la PWA');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+    </script>
+</body>
+</html>
