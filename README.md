@@ -1,176 +1,109 @@
-# 📦 App de Conteo de Cajas - PWA
+# Aplicación de Conteo de Mercancía
 
-> Aplicación web progresiva para el conteo y gestión de diferentes tipos de cajas y contenedores.
+Una aplicación móvil desarrollada con React Native y Expo para el conteo y gestión de diferentes tipos de cajas y mercancía.
 
-## 🌟 Características
+## Características
 
-- ✅ **PWA Completa**: Instalable en móviles y funciona offline
-- ✅ **Gestión de Cajas**: Crear, editar y eliminar tipos de cajas personalizadas
-- ✅ **Conteo Inteligente**: Sistema de conteo con historial completo
-- ✅ **Exportación PDF**: Genera reportes en PDF de los conteos
-- ✅ **Responsive**: Optimizada para móviles y escritorio
-- ✅ **Offline First**: Funciona sin conexión a internet
-- ✅ **Almacenamiento Local**: Los datos se guardan en el navegador
+- **Resumen del Conteo**: Vista principal con contadores para diferentes tipos de cajas
+- **Historial de Conteos**: Tabla detallada con el historial de todos los conteos realizados
+- **Registros Archivados**: Gestión de registros históricos archivados
+- **Crear Caja**: Interfaz para seleccionar y contar diferentes tipos de mercancía
 
-## 🚀 Demo en Vivo
+## Tipos de Mercancía Soportados
 
-[Ver Demo](https://tu-usuario.github.io/app-conteo-cajas)
+- Caja Verde Grande (CEVG)
+- Caja Verde Pequeña (CEVP)
+- Caja Roja Grande (CERG)
+- Caja Roja Pequeña (CERP)
+- Caja Verde Grande BOX (CVGBOX)
+- Caja Azul Pescado (PEAZUL)
+- Palet Mercancía (EUROPEO)
 
-## 📱 Capturas de Pantalla
+## Instalación
 
-### Pantalla Principal
-![Pantalla Principal](https://via.placeholder.com/400x600/4CAF50/FFFFFF?text=Pantalla+Principal)
+1. Asegúrate de tener Node.js instalado
+2. Instala Expo CLI globalmente:
+   ```bash
+   npm install -g expo-cli
+   ```
 
-### Crear Cajas
-![Crear Cajas](https://via.placeholder.com/400x600/2196F3/FFFFFF?text=Crear+Cajas)
+3. Instala las dependencias del proyecto:
+   ```bash
+   npm install
+   ```
 
-### Historial
-![Historial](https://via.placeholder.com/400x600/FF9800/FFFFFF?text=Historial)
+## Ejecución
 
-## 🛠️ Tecnologías Utilizadas
-
-- **HTML5** - Estructura semántica
-- **CSS3** - Estilos modernos y responsive
-- **JavaScript ES6+** - Lógica de la aplicación
-- **PWA** - Service Worker para funcionalidad offline
-- **jsPDF** - Generación de reportes PDF
-- **Font Awesome** - Iconografía
-- **LocalStorage** - Persistencia de datos
-
-## 📋 Funcionalidades Detalladas
-
-### 🏠 Pantalla de Inicio
-- Resumen total de cajas contadas
-- Vista rápida de todos los tipos de cajas
-- Acceso directo para agregar conteos
-
-### ⚙️ Gestión de Cajas
-- Crear nuevos tipos de cajas con:
-  - Nombre personalizado
-  - Tipo de contenido (Juego, Película, Libro, etc.)
-  - Descripción y medidas
-  - Peso para tara
-  - Imagen personalizada o colores predefinidos
-- Editar cajas existentes
-- Eliminar cajas no utilizadas
-
-### 📊 Sistema de Conteo
-- Conteo individual por tipo de caja
-- Historial completo con fechas
-- Subtotales y totales generales
-- Función de archivar históricos
-
-### 📄 Reportes
-- Exportación a PDF del historial
-- Exportación de registros archivados
-- Formato profesional para reportes
-
-## 🚀 Instalación y Uso
-
-### Opción 1: Usar desde GitHub Pages
-1. Ve a la [demo en vivo](https://tu-usuario.github.io/app-conteo-cajas)
-2. En móviles, aparecerá la opción "Agregar a pantalla de inicio"
-3. ¡Listo! Ya puedes usar la app offline
-
-### Opción 2: Ejecutar Localmente
-
+### Desarrollo
 ```bash
-# Clonar el repositorio
-git clone https://github.com/tu-usuario/app-conteo-cajas.git
-
-# Entrar al directorio
-cd app-conteo-cajas
-
-# Servir con cualquier servidor HTTP
-# Opción 1: Python
-python -m http.server 8080
-
-# Opción 2: Node.js
-npx http-server -p 8080
-
-# Opción 3: PHP
-php -S localhost:8080
+npm start
 ```
 
-Luego abre tu navegador en `http://localhost:8080`
-
-## 📱 Instalación como PWA
-
-### En Android:
-1. Abre la app en Chrome
-2. Toca el menú (⋮) → "Agregar a pantalla de inicio"
-3. Confirma la instalación
-
-### En iOS:
-1. Abre la app en Safari
-2. Toca el botón de compartir
-3. Selecciona "Agregar a pantalla de inicio"
-
-### En Escritorio:
-1. Abre la app en Chrome/Edge
-2. Busca el ícono de instalación en la barra de direcciones
-3. Haz clic en "Instalar"
-
-## 🔧 Desarrollo
-
-### Estructura del Proyecto
-```
-app-conteo-cajas/
-├── index.html          # Estructura principal
-├── script.js           # Lógica de la aplicación
-├── styles.css          # Estilos CSS
-├── manifest.json       # Configuración PWA
-├── sw.js              # Service Worker
-├── icon-192.png       # Icono 192x192
-├── icon-512.png       # Icono 512x512
-└── README.md          # Este archivo
+### Android
+```bash
+npm run android
 ```
 
-### Contribuir
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit tus cambios (`git commit -am 'Agregar nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abre un Pull Request
+### iOS
+```bash
+npm run ios
+```
 
-## 📊 Datos y Privacidad
+### Web
+```bash
+npm run web
+```
 
-- **Almacenamiento Local**: Todos los datos se guardan en el `localStorage` del navegador
-- **Sin Servidor**: No se envían datos a ningún servidor externo
-- **Privacidad Total**: Tus datos permanecen en tu dispositivo
-- **Backup Manual**: Puedes exportar tus datos en PDF
+## Estructura del Proyecto
 
-## 🐛 Problemas Conocidos
+```
+├── App.js                 # Componente principal con navegación
+├── src/
+│   └── screens/
+│       ├── ResumenScreen.js      # Pantalla de resumen
+│       ├── HistorialScreen.js    # Pantalla de historial
+│       ├── RegistrosScreen.js    # Pantalla de registros archivados
+│       └── CrearCajaScreen.js    # Pantalla para crear conteos
+├── package.json
+├── app.json
+└── babel.config.js
+```
 
-- Los datos no se sincronizan entre dispositivos (por diseño)
-- Limpiar datos del navegador eliminará todos los conteos
-- La exportación PDF requiere conexión para cargar la librería
+## Tecnologías Utilizadas
 
-## 🔮 Próximas Funcionalidades
+- React Native
+- Expo
+- React Navigation
+- React Native Paper
+- Expo Vector Icons
 
-- [ ] Sincronización en la nube (opcional)
-- [ ] Códigos QR para cajas
-- [ ] Estadísticas avanzadas
-- [ ] Temas personalizables
-- [ ] Backup automático
-- [ ] Múltiples almacenes
+## Funcionalidades
 
-## 📄 Licencia
+### Pantalla de Resumen
+- Muestra el total de cajas contadas
+- Lista todos los tipos de cajas con sus contadores individuales
+- Botón para agregar nuevos conteos
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+### Pantalla de Historial
+- Tabla detallada con fecha/hora de cada conteo
+- Subtotales y total general
+- Opciones para exportar a PDF y archivar
 
-## 👨‍💻 Autor
+### Pantalla de Registros Archivados
+- Visualización de totales archivados
+- Acciones para ver detalles y eliminar registros
+- Exportación a PDF
 
-**Tu Nombre**
-- GitHub: [@tu-usuario](https://github.com/tu-usuario)
-- Email: tu-email@ejemplo.com
+### Pantalla de Crear Caja
+- Selección de tipo de mercancía
+- Contador interactivo con botones de incremento/decremento
+- Guardado de conteos
 
-## 🙏 Agradecimientos
+## Colores del Tema
 
-- [Font Awesome](https://fontawesome.com/) por los iconos
-- [jsPDF](https://github.com/parallax/jsPDF) por la generación de PDFs
-- Comunidad de desarrolladores PWA
-
----
-
-⭐ **¡Si te gusta este proyecto, dale una estrella!** ⭐
+- Verde Principal: #4CAF50
+- Verde Oscuro: #2E7D32
+- Rojo: #F44336
+- Azul: #2196F3
+- Naranja: #FF9800
+- Fondo: #F5F5F5
