@@ -385,6 +385,26 @@ body {
     font-size: 12px;
 }
 
+.box-actions .btn.danger-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.box-actions .btn.danger-btn:hover {
+    background-color: #da190b;
+    transform: scale(1.05);
+}
+
+.box-actions .btn.secondary-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.box-actions .btn.secondary-btn:hover {
+    background-color: #5a6268;
+    transform: scale(1.05);
+}
+
 .box-content {
     display: flex;
     gap: 12px;
@@ -462,16 +482,11 @@ body {
 .subtotal-row {
     background-color: #e8f5e9;
     font-weight: 600;
-    color: #d32f2f;
 }
 
 .total-row {
     background-color: #c8e6c9;
     font-weight: 700;
-}
-
-.bloque-completado {
-    background-color: #ffebee !important;
 }
 
 .table-actions {
@@ -984,4 +999,201 @@ body {
 
 .page.active {
     display: block;
+}
+
+/* Estilos para el Teclado Numérico Modal */
+.numeric-keypad {
+    max-width: 350px;
+    width: 90%;
+    padding: 0;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.keypad-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.keypad-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.keypad-display {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+#keypad-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 2rem;
+    text-align: center;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    background-color: white;
+    color: #333;
+    font-weight: 600;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.keypad-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background-color: #dee2e6;
+    padding: 0;
+}
+
+.keypad-btn {
+    border: none;
+    padding: 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: white;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+}
+
+.keypad-btn:hover {
+    background-color: #f8f9fa;
+    transform: scale(0.95);
+}
+
+.keypad-btn:active {
+    transform: scale(0.9);
+    background-color: #e9ecef;
+}
+
+.number-btn {
+    background-color: #ffffff;
+    color: #333;
+}
+
+.number-btn:hover {
+    background-color: #f0f8ff;
+    color: #007bff;
+}
+
+.action-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.action-btn:hover {
+    background-color: #5a6268;
+}
+
+.confirm-btn {
+    background-color: #28a745;
+    color: white;
+    grid-row: span 2;
+    font-size: 2rem;
+}
+
+.confirm-btn:hover {
+    background-color: #218838;
+}
+
+.zero-btn {
+    grid-column: span 2;
+}
+
+#keypad-cancel {
+    background-color: #dc3545;
+    color: white;
+}
+
+#keypad-cancel:hover {
+    background-color: #c82333;
+}
+
+/* Animaciones para el modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.numeric-keypad {
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+    .numeric-keypad {
+        width: 95%;
+        max-width: none;
+    }
+    
+    .keypad-btn {
+        padding: 15px;
+        font-size: 1.3rem;
+        min-height: 50px;
+    }
+    
+    #keypad-input {
+        font-size: 1.8rem;
+        padding: 12px;
+    }
+    
+    .keypad-header h3 {
+        font-size: 1.1rem;
+    }
 }

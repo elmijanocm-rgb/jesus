@@ -1,109 +1,49 @@
-# Aplicación de Conteo de Mercancía
+# Aplicación PWA de Conteo de Cajas
 
-Una aplicación móvil desarrollada con React Native y Expo para el conteo y gestión de diferentes tipos de cajas y mercancía.
+## Descripción
+Aplicación web progresiva (PWA) para el conteo de diferentes tipos de cajas y palets.
 
-## Características
+## Cómo abrir la aplicación en el PC
 
-- **Resumen del Conteo**: Vista principal con contadores para diferentes tipos de cajas
-- **Historial de Conteos**: Tabla detallada con el historial de todos los conteos realizados
-- **Registros Archivados**: Gestión de registros históricos archivados
-- **Crear Caja**: Interfaz para seleccionar y contar diferentes tipos de mercancía
-
-## Tipos de Mercancía Soportados
-
-- Caja Verde Grande (CEVG)
-- Caja Verde Pequeña (CEVP)
-- Caja Roja Grande (CERG)
-- Caja Roja Pequeña (CERP)
-- Caja Verde Grande BOX (CVGBOX)
-- Caja Azul Pescado (PEAZUL)
-- Palet Mercancía (EUROPEO)
-
-## Instalación
-
-1. Asegúrate de tener Node.js instalado
-2. Instala Expo CLI globalmente:
-   ```bash
-   npm install -g expo-cli
-   ```
-
-3. Instala las dependencias del proyecto:
-   ```bash
-   npm install
-   ```
-
-## Ejecución
-
-### Desarrollo
-```bash
-npm start
+### Opción 1: Servidor HTTP Simple
+1. Abrir PowerShell en la carpeta del proyecto
+2. Ejecutar el siguiente comando:
+```powershell
+$listener = New-Object System.Net.HttpListener; $listener.Prefixes.Add('http://localhost:8080/'); $listener.Start(); Write-Host 'Servidor iniciado en http://localhost:8080/' -ForegroundColor Green; Write-Host 'Para acceso desde móvil: http://192.168.18.5:8080/' -ForegroundColor Green; while ($listener.IsListening) { $context = $listener.GetContext(); $request = $context.Request; $response = $context.Response; $localPath = $request.Url.LocalPath; if ($localPath -eq '/') { $localPath = '/index.html' }; $filePath = Join-Path (Get-Location) $localPath.TrimStart('/'); if (Test-Path $filePath) { $content = [System.IO.File]::ReadAllBytes($filePath); $response.ContentLength64 = $content.Length; $response.OutputStream.Write($content, 0, $content.Length) } else { $response.StatusCode = 404; $notFound = [System.Text.Encoding]::UTF8.GetBytes('404 - Not Found'); $response.ContentLength64 = $notFound.Length; $response.OutputStream.Write($notFound, 0, $notFound.Length) }; $response.OutputStream.Close() }
 ```
+3. Abrir el navegador y ir a: http://localhost:8080/
 
-### Android
-```bash
-npm run android
-```
+### Opción 2: Python (si está instalado)
+1. Abrir terminal en la carpeta del proyecto
+2. Ejecutar: `python -m http.server 8080`
+3. Abrir el navegador y ir a: http://localhost:8080/
 
-### iOS
-```bash
-npm run ios
-```
-
-### Web
-```bash
-npm run web
-```
-
-## Estructura del Proyecto
-
-```
-├── App.js                 # Componente principal con navegación
-├── src/
-│   └── screens/
-│       ├── ResumenScreen.js      # Pantalla de resumen
-│       ├── HistorialScreen.js    # Pantalla de historial
-│       ├── RegistrosScreen.js    # Pantalla de registros archivados
-│       └── CrearCajaScreen.js    # Pantalla para crear conteos
-├── package.json
-├── app.json
-└── babel.config.js
-```
-
-## Tecnologías Utilizadas
-
-- React Native
-- Expo
-- React Navigation
-- React Native Paper
-- Expo Vector Icons
+### Opción 3: Node.js (si está instalado)
+1. Instalar servidor simple: `npm install -g http-server`
+2. Ejecutar: `http-server -p 8080`
+3. Abrir el navegador y ir a: http://localhost:8080/
 
 ## Funcionalidades
+- ✅ Crear y administrar tipos de cajas personalizadas
+- ✅ Realizar conteos de cajas
+- ✅ Ver historial de conteos con totales
+- ✅ Exportar historial a PDF
+- ✅ Funcionalidad PWA (instalable en móviles)
+- ✅ Funciona offline
+- ✅ Navegación entre pantallas
 
-### Pantalla de Resumen
-- Muestra el total de cajas contadas
-- Lista todos los tipos de cajas con sus contadores individuales
-- Botón para agregar nuevos conteos
+## Archivos principales
+- `index.html` - Estructura de la aplicación
+- `script.js` - Lógica de la aplicación
+- `styles.css` - Estilos de la interfaz
+- `manifest.json` - Configuración PWA
+- `sw.js` - Service Worker para funcionalidad offline
+- `icon-192.png`, `icon-512.png` - Iconos de la aplicación
 
-### Pantalla de Historial
-- Tabla detallada con fecha/hora de cada conteo
-- Subtotales y total general
-- Opciones para exportar a PDF y archivar
+## Backup
+La carpeta `backup_app_conteo/` contiene una copia de seguridad de todos los archivos.
 
-### Pantalla de Registros Archivados
-- Visualización de totales archivados
-- Acciones para ver detalles y eliminar registros
-- Exportación a PDF
-
-### Pantalla de Crear Caja
-- Selección de tipo de mercancía
-- Contador interactivo con botones de incremento/decremento
-- Guardado de conteos
-
-## Colores del Tema
-
-- Verde Principal: #4CAF50
-- Verde Oscuro: #2E7D32
-- Rojo: #F44336
-- Azul: #2196F3
-- Naranja: #FF9800
-- Fondo: #F5F5F5
+## Notas
+- La aplicación guarda los datos en el localStorage del navegador
+- Para acceso desde móvil, usar la IP local mostrada al iniciar el servidor
+- La aplicación es completamente funcional offline una vez cargada

@@ -1,30 +1,848 @@
-// Array para almacenar el historial de conteos
-let historialConteos = [];
-
-// Arrays para almacenar las cajas creadas por el usuario y las cajas por defecto
+// Array para almacenar las cajas creadas por el usuario
 let userCreatedBoxes = [];
-let defaultBoxes = [
-    { nombre: 'IFCO', cantidad: 0 },
-    { nombre: 'CVG', cantidad: 0 },
-    { nombre: 'CVP', cantidad: 0 },
-    { nombre: 'CRG', cantidad: 0 },
-    { nombre: 'CRP', cantidad: 0 },
-    { nombre: 'CVGB', cantidad: 0 },
-    { nombre: 'CAP', cantidad: 0 }
-];
 
-// Función para cargar las cajas del usuario desde localStorage
-function loadUserCreatedBoxes() {
+// Función para guardar las cajas creadas por el usuario en localStorage
+function saveUserBoxes() {
+    localStorage.setItem('userCreatedBoxes', JSON.stringify(userCreatedBoxes));
+}
+
+// Función para cargar las cajas creadas por el usuario desde localStorage
+function loadUserBoxes() {
     const saved = localStorage.getItem('userCreatedBoxes');
     if (saved) {
         userCreatedBoxes = JSON.parse(saved);
     }
 }
 
-// Función para guardar las cajas del usuario en localStorage
-function saveUserCreatedBoxes() {
-    localStorage.setItem('userCreatedBoxes', JSON.stringify(userCreatedBoxes));
+// Cargar las cajas al iniciar
+loadUserBoxes();
+
+// Agregar una caja de prueba si no hay cajas (solo para demostración)
+if (userCreatedBoxes.length === 0) {
+    userCreatedBoxes.push({
+        nombre: "Caja de Prueba",
+        tipo: "Ejemplo",
+        descripcion: "Esta es una caja de prueba",
+        pesoTara: "1.0",
+        color: "#4CAF50",
+        cantidad: 5
+    });
+    saveUserBoxes();
 }
+
+// Función para actualizar el total de cajas
+function updateTotalBoxes() {
+    let total = 0;
+    
+    // Solo contar las cantidades de las cajas creadas por el usuario
+    userCreatedBoxes.forEach(box => {
+        total += parseInt(box.cantidad) || 0;
+    });
+    
+    const totalElement = document.getElementById('total-cajas');
+    if (totalElement) {
+        totalElement.textContent = total;
+    }
+    
+    // Remover el elemento de total de palets si existe
+    const paletElement = document.getElementById('total-palets');
+    if (paletElement) {
+        paletElement.parentElement.remove();
+    }
+}
+
+// Función para actualizar la pantalla de inicio
+function updateHomeScreen() {
+    updateTotalBoxes();
+    displayUserBoxesInAdmin();
+    displayUserBoxesInHome();
+}
+
+// Función para mostrar las cajas creadas por el usuario en la sección de administración
+function displayUserBoxesInAdmin() {
+    const adminSection = document.getElementById('administrar');
+    if (!adminSection) return;
+    
+    // Buscar o crear el contenedor de cajas de usuario
+    let userBoxesContainer = adminSection.querySelector('.user-boxes-container');
+    if (!userBoxesContainer) {
+        // Crear el contenedor si no existe
+        userBoxesContainer = document.createElement('div');
+        userBoxesContainer.className = 'user-boxes-container';
+        adminSection.appendChild(userBoxesContainer);
+    }
+    
+    // Limpiar contenido existente
+    userBoxesContainer.innerHTML = '';
+    
+
+    
+    // Si no hay cajas creadas por el usuario, mostrar mensaje
+    if (userCreatedBoxes.length === 0) {
+        const emptyMessage = document.createElement('div');
+        emptyMessage.className = 'admin-empty-message';
+        emptyMessage.innerHTML = '<p>No hay cajas personalizadas creadas.</p>';
+        userBoxesContainer.appendChild(emptyMessage);
+        return;
+    }
+    
+    // Mostrar cada caja creada por el usuario
+    userCreatedBoxes.forEach((box, index) => {
+        const boxElement = document.createElement('div');
+        boxElement.className = 'box-detail';
+        boxElement.setAttribute('data-box-name', box.nombre);
+        boxElement.setAttribute('data-box-index', index);
+        
+        let imageContent = '';
+        if (box.imagen) {
+            imageContent = `<img src="${box.imagen}" alt="${box.nombre}" style="width: 100%; height: 100%; object-fit: cover;">`;
+        } else if (box.color) {
+            imageContent = `<div style="width: 100%; height: 100%; background-color: ${box.color};"></div>`;
+        } else {
+            imageContent = `<div style="width: 100%; height: 100%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #666;">Sin imagen</div>`;
+        }
+        
+        boxElement.innerHTML = `
+            <div class="box-list-item">
+                <div class="box-mini-image">
+                    ${imageContent}
+                </div>
+                <div class="box-info">
+                    <h3>${box.nombre}</h3>
+                    <p class="box-type">${box.tipo || 'Sin tipo'}</p>
+                </div>
+                <div class="box-actions">
+                    <button class="btn secondary-btn edit-box-btn" title="Editar caja" data-box-index="${index}">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn danger-btn delete-box-btn" title="Eliminar caja" data-box-index="${index}" data-box-name="${box.nombre}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        userBoxesContainer.appendChild(boxElement);
+        
+        // Agregar event listener al botón de editar
+        const editBtn = boxElement.querySelector('.edit-box-btn');
+        editBtn.addEventListener('click', function() {
+            const boxIndex = parseInt(this.getAttribute('data-box-index'));
+            const boxToEdit = userCreatedBoxes[boxIndex];
+            if (boxToEdit) {
+                editUserBox(boxToEdit);
+            }
+        });
+        
+        // Agregar event listener al botón de eliminar
+        const deleteBtn = boxElement.querySelector('.delete-box-btn');
+        deleteBtn.addEventListener('click', function() {
+            const boxName = this.getAttribute('data-box-name');
+            const boxIndex = parseInt(this.getAttribute('data-box-index'));
+            
+            if (confirm(`¿Estás seguro de que quieres eliminar la caja "${boxName}"? Esta acción no se puede deshacer.`)) {
+                userCreatedBoxes.splice(boxIndex, 1);
+                saveUserBoxes();
+                displayUserBoxesInAdmin();
+                displayUserBoxesInHome();
+                updateTotalBoxes();
+                alert('Caja eliminada exitosamente');
+            }
+        });
+    });
+    
+    // Los botones ahora usan onclick directo - más simple y confiable
+}
+
+// Función para editar una caja creada por el usuario
+function editUserBox(box) {
+    // Encontrar el elemento de la caja
+    const boxElement = document.querySelector(`[data-box-name="${box.nombre}"]`);
+    if (!boxElement) return;
+    
+    // Verificar si ya hay un editor abierto en esta caja
+    let existingEditor = boxElement.querySelector('.box-editor');
+    if (existingEditor) {
+        existingEditor.remove();
+        return;
+    }
+    
+    // Cerrar cualquier otro editor abierto
+    document.querySelectorAll('.box-editor').forEach(editor => editor.remove());
+    
+    let selectedImage = box.imagen || null;
+    let selectedColor = box.color || null;
+    
+    // Crear el editor desplegable
+    const editor = document.createElement('div');
+    editor.className = 'box-editor';
+    editor.innerHTML = `
+        <div class="editor-content">
+            <div class="editor-header">
+                <h4>Editar Caja</h4>
+                <button class="close-editor">&times;</button>
+            </div>
+            <div class="editor-body">
+                <div class="form-group">
+                    <label>Nombre:</label>
+                    <input type="text" class="edit-name-input" value="${box.nombre}" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de caja:</label>
+                    <input type="text" class="edit-type-input" value="${box.tipo || ''}" placeholder="Ej: Juego, Película, Libro...">
+                </div>
+                <div class="form-group">
+                    <label>Imagen/Color:</label>
+                    <div class="current-preview">
+                        ${box.imagen ? `<img src="${box.imagen}" alt="${box.nombre}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 3px;">` : 
+                          box.color ? `<div style="width: 40px; height: 40px; background-color: ${box.color}; border-radius: 3px;"></div>` :
+                          '<div style="width: 40px; height: 40px; background-color: #f0f0f0; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #666;">Sin</div>'}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Subir imagen:</label>
+                    <input type="file" class="image-upload" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>O seleccionar color:</label>
+                    <div class="color-options">
+                        <div class="color-option" style="background-color: #4CAF50;" data-color="#4CAF50"></div>
+                        <div class="color-option" style="background-color: #F44336;" data-color="#F44336"></div>
+                        <div class="color-option" style="background-color: #2196F3;" data-color="#2196F3"></div>
+                        <div class="color-option" style="background-color: #FF9800;" data-color="#FF9800"></div>
+                        <div class="color-option" style="background-color: #9C27B0;" data-color="#9C27B0"></div>
+                        <div class="color-option" style="background-color: #607D8B;" data-color="#607D8B"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="editor-actions">
+                <button class="btn-small primary-btn save-changes">Guardar</button>
+                <button class="btn-small danger-btn delete-box">Eliminar</button>
+                <button class="btn-small secondary-btn cancel-edit">Cancelar</button>
+            </div>
+        </div>
+    `;
+    
+    // Insertar el editor después del elemento de lista de la caja
+    const boxListItem = boxElement.querySelector('.box-list-item');
+    boxListItem.insertAdjacentElement('afterend', editor);
+    
+    // Event listeners
+    const closeEditor = () => {
+        editor.remove();
+    };
+    
+    editor.querySelector('.close-editor').addEventListener('click', closeEditor);
+    editor.querySelector('.cancel-edit').addEventListener('click', closeEditor);
+    
+    // Subir imagen
+    editor.querySelector('.image-upload').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedImage = e.target.result;
+                selectedColor = null;
+                
+                // Actualizar preview
+                const preview = editor.querySelector('.current-preview');
+                preview.innerHTML = `<img src="${selectedImage}" alt="Preview" style="width: 40px; height: 40px; object-fit: cover; border-radius: 3px;">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Seleccionar color
+    editor.querySelectorAll('.color-option').forEach(option => {
+        option.addEventListener('click', function() {
+            selectedColor = this.getAttribute('data-color');
+            selectedImage = null;
+            
+            // Actualizar preview
+            const preview = editor.querySelector('.current-preview');
+            preview.innerHTML = `<div style="width: 40px; height: 40px; background-color: ${selectedColor}; border-radius: 3px;"></div>`;
+            
+            // Marcar como seleccionado
+            editor.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+    
+    // Guardar cambios
+    editor.querySelector('.save-changes').addEventListener('click', function() {
+        const newName = editor.querySelector('.edit-name-input').value.trim();
+        const newType = editor.querySelector('.edit-type-input').value.trim();
+        
+        if (!newName) {
+            alert('Por favor, ingresa un nombre para la caja.');
+            return;
+        }
+        
+        // Verificar que el nuevo nombre no exista ya (excepto si es el mismo)
+        const existingBox = userCreatedBoxes.find(b => b.nombre.toLowerCase() === newName.toLowerCase() && b !== box);
+        if (existingBox) {
+            alert('Ya existe una caja con ese nombre. Por favor, elige otro nombre.');
+            return;
+        }
+        
+        // Actualizar la caja
+        const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
+        if (boxIndex !== -1) {
+            userCreatedBoxes[boxIndex].nombre = newName;
+            userCreatedBoxes[boxIndex].tipo = newType;
+            userCreatedBoxes[boxIndex].imagen = selectedImage;
+            userCreatedBoxes[boxIndex].color = selectedColor;
+            
+            saveUserBoxes();
+            displayUserBoxesInAdmin();
+            displayUserBoxesInHome();
+            updateTotalBoxes();
+        }
+        
+        closeEditor();
+    });
+    
+    // Eliminar caja
+    editor.querySelector('.delete-box').addEventListener('click', function() {
+        if (confirm(`¿Estás seguro de que quieres eliminar la caja "${box.nombre}"? Esta acción no se puede deshacer.`)) {
+            const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
+            
+            if (boxIndex !== -1) {
+                userCreatedBoxes.splice(boxIndex, 1);
+                saveUserBoxes();
+                displayUserBoxesInAdmin();
+                displayUserBoxesInHome();
+                updateTotalBoxes();
+                alert('Caja eliminada exitosamente');
+            }
+            
+            closeEditor();
+        }
+    });
+}
+
+// Función para eliminar una caja creada por el usuario
+function deleteUserBox(box) {
+    if (confirm(`¿Estás seguro de que quieres eliminar la caja "${box.nombre}"?`)) {
+        const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
+        
+        if (boxIndex !== -1) {
+            userCreatedBoxes.splice(boxIndex, 1);
+            saveUserBoxes();
+            displayUserBoxesInAdmin();
+            displayUserBoxesInHome();
+            updateTotalBoxes();
+            alert('Caja eliminada exitosamente');
+        }
+    }
+}
+
+// Función ULTRA SIMPLE para eliminar caja - GARANTIZADA
+function eliminarCaja(nombreCaja) {
+    console.log('eliminarCaja llamada con:', nombreCaja);
+    console.log('Cajas antes:', userCreatedBoxes.length);
+    
+    if (confirm('¿Eliminar la caja "' + nombreCaja + '"?')) {
+        // Buscar y eliminar la caja
+        for (let i = 0; i < userCreatedBoxes.length; i++) {
+            if (userCreatedBoxes[i].nombre === nombreCaja) {
+                console.log('Caja encontrada en índice:', i);
+                userCreatedBoxes.splice(i, 1);
+                break;
+            }
+        }
+        
+        console.log('Cajas después:', userCreatedBoxes.length);
+        
+        // Guardar y actualizar
+        localStorage.setItem('userCreatedBoxes', JSON.stringify(userCreatedBoxes));
+        displayUserBoxesInAdmin();
+        displayUserBoxesInHome();
+        updateTotalBoxes();
+        
+        alert('¡Caja eliminada!');
+    }
+}
+
+// Función para borrar TODAS las cajas creadas
+function borrarTodasLasCajas() {
+    if (confirm('¿Estás seguro de que quieres BORRAR TODAS las cajas creadas? Esta acción no se puede deshacer.')) {
+        userCreatedBoxes = [];
+        localStorage.setItem('userCreatedBoxes', JSON.stringify(userCreatedBoxes));
+        displayUserBoxesInAdmin();
+        displayUserBoxesInHome();
+        updateTotalBoxes();
+        alert('¡Todas las cajas han sido eliminadas!');
+    }
+}
+
+// Función para mostrar las cajas creadas por el usuario en la pantalla de inicio
+function displayUserBoxesInHome() {
+    const boxTypesContainer = document.querySelector('.box-types');
+    if (!boxTypesContainer) return;
+    
+    // Eliminar cajas de usuario existentes para evitar duplicados
+    const existingUserBoxes = boxTypesContainer.querySelectorAll('.user-created-box-type');
+    existingUserBoxes.forEach(box => box.remove());
+    
+    // Eliminar mensaje de "no hay cajas" si existe
+    const existingMessage = boxTypesContainer.querySelector('.no-boxes-message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    // Si no hay cajas creadas por el usuario, mostrar mensaje
+    if (userCreatedBoxes.length === 0) {
+        const messageElement = document.createElement('div');
+        messageElement.className = 'no-boxes-message';
+        messageElement.style.cssText = 'text-align: center; padding: 40px; color: #666; font-size: 16px;';
+        messageElement.innerHTML = '<p>No hay cajas personalizadas creadas.</p><p>Ve a la sección "Crear Caja" para crear tus propias cajas.</p>';
+        boxTypesContainer.appendChild(messageElement);
+        return;
+    }
+    
+    // Agregar cada caja creada por el usuario
+    userCreatedBoxes.forEach(box => {
+        const boxTypeElement = document.createElement('div');
+        boxTypeElement.className = 'box-type user-created-box-type';
+        
+        let imageContent = '';
+        if (box.imagen) {
+            imageContent = `<div class="box-image" style="background-image: url('${box.imagen}'); background-size: cover; background-position: center;"></div>`;
+        } else if (box.color) {
+            imageContent = `<div class="box-image" style="background-color: ${box.color};"></div>`;
+        } else {
+            imageContent = `<div class="box-image" style="background-color: #f0f0f0;"></div>`;
+        }
+        
+        boxTypeElement.innerHTML = `
+            ${imageContent}
+            <div class="box-info">
+                <span class="box-name">${box.nombre}</span>
+                <span class="box-code">${box.tipo || 'Sin tipo'}</span>
+            </div>
+            <div class="box-controls">
+                <button class="btn primary-btn count-btn">Conteo: <span class="box-count">${box.cantidad || 0}</span></button>
+            </div>
+
+        `;
+        
+        boxTypesContainer.appendChild(boxTypeElement);
+        
+        // Agregar event listener para el botón de conteo
+        const countBtn = boxTypeElement.querySelector('.count-btn');
+        const counterValue = boxTypeElement.querySelector('.box-count');
+        
+        countBtn.addEventListener('click', function() {
+            const currentValue = parseInt(counterValue.textContent);
+            showNumericKeypad(box.nombre, currentValue, function(newValue) {
+                if (newValue !== null && !isNaN(newValue) && parseInt(newValue) >= 0) {
+                    const finalValue = parseInt(newValue);
+                    counterValue.textContent = finalValue;
+                    
+                    // Actualizar en el array
+                    const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
+                    if (boxIndex !== -1) {
+                        userCreatedBoxes[boxIndex].cantidad = finalValue;
+                        saveUserBoxes();
+                    }
+                    updateTotalBoxes();
+                }
+            });
+        });
+        
+
+    });
+}
+
+// Función para la navegación
+function setupNavigation() {
+    const navItems = document.querySelectorAll('.nav-item');
+    const pages = document.querySelectorAll('.page');
+    
+    navItems.forEach(nav => {
+        nav.addEventListener('click', function() {
+            const targetPage = this.getAttribute('data-page');
+            
+            // Remover clase activa de TODOS los elementos de navegación en TODAS las páginas
+            document.querySelectorAll('.nav-item').forEach(navItem => {
+                navItem.classList.remove('active');
+            });
+            
+            // Agregar clase activa a TODOS los elementos con el mismo data-page
+            document.querySelectorAll(`[data-page="${targetPage}"]`).forEach(navItem => {
+                navItem.classList.add('active');
+            });
+            
+            // Ocultar todas las páginas
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Mostrar la página objetivo
+            const targetPageElement = document.getElementById(targetPage);
+            if (targetPageElement) {
+                targetPageElement.classList.add('active');
+                
+                // Si es la página de administración, actualizar la visualización
+                if (targetPage === 'administrar') {
+                    displayUserBoxesInAdmin();
+                }
+            }
+        });
+    });
+}
+
+// Función para calcular el total de cajas
+function calculateTotalBoxes() {
+    const defaultBoxes = 6;
+    const userBoxes = userCreatedBoxes.length;
+    return defaultBoxes + userBoxes;
+}
+
+// Función simulada para exportar PDF
+function exportToPDF() {
+    alert('Funcionalidad de exportación a PDF - En desarrollo');
+}
+
+// Función para archivar y limpiar
+function archiveAndClean() {
+    if (confirm('¿Estás seguro de que deseas archivar y limpiar los conteos actuales?')) {
+        // Aquí iría la lógica para archivar
+        alert('Conteos archivados y limpiados correctamente.');
+    }
+}
+
+// Función para agregar nueva caja
+function addNewBox() {
+    const boxName = prompt('Ingresa el nombre de la nueva caja:');
+    if (boxName && boxName.trim() !== '') {
+        const newBox = {
+            nombre: boxName.trim(),
+            cantidad: 0,
+            imagen: null,
+            color: '#f0f0f0'
+        };
+        
+        userCreatedBoxes.push(newBox);
+        saveUserBoxes();
+        updateHomeScreen();
+        displayUserBoxesInHome();
+        displayUserBoxesInAdmin();
+        
+        alert('Caja agregada correctamente.');
+    }
+}
+
+// Event listener para el DOM
+document.addEventListener('DOMContentLoaded', function() {
+    // Configurar navegación
+    setupNavigation();
+    
+    // Mostrar cajas existentes
+    displayUserBoxesInAdmin();
+    displayUserBoxesInHome();
+    
+    // Configurar botón de agregar contenedor
+    const agregarContenedorBtn = document.getElementById('agregar-contenedor-btn');
+    const nuevoContenedorForm = document.getElementById('nuevo-contenedor-form');
+    const cancelarContenedorBtn = document.getElementById('cancelar-contenedor');
+    const guardarContenedorBtn = document.getElementById('guardar-contenedor');
+    
+    if (agregarContenedorBtn && nuevoContenedorForm) {
+        agregarContenedorBtn.addEventListener('click', function() {
+            nuevoContenedorForm.style.display = 'block';
+        });
+    }
+    
+    if (cancelarContenedorBtn && nuevoContenedorForm) {
+        cancelarContenedorBtn.addEventListener('click', function() {
+            nuevoContenedorForm.style.display = 'none';
+            // Limpiar formulario
+            document.getElementById('nombre-contenedor').value = '';
+            document.getElementById('color-contenedor').value = 'green-box';
+            document.getElementById('imagen-contenedor').value = '';
+            document.getElementById('use-color').checked = true;
+            document.getElementById('use-image').checked = false;
+            document.getElementById('imagen-contenedor').disabled = true;
+        });
+    }
+    
+    if (guardarContenedorBtn) {
+        guardarContenedorBtn.addEventListener('click', function() {
+            const nombre = document.getElementById('nombre-contenedor').value.trim();
+            const tipo = document.getElementById('tipo-contenedor').value.trim();
+            const useImage = document.getElementById('use-image').checked;
+            const imageFile = document.getElementById('imagen-contenedor').files[0];
+            const colorValue = document.getElementById('color-contenedor').value;
+            
+            if (!nombre) {
+                alert('Por favor ingresa un nombre para el contenedor.');
+                return;
+            }
+            
+            const newBox = {
+                nombre: nombre,
+                tipo: tipo,
+                cantidad: 0,
+                imagen: null,
+                color: null
+            };
+            
+            if (useImage && imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    newBox.imagen = e.target.result;
+                    userCreatedBoxes.push(newBox);
+                    saveUserBoxes();
+                    displayUserBoxesInAdmin();
+                    displayUserBoxesInHome();
+                    updateTotalBoxes();
+                    
+                    // Ocultar formulario y limpiar
+                    nuevoContenedorForm.style.display = 'none';
+                    document.getElementById('nombre-contenedor').value = '';
+                    document.getElementById('tipo-contenedor').value = '';
+                    document.getElementById('color-contenedor').value = 'green-box';
+                    document.getElementById('imagen-contenedor').value = '';
+                    document.getElementById('use-color').checked = true;
+                    document.getElementById('use-image').checked = false;
+                    document.getElementById('imagen-contenedor').disabled = true;
+                    
+                    alert('Contenedor creado exitosamente!');
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                // Usar color predeterminado
+                const colorMap = {
+                    'green-box': '#4CAF50',
+                    'green-small-box': '#8BC34A',
+                    'red-box': '#F44336',
+                    'red-small-box': '#FF5722',
+                    'blue-box': '#2196F3',
+                    'ifco-box': '#9E9E9E'
+                };
+                
+                newBox.color = colorMap[colorValue] || '#4CAF50';
+                userCreatedBoxes.push(newBox);
+                saveUserBoxes();
+                displayUserBoxesInAdmin();
+                displayUserBoxesInHome();
+                updateTotalBoxes();
+                
+                // Ocultar formulario y limpiar
+                nuevoContenedorForm.style.display = 'none';
+                document.getElementById('nombre-contenedor').value = '';
+                document.getElementById('tipo-contenedor').value = '';
+                document.getElementById('color-contenedor').value = 'green-box';
+                document.getElementById('imagen-contenedor').value = '';
+                document.getElementById('use-color').checked = true;
+                document.getElementById('use-image').checked = false;
+                document.getElementById('imagen-contenedor').disabled = true;
+                
+                alert('Contenedor creado exitosamente!');
+            }
+        });
+    }
+    
+    // Configurar radio buttons para tipo de imagen
+    const useColorRadio = document.getElementById('use-color');
+    const useImageRadio = document.getElementById('use-image');
+    const imageInput = document.getElementById('imagen-contenedor');
+    
+    if (useColorRadio && useImageRadio && imageInput) {
+        useColorRadio.addEventListener('change', function() {
+            if (this.checked) {
+                imageInput.disabled = true;
+            }
+        });
+        
+        useImageRadio.addEventListener('change', function() {
+            if (this.checked) {
+                imageInput.disabled = false;
+            }
+        });
+    }
+    
+    // Configurar botón de agregar nueva caja
+    const addBoxBtn = document.getElementById('add-box-btn');
+    if (addBoxBtn) {
+        addBoxBtn.addEventListener('click', addNewBox);
+    }
+    
+    // Configurar botón de exportar PDF
+    const exportBtn = document.getElementById('export-pdf-btn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', exportToPDF);
+    }
+    
+    // Configurar botón de archivar y limpiar
+    const archivarLimpiarBtn = document.getElementById('archivar-limpiar-btn');
+    if (archivarLimpiarBtn) {
+        archivarLimpiarBtn.addEventListener('click', archivarYLimpiarHistorial);
+    }
+    
+    // Event listeners para los botones de exportar a PDF
+    const exportarHistorialBtn = document.getElementById('exportar-historial-pdf-btn');
+    const exportarRegistrosBtn = document.getElementById('exportar-registros-pdf-btn');
+    
+    if (exportarHistorialBtn) {
+        exportarHistorialBtn.addEventListener('click', exportarHistorialPDF);
+    }
+    
+    if (exportarRegistrosBtn) {
+        exportarRegistrosBtn.addEventListener('click', exportarRegistrosPDF);
+    }
+    
+    // Configurar botón de agregar conteo
+    const agregarConteoBtn = document.getElementById('agregar-conteo-btn');
+    if (agregarConteoBtn) {
+        agregarConteoBtn.addEventListener('click', agregarConteoAlHistorial);
+    }
+    
+    // Actualizar total de cajas al cargar
+    updateTotalBoxes();
+    
+    // Cargar historial de conteos
+    loadHistorialConteos();
+    
+    // Cargar registros archivados
+    loadRegistrosArchivados();
+    
+    // Funcionalidad para cambiar imagen de caja
+    function initializeImageChangeButtons() {
+        const imageButtons = document.querySelectorAll('.btn.secondary-btn');
+        
+        imageButtons.forEach(button => {
+            if (button.querySelector('.fa-image')) {
+                button.addEventListener('click', function() {
+                    const boxDetail = this.closest('.box-detail');
+                    const boxName = boxDetail.querySelector('.box-header h3').textContent;
+                    
+                    // Crear modal para selección de imagen
+                    const modal = document.createElement('div');
+                    modal.className = 'modal';
+                    modal.innerHTML = `
+                        <div class="modal-content">
+                            <h3>Cambiar imagen de ${boxName}</h3>
+                            <div class="image-options">
+                                <div class="option">
+                                    <label>Subir imagen:</label>
+                                    <input type="file" accept="image/*" class="image-upload">
+                                </div>
+                                <div class="option">
+                                    <label>Seleccionar color:</label>
+                                    <div class="color-options">
+                                        <div class="color-option" style="background-color: #ff6b6b;" data-color="#ff6b6b"></div>
+                                        <div class="color-option" style="background-color: #4ecdc4;" data-color="#4ecdc4"></div>
+                                        <div class="color-option" style="background-color: #45b7d1;" data-color="#45b7d1"></div>
+                                        <div class="color-option" style="background-color: #96ceb4;" data-color="#96ceb4"></div>
+                                        <div class="color-option" style="background-color: #feca57;" data-color="#feca57"></div>
+                                        <div class="color-option" style="background-color: #ff9ff3;" data-color="#ff9ff3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-actions">
+                                <button class="btn secondary-btn modal-cancel">Cancelar</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(modal);
+                    
+                    // Event listener para subir imagen
+                    const fileInput = modal.querySelector('.image-upload');
+                    fileInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                const imageData = e.target.result;
+                                
+                                // Actualizar la caja en el array
+                                const boxIndex = userCreatedBoxes.findIndex(box => box.nombre === boxName);
+                                if (boxIndex !== -1) {
+                                    userCreatedBoxes[boxIndex].imagen = imageData;
+                                    userCreatedBoxes[boxIndex].color = null;
+                                    saveUserBoxes();
+                                }
+                                
+                                // Actualizar la visualización
+                                const imageContainer = boxDetail.querySelector('.box-image-container');
+                                imageContainer.innerHTML = `<img src="${imageData}" alt="${boxName}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                                
+                                document.body.removeChild(modal);
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                    
+                    // Event listeners para opciones de color
+                    const colorOptions = modal.querySelectorAll('.color-option');
+                    colorOptions.forEach(option => {
+                        option.addEventListener('click', function() {
+                            const selectedColor = this.getAttribute('data-color');
+                            
+                            // Actualizar la caja en el array
+                            const boxIndex = userCreatedBoxes.findIndex(box => box.nombre === boxName);
+                            if (boxIndex !== -1) {
+                                userCreatedBoxes[boxIndex].color = selectedColor;
+                                userCreatedBoxes[boxIndex].imagen = null;
+                                saveUserBoxes();
+                            }
+                            
+                            // Actualizar la visualización
+                            const imageContainer = boxDetail.querySelector('.box-image-container');
+                            imageContainer.innerHTML = `<div style="width: 100%; height: 100%; background-color: ${selectedColor};"></div>`;
+                            
+                            document.body.removeChild(modal);
+                        });
+                    });
+                    
+                    // Event listener para cancelar
+                    const cancelButton = modal.querySelector('.modal-cancel');
+                    cancelButton.addEventListener('click', function() {
+                        document.body.removeChild(modal);
+                    });
+                });
+            }
+        });
+    }
+    
+    // Funcionalidad para eliminar caja
+    function initializeDeleteButtons() {
+        const deleteBoxButtons = document.querySelectorAll('.btn.danger-btn');
+        
+        deleteBoxButtons.forEach(button => {
+            if (button.querySelector('.fa-trash')) {
+                button.addEventListener('click', function() {
+                    if (confirm('¿Estás seguro de que deseas eliminar esta caja?')) {
+                        const boxDetail = this.closest('.box-detail');
+                        const boxName = boxDetail.querySelector('.box-header h3').textContent;
+                        
+                        // Eliminar la caja del array
+                        userCreatedBoxes = userCreatedBoxes.filter(box => box.nombre !== boxName);
+                        saveUserBoxes();
+                        
+                        boxDetail.remove();
+                        displayUserBoxesInHome();
+                        updateTotalBoxes();
+                        
+                        alert('Caja eliminada correctamente.');
+                    }
+                });
+            }
+        });
+    }
+    
+    // Inicializar el total de cajas
+    updateTotalBoxes();
+    
+    // Inicializar funcionalidades
+    initializeImageChangeButtons();
+    initializeDeleteButtons();
+});
+
+// Array para almacenar el historial de conteos
+let historialConteos = [];
 
 // Función para cargar el historial desde localStorage
 function loadHistorialConteos() {
@@ -43,12 +861,14 @@ function saveHistorialConteos() {
 // Función para agregar el conteo actual al historial
 function agregarConteoAlHistorial() {
     if (userCreatedBoxes.length === 0) {
+        alert('No hay cajas creadas para agregar al conteo.');
         return;
     }
     
     // Verificar si hay cantidades para contar
     const totalCantidad = userCreatedBoxes.reduce((total, box) => total + (box.cantidad || 0), 0);
     if (totalCantidad === 0) {
+        alert('No hay cantidades para agregar al historial.');
         return;
     }
     
@@ -86,18 +906,20 @@ function agregarConteoAlHistorial() {
     userCreatedBoxes.forEach(box => {
         box.cantidad = 0;
     });
-    saveUserCreatedBoxes();
+    saveUserBoxes();
     
     // Actualizar las pantallas
+    displayUserBoxesInHome();
+    updateTotalBoxes();
     displayHistorialConteos();
+    
+    alert('Conteo agregado al historial y cantidades reseteadas.');
 }
 
 // Función para mostrar el historial de conteos
 function displayHistorialConteos() {
     const tbody = document.querySelector('#conteos .data-table tbody');
-    if (!tbody) {
-        return;
-    }
+    if (!tbody) return;
     
     // Limpiar contenido existente
     tbody.innerHTML = '';
@@ -107,20 +929,17 @@ function displayHistorialConteos() {
         return;
     }
     
-    // Usar todas las cajas en el mismo orden que los headers
-    const todasLasCajas = [...userCreatedBoxes, ...defaultBoxes];
-    const todasLasCajasArray = todasLasCajas.map(box => box.nombre);
+    // Separar cajas normales de palets
+    const cajasNormales = userCreatedBoxes.filter(box => !box.nombre.toLowerCase().includes('palet'));
+    const cajasPalet = userCreatedBoxes.filter(box => box.nombre.toLowerCase().includes('palet'));
     
-    // Mantener arrays vacíos para compatibilidad
-    const cajasNormalesArray = todasLasCajasArray;
-    const cajasPaletArray = [];
+    const cajasNormalesArray = cajasNormales.map(box => box.nombre);
+    const cajasPaletArray = cajasPalet.map(box => box.nombre);
     
-    // Variables para subtotales (bloques independientes de 4 filas)
+    // Variables para subtotales (solo cajas normales)
     let subtotalesPorCaja = {};
     let subtotalGeneral = 0;
     let contadorFilas = 0;
-    let bloqueActual = []; // Array para almacenar el bloque actual de 4 filas
-    let numeroBloque = 0; // Contador de bloques completados
     
     // Variables para total general (solo cajas normales)
     let totalesPorCaja = {};
@@ -161,36 +980,15 @@ function displayHistorialConteos() {
         // Agregar columna Total después de Fecha
         cellsHTML += `<td><strong>${totalCajasNormales}</strong></td>`;
         
-        // Crear objeto para almacenar los datos de esta fila
-        let datosFilaActual = {
-            totalCajasNormales: totalCajasNormales,
-            cajas: {}
-        };
-        
-        // Agregar celdas para userCreatedBoxes en el mismo orden que los headers
-        userCreatedBoxes.forEach(box => {
-            const cantidad = (conteo.cajas && conteo.cajas[box.nombre]) || 0;
+        // Agregar celdas para cada tipo de caja normal
+        cajasNormalesArray.forEach(nombreCaja => {
+            const cantidad = (conteo.cajas && conteo.cajas[nombreCaja]) || 0;
             cellsHTML += `<td>${cantidad}</td>`;
             
-            // Guardar en datos de la fila y acumular en totales generales
-            datosFilaActual.cajas[box.nombre] = cantidad;
-            totalesPorCaja[box.nombre] += cantidad;
+            // Acumular en subtotales y totales (solo cajas normales)
+            subtotalesPorCaja[nombreCaja] += cantidad;
+            totalesPorCaja[nombreCaja] += cantidad;
         });
-        
-        // Agregar celdas para defaultBoxes en el mismo orden que los headers
-        defaultBoxes.forEach(box => {
-            const cantidad = (conteo.cajas && conteo.cajas[box.nombre]) || 0;
-            cellsHTML += `<td>${cantidad}</td>`;
-            
-            // Guardar en datos de la fila y acumular en totales generales
-            datosFilaActual.cajas[box.nombre] = cantidad;
-            totalesPorCaja[box.nombre] += cantidad;
-        });
-        
-        // Agregar la fila actual al bloque actual
-        bloqueActual.push(datosFilaActual);
-        
-        contadorFilas++;
         
         // Agregar celdas para palets (separadas)
         cajasPaletArray.forEach(nombreCaja => {
@@ -203,6 +1001,7 @@ function displayHistorialConteos() {
         });
         
         // Acumular totales generales (solo cajas normales)
+        subtotalGeneral += totalCajasNormales;
         totalGeneral += totalCajasNormales;
         
         row.innerHTML = cellsHTML;
@@ -223,132 +1022,41 @@ function displayHistorialConteos() {
         
         tbody.appendChild(row);
         
-        // Verificar si completamos un bloque de 4 filas
-        if (bloqueActual.length === 4) {
-            numeroBloque++;
-            
-            // Calcular subtotales para el bloque actual
-            let subtotalGeneralCalculado = 0;
-            let subtotalesPorCajaCalculados = {};
-            
-            // Inicializar subtotales
-            userCreatedBoxes.forEach(box => {
-                subtotalesPorCajaCalculados[box.nombre] = 0;
-            });
-            defaultBoxes.forEach(box => {
-                subtotalesPorCajaCalculados[box.nombre] = 0;
-            });
-            
-            for (let i = 0; i < bloqueActual.length; i++) {
-                const fila = bloqueActual[i];
-                subtotalGeneralCalculado += fila.totalCajasNormales;
-                
-                userCreatedBoxes.forEach(box => {
-                    subtotalesPorCajaCalculados[box.nombre] += fila.cajas[box.nombre] || 0;
-                });
-                
-                defaultBoxes.forEach(box => {
-                    subtotalesPorCajaCalculados[box.nombre] += fila.cajas[box.nombre] || 0;
-                });
-            }
-            
-            // Crear fila de subtotal
+        contadorFilas++;
+        
+        // Agregar subtotal cada 4 filas
+        if (contadorFilas % 4 === 0 || index === historialConteos.length - 1) {
             const subtotalRow = document.createElement('tr');
             subtotalRow.className = 'subtotal-row';
             
-            let subtotalHTML = `<td><strong>SUBTOTAL - Bloque ${numeroBloque} (CERRADO)</strong></td>`;
+            let subtotalHTML = '<td><strong>Subtotal</strong></td>';
             
             // Agregar columna Total después de Fecha
-            subtotalHTML += `<td><strong>${subtotalGeneralCalculado}</strong></td>`;
+            subtotalHTML += `<td><strong>${subtotalGeneral}</strong></td>`;
             
-            // Agregar userCreatedBoxes en el mismo orden que los headers
-            userCreatedBoxes.forEach(box => {
-                subtotalHTML += `<td><strong>${subtotalesPorCajaCalculados[box.nombre] || 0}</strong></td>`;
+            // Subtotales para cajas normales
+            cajasNormalesArray.forEach(nombreCaja => {
+                subtotalHTML += `<td><strong>${subtotalesPorCaja[nombreCaja]}</strong></td>`;
             });
             
-            // Agregar defaultBoxes en el mismo orden que los headers
-            defaultBoxes.forEach(box => {
-                subtotalHTML += `<td><strong>${subtotalesPorCajaCalculados[box.nombre] || 0}</strong></td>`;
-            });
-
-            // Agregar columnas de palets (vacías en subtotal)
+            // Subtotales para palets (mostrar pero no sumar al total general)
             cajasPaletArray.forEach(nombreCaja => {
-                subtotalHTML += `<td></td>`;
+                subtotalHTML += `<td><strong>${subtotalesPalets[nombreCaja]}</strong></td>`;
             });
-
+            
             subtotalRow.innerHTML = subtotalHTML;
             tbody.appendChild(subtotalRow);
             
-            // Agregar clase de bloque completado a las últimas 4 filas
-            const todasLasFilas = tbody.querySelectorAll('tr:not(.subtotal-row):not(.total-row)');
-            const inicioBloque = Math.max(0, todasLasFilas.length - 4);
-            for (let i = inicioBloque; i < todasLasFilas.length; i++) {
-                if (todasLasFilas[i]) {
-                    todasLasFilas[i].classList.add('bloque-completado');
-                }
-            }
-            
-            // Resetear el bloque actual para empezar de cero
-            bloqueActual = [];
+            // Resetear subtotales
+            cajasNormalesArray.forEach(nombreCaja => {
+                subtotalesPorCaja[nombreCaja] = 0;
+            });
+            cajasPaletArray.forEach(nombreCaja => {
+                subtotalesPalets[nombreCaja] = 0;
+            });
+            subtotalGeneral = 0;
         }
-        
-        // Esta lógica se movió arriba para manejar bloques independientes
     });
-    
-    // Agregar subtotal final si quedan filas sin agrupar (no múltiplo de 4)
-    if (bloqueActual.length > 0) {
-        const subtotalRow = document.createElement('tr');
-        subtotalRow.className = 'subtotal-row';
-        
-        let subtotalHTML = `<td><strong>SUBTOTAL - Filas Restantes (${bloqueActual.length})</strong></td>`;
-        
-        // Calcular subtotales solo de las filas restantes
-        let subtotalGeneralCalculado = 0;
-        let subtotalesPorCajaCalculados = {};
-        
-        // Inicializar subtotales
-        userCreatedBoxes.forEach(box => {
-            subtotalesPorCajaCalculados[box.nombre] = 0;
-        });
-        defaultBoxes.forEach(box => {
-            subtotalesPorCajaCalculados[box.nombre] = 0;
-        });
-        
-        // Sumar todas las filas restantes que están en bloqueActual
-        for (let i = 0; i < bloqueActual.length; i++) {
-            const fila = bloqueActual[i];
-            subtotalGeneralCalculado += fila.totalCajasNormales;
-            
-            userCreatedBoxes.forEach(box => {
-                subtotalesPorCajaCalculados[box.nombre] += fila.cajas[box.nombre] || 0;
-            });
-            
-            defaultBoxes.forEach(box => {
-                subtotalesPorCajaCalculados[box.nombre] += fila.cajas[box.nombre] || 0;
-            });
-        }
-        
-        // Agregar columna Total después de Fecha
-        subtotalHTML += `<td><strong>${subtotalGeneralCalculado}</strong></td>`;
-        
-        // Agregar userCreatedBoxes en el mismo orden que los headers
-        userCreatedBoxes.forEach(box => {
-            subtotalHTML += `<td><strong>${subtotalesPorCajaCalculados[box.nombre] || 0}</strong></td>`;
-        });
-        
-        // Agregar defaultBoxes en el mismo orden que los headers
-        defaultBoxes.forEach(box => {
-            subtotalHTML += `<td><strong>${subtotalesPorCajaCalculados[box.nombre] || 0}</strong></td>`;
-        });
-
-        // Agregar columnas de palets (vacías en subtotal)
-        cajasPaletArray.forEach(nombreCaja => {
-            subtotalHTML += `<td></td>`;
-        });
-
-        subtotalRow.innerHTML = subtotalHTML;
-        tbody.appendChild(subtotalRow);
-    }
     
     // Agregar fila de total general
     const totalRow = document.createElement('tr');
@@ -359,21 +1067,16 @@ function displayHistorialConteos() {
     // Agregar columna Total después de Fecha
     totalHTML += `<td><strong>${totalGeneral}</strong></td>`;
     
-    // Agregar userCreatedBoxes en el mismo orden que los headers
-    userCreatedBoxes.forEach(box => {
-        totalHTML += `<td><strong>${totalesPorCaja[box.nombre] || 0}</strong></td>`;
+    // Totales para cajas normales
+    cajasNormalesArray.forEach(nombreCaja => {
+        totalHTML += `<td><strong>${totalesPorCaja[nombreCaja]}</strong></td>`;
     });
     
-    // Agregar defaultBoxes en el mismo orden que los headers
-    defaultBoxes.forEach(box => {
-        totalHTML += `<td><strong>${totalesPorCaja[box.nombre] || 0}</strong></td>`;
-    });
-
-    // Agregar columnas de palets con sus totales
+    // Totales para palets (separados)
     cajasPaletArray.forEach(nombreCaja => {
-        totalHTML += `<td><strong>${totalesPalets[nombreCaja] || 0}</strong></td>`;
+        totalHTML += `<td><strong>${totalesPalets[nombreCaja]}</strong></td>`;
     });
-
+    
     totalRow.innerHTML = totalHTML;
     tbody.appendChild(totalRow);
     
@@ -384,20 +1087,26 @@ function displayHistorialConteos() {
 // Función para actualizar los encabezados de la tabla del historial
 function updateHistorialHeaders() {
     const thead = document.querySelector('#conteos .data-table thead tr');
-    if (!thead) {
-        return;
-    }
-
-    let headersHTML = '<th>Fecha/Hora</th><th>Total</th>';
+    if (!thead) return;
     
-    // Agregar userCreatedBoxes primero
-    userCreatedBoxes.forEach(box => {
+    // Separar cajas normales de palets
+    const cajasNormales = userCreatedBoxes.filter(box => !box.nombre.toLowerCase().includes('palet'));
+    const cajasPalet = userCreatedBoxes.filter(box => box.nombre.toLowerCase().includes('palet'));
+    
+    // Crear encabezados dinámicamente
+    let headersHTML = '<th>Fecha/Hora</th>';
+    
+    // Agregar columna Total después de Fecha
+    headersHTML += '<th>Total</th>';
+    
+    // Encabezados para cajas normales
+    cajasNormales.forEach(box => {
         headersHTML += `<th>${box.nombre}</th>`;
     });
     
-    // Agregar defaultBoxes en el orden especificado
-    defaultBoxes.forEach(box => {
-        headersHTML += `<th>${box.nombre}</th>`;
+    // Encabezados para palets (separados)
+    cajasPalet.forEach(box => {
+        headersHTML += `<th style="background-color: #f0f8ff;">${box.nombre}</th>`;
     });
     
     thead.innerHTML = headersHTML;
@@ -423,8 +1132,11 @@ function saveRegistrosArchivados() {
 // Función principal para archivar y limpiar el historial
 function archivarYLimpiarHistorial() {
     if (historialConteos.length === 0) {
+        alert('No hay conteos en el historial para archivar.');
         return;
     }
+    
+    if (confirm('¿Estás seguro de que deseas archivar todos los conteos actuales y limpiar el historial? Esta acción no se puede deshacer.')) {
         // Crear el registro archivado con la fecha actual
         const ahora = new Date();
         const fechaArchivo = ahora.toLocaleDateString('es-ES', { 
@@ -472,6 +1184,9 @@ function archivarYLimpiarHistorial() {
         // Actualizar las pantallas
         displayHistorialConteos();
         displayRegistrosArchivados();
+        
+        alert('Historial archivado exitosamente y conteos actuales limpiados.');
+    }
 }
 
 // Función para mostrar los registros archivados
@@ -546,7 +1261,7 @@ function verDetalleRegistro(index) {
     
     mensaje += `\nConteos individuales: ${registro.conteos.length} registros`;
     
-    console.log(mensaje);
+    alert(mensaje);
 }
 
 // Función para eliminar un registro archivado específico
@@ -554,19 +1269,24 @@ function eliminarRegistroArchivado(index) {
     const registro = registrosArchivados[index];
     if (!registro) return;
     
-    // Eliminar el registro del array
-    registrosArchivados.splice(index, 1);
-    
-    // Guardar los cambios en localStorage
-    saveRegistrosArchivados();
-    
-    // Actualizar la visualización
-    displayRegistrosArchivados();
+    if (confirm(`¿Estás seguro de que deseas eliminar el registro archivado del ${registro.fechaArchivo}? Esta acción no se puede deshacer.`)) {
+        // Eliminar el registro del array
+        registrosArchivados.splice(index, 1);
+        
+        // Guardar los cambios en localStorage
+        saveRegistrosArchivados();
+        
+        // Actualizar la visualización
+        displayRegistrosArchivados();
+        
+        alert('Registro eliminado exitosamente.');
+    }
 }
 
 // Función para exportar historial a PDF
 function exportarHistorialPDF() {
     if (historialConteos.length === 0) {
+        alert('No hay conteos en el historial para exportar.');
         return;
     }
     
@@ -588,35 +1308,15 @@ function exportarHistorialPDF() {
     doc.setFontSize(10);
     doc.text(`Generado el: ${fechaGeneracion}`, 20, 30);
     
-    // Usar todas las cajas juntas sin separar
-    const todasLasCajas = userCreatedBoxes;
-    const todasLasCajasArray = todasLasCajas.map(box => box.nombre);
+    // Separar cajas normales de palets (igual que en pantalla)
+    const cajasNormales = userCreatedBoxes.filter(box => !box.nombre.toLowerCase().includes('palet'));
+    const cajasPalet = userCreatedBoxes.filter(box => box.nombre.toLowerCase().includes('palet'));
     
-    // Mantener arrays para compatibilidad
-    const cajasNormalesArray = todasLasCajasArray;
-    const cajasPaletArray = [];
+    const cajasNormalesArray = cajasNormales.map(box => box.nombre);
+    const cajasPaletArray = cajasPalet.map(box => box.nombre);
     
-    // Preparar encabezados con orden específico: Total, caja de palet, demás cajas
-    let cajaPaleMercancia = todasLasCajas.find(box => 
-        box.nombre.toLowerCase().includes('palet') || 
-        box.nombre.toLowerCase().includes('mercancia')
-    );
-    
-    let headersOrdenados = ['Fecha/Hora', 'Total'];
-    
-    // Agregar PALE DE MERCANCIA inmediatamente después de Total
-    if (cajaPaleMercancia) {
-        headersOrdenados.push(cajaPaleMercancia.nombre);
-    }
-    
-    // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
-    todasLasCajas.forEach(box => {
-        if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
-            headersOrdenados.push(box.nombre);
-        }
-    });
-    
-    const headers = headersOrdenados;
+    // Preparar encabezados (igual que en pantalla)
+    const headers = ['Fecha/Hora', 'Total', ...cajasNormalesArray, ...cajasPaletArray];
     const data = [];
     
     // Variables para subtotales (igual que en pantalla)
@@ -659,32 +1359,24 @@ function exportarHistorialPDF() {
         // Agregar columna Total después de Fecha
         fila.push(totalCajasNormales.toString());
         
-        // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
-        cajaPaleMercancia = todasLasCajas.find(box => 
-            box.nombre.toLowerCase().includes('palet') || 
-            box.nombre.toLowerCase().includes('mercancia')
-        );
-        
-        // Agregar PALE DE MERCANCIA inmediatamente después de Total
-        if (cajaPaleMercancia) {
-            const cantidad = (conteo.cajas && conteo.cajas[cajaPaleMercancia.nombre]) || 0;
+        // Agregar celdas para cajas normales
+        cajasNormalesArray.forEach(nombreCaja => {
+            const cantidad = (conteo.cajas && conteo.cajas[nombreCaja]) || 0;
             fila.push(cantidad.toString());
             
             // Acumular en subtotales y totales
-            subtotalesPorCaja[cajaPaleMercancia.nombre] += cantidad;
-            totalesPorCaja[cajaPaleMercancia.nombre] += cantidad;
-        }
+            subtotalesPorCaja[nombreCaja] += cantidad;
+            totalesPorCaja[nombreCaja] += cantidad;
+        });
         
-        // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
-        todasLasCajas.forEach(box => {
-            if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
-                const cantidad = (conteo.cajas && conteo.cajas[box.nombre]) || 0;
-                fila.push(cantidad.toString());
-                
-                // Acumular en subtotales y totales
-                subtotalesPorCaja[box.nombre] += cantidad;
-                totalesPorCaja[box.nombre] += cantidad;
-            }
+        // Agregar celdas para palets
+        cajasPaletArray.forEach(nombreCaja => {
+            const cantidad = (conteo.cajas && conteo.cajas[nombreCaja]) || 0;
+            fila.push(cantidad.toString());
+            
+            // Acumular solo en totales de palets
+            subtotalesPalets[nombreCaja] += cantidad;
+            totalesPalets[nombreCaja] += cantidad;
         });
         
         // Acumular totales generales (solo cajas normales)
@@ -702,22 +1394,14 @@ function exportarHistorialPDF() {
             // Agregar subtotal general en segunda posición
             filaSubtotal.push(subtotalGeneral.toString());
             
-            // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
-            cajaPaleMercancia = todasLasCajas.find(box => 
-                box.nombre.toLowerCase().includes('palet') || 
-                box.nombre.toLowerCase().includes('mercancia')
-            );
+            // Subtotales de cajas normales
+            cajasNormalesArray.forEach(nombreCaja => {
+                filaSubtotal.push(subtotalesPorCaja[nombreCaja].toString());
+            });
             
-            // Agregar PALE DE MERCANCIA inmediatamente después de Total
-            if (cajaPaleMercancia) {
-                filaSubtotal.push((subtotalesPorCaja[cajaPaleMercancia.nombre] || 0).toString());
-            }
-            
-            // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
-            todasLasCajas.forEach(box => {
-                if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
-                    filaSubtotal.push((subtotalesPorCaja[box.nombre] || 0).toString());
-                }
+            // Subtotales de palets
+            cajasPaletArray.forEach(nombreCaja => {
+                filaSubtotal.push(subtotalesPalets[nombreCaja].toString());
             });
             
             data.push(filaSubtotal);
@@ -739,22 +1423,14 @@ function exportarHistorialPDF() {
     // Agregar total general en segunda posición
     filaTotalGeneral.push(totalGeneral.toString());
     
-    // Buscar la caja de palet (cualquier caja que contenga 'palet' o 'mercancia')
-        cajaPaleMercancia = todasLasCajas.find(box => 
-            box.nombre.toLowerCase().includes('palet') || 
-            box.nombre.toLowerCase().includes('mercancia')
-        );
+    // Totales de cajas normales
+    cajasNormalesArray.forEach(nombreCaja => {
+        filaTotalGeneral.push(totalesPorCaja[nombreCaja].toString());
+    });
     
-    // Agregar PALE DE MERCANCIA inmediatamente después de Total
-    if (cajaPaleMercancia) {
-        filaTotalGeneral.push((totalesPorCaja[cajaPaleMercancia.nombre] || 0).toString());
-    }
-    
-    // Agregar las demás cajas (excluyendo PALE DE MERCANCIA)
-    todasLasCajas.forEach(box => {
-        if (!cajaPaleMercancia || box.nombre !== cajaPaleMercancia.nombre) {
-            filaTotalGeneral.push((totalesPorCaja[box.nombre] || 0).toString());
-        }
+    // Totales de palets
+    cajasPaletArray.forEach(nombreCaja => {
+        filaTotalGeneral.push(totalesPalets[nombreCaja].toString());
     });
     
     data.push(filaTotalGeneral);
@@ -811,6 +1487,7 @@ function exportarHistorialPDF() {
 // Función para exportar registros archivados a PDF
 function exportarRegistrosPDF() {
     if (registrosArchivados.length === 0) {
+        alert('No hay registros archivados para exportar.');
         return;
     }
     
@@ -884,14 +1561,160 @@ function exportarRegistrosPDF() {
     doc.save(`registros-archivados-${new Date().toISOString().split('T')[0]}.pdf`);
 }
 
-// Función de inicialización
-function initializeApp() {
-    loadUserCreatedBoxes();
-    loadHistorialConteos();
-    loadRegistrosArchivados();
-    displayHistorialConteos();
-    updateHistorialHeaders();
+// Función para mostrar el teclado numérico modal
+function showNumericKeypad(boxName, currentValue, callback) {
+    const modal = document.getElementById('numeric-keypad-modal');
+    const title = document.getElementById('keypad-title');
+    const input = document.getElementById('keypad-input');
+    const closeBtn = document.getElementById('close-keypad');
+    const confirmBtn = document.getElementById('keypad-confirm');
+    const cancelBtn = document.getElementById('keypad-cancel');
+    const clearBtn = document.getElementById('keypad-clear');
+    const backspaceBtn = document.getElementById('keypad-backspace');
+    const numberBtns = document.querySelectorAll('.number-btn');
+    
+    // Configurar el modal
+    title.textContent = `Cantidad para ${boxName}`;
+    input.value = currentValue.toString();
+    modal.style.display = 'flex';
+    
+    // Variables para manejar el estado
+    let currentInput = currentValue.toString();
+    
+    // Función para actualizar el display
+    function updateDisplay() {
+        input.value = currentInput || '0';
+    }
+    
+    // Event listeners para números
+    numberBtns.forEach(btn => {
+        const newHandler = function() {
+            const number = this.getAttribute('data-number');
+            if (currentInput === '0') {
+                currentInput = number;
+            } else {
+                currentInput += number;
+            }
+            updateDisplay();
+        };
+        btn.removeEventListener('click', btn._keypadHandler);
+        btn._keypadHandler = newHandler;
+        btn.addEventListener('click', newHandler);
+    });
+    
+    // Event listener para limpiar
+    const clearHandler = function() {
+        currentInput = '0';
+        updateDisplay();
+    };
+    clearBtn.removeEventListener('click', clearBtn._keypadHandler);
+    clearBtn._keypadHandler = clearHandler;
+    clearBtn.addEventListener('click', clearHandler);
+    
+    // Event listener para backspace
+    const backspaceHandler = function() {
+        if (currentInput.length > 1) {
+            currentInput = currentInput.slice(0, -1);
+        } else {
+            currentInput = '0';
+        }
+        updateDisplay();
+    };
+    backspaceBtn.removeEventListener('click', backspaceBtn._keypadHandler);
+    backspaceBtn._keypadHandler = backspaceHandler;
+    backspaceBtn.addEventListener('click', backspaceHandler);
+    
+    // Event listener para confirmar
+    const confirmHandler = function() {
+        const value = parseInt(currentInput) || 0;
+        modal.style.display = 'none';
+        callback(value);
+        cleanupEventListeners();
+    };
+    confirmBtn.removeEventListener('click', confirmBtn._keypadHandler);
+    confirmBtn._keypadHandler = confirmHandler;
+    confirmBtn.addEventListener('click', confirmHandler);
+    
+    // Event listener para cancelar
+    const cancelHandler = function() {
+        modal.style.display = 'none';
+        callback(null);
+        cleanupEventListeners();
+    };
+    cancelBtn.removeEventListener('click', cancelBtn._keypadHandler);
+    cancelBtn._keypadHandler = cancelHandler;
+    cancelBtn.addEventListener('click', cancelHandler);
+    
+    // Event listener para cerrar
+    const closeHandler = function() {
+        modal.style.display = 'none';
+        callback(null);
+        cleanupEventListeners();
+    };
+    closeBtn.removeEventListener('click', closeBtn._keypadHandler);
+    closeBtn._keypadHandler = closeHandler;
+    closeBtn.addEventListener('click', closeHandler);
+    
+    // Event listener para cerrar al hacer clic fuera del modal
+    const modalClickHandler = function(e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            callback(null);
+            cleanupEventListeners();
+        }
+    };
+    modal.removeEventListener('click', modal._keypadHandler);
+    modal._keypadHandler = modalClickHandler;
+    modal.addEventListener('click', modalClickHandler);
+    
+    // Función para limpiar event listeners
+    function cleanupEventListeners() {
+        numberBtns.forEach(btn => {
+            btn.removeEventListener('click', btn._keypadHandler);
+        });
+        clearBtn.removeEventListener('click', clearBtn._keypadHandler);
+        backspaceBtn.removeEventListener('click', backspaceBtn._keypadHandler);
+        confirmBtn.removeEventListener('click', confirmBtn._keypadHandler);
+        cancelBtn.removeEventListener('click', cancelBtn._keypadHandler);
+        closeBtn.removeEventListener('click', closeBtn._keypadHandler);
+        modal.removeEventListener('click', modal._keypadHandler);
+    }
+    
+    // Soporte para teclado físico
+    const keyboardHandler = function(e) {
+        e.preventDefault();
+        
+        if (e.key >= '0' && e.key <= '9') {
+            const number = e.key;
+            if (currentInput === '0') {
+                currentInput = number;
+            } else {
+                currentInput += number;
+            }
+            updateDisplay();
+        } else if (e.key === 'Backspace') {
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = '0';
+            }
+            updateDisplay();
+        } else if (e.key === 'Enter') {
+            const value = parseInt(currentInput) || 0;
+            modal.style.display = 'none';
+            callback(value);
+            document.removeEventListener('keydown', keyboardHandler);
+            cleanupEventListeners();
+        } else if (e.key === 'Escape') {
+            modal.style.display = 'none';
+            callback(null);
+            document.removeEventListener('keydown', keyboardHandler);
+            cleanupEventListeners();
+        } else if (e.key === 'Delete' || e.key === 'c' || e.key === 'C') {
+            currentInput = '0';
+            updateDisplay();
+        }
+    };
+    
+    document.addEventListener('keydown', keyboardHandler);
 }
-
-// Inicializar la aplicación cuando se carga la página
-document.addEventListener('DOMContentLoaded', initializeApp);

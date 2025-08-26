@@ -1,4 +1,4 @@
-const CACHE_NAME = 'conteo-app-v2';
+const CACHE_NAME = 'conteo-app-v1';
 const urlsToCache = [
   '/',
   '/index.html',
