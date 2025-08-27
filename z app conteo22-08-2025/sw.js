@@ -1,9 +1,9 @@
-const CACHE_NAME = 'conteo-pwa-v2.1';
+const CACHE_NAME = 'conteo-pwa-fresh-' + Date.now();
 const urlsToCache = [
   './',
   './index.html',
-  './script.js?v=2.1',
-  './styles.css?v=2.1',
+  './script.js?v=20250827150000',
+  './styles.css?v=20250827150000',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'
@@ -11,10 +11,12 @@ const urlsToCache = [
 
 // Instalar el service worker y cachear archivos
 self.addEventListener('install', event => {
+  // Saltar la espera para activar inmediatamente
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Cache abierto');
+        console.log('Cache abierto con nombre:', CACHE_NAME);
         return cache.addAll(urlsToCache);
       })
   );
@@ -23,15 +25,20 @@ self.addEventListener('install', event => {
 // Interceptar requests y servir desde cache
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then(response => {
-        // Devolver desde cache si existe, sino hacer fetch
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
+        // Siempre intentar obtener la versión más reciente primero
+        const responseClone = response.clone();
+        caches.open(CACHE_NAME)
+          .then(cache => {
+            cache.put(event.request, responseClone);
+          });
+        return response;
+      })
+      .catch(() => {
+        // Solo usar cache si falla la red
+        return caches.match(event.request);
+      })
   );
 });
 
