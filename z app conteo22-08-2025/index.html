@@ -452,45 +452,15 @@
 
     <!-- FORCE COMPLETE REFRESH Script -->
     <script>
-        // FORCE COMPLETE REFRESH - Versión 3.0
+        // VERSION CHECK - Versión 3.0 (sin auto-reload)
         (function() {
             const currentVersion = '3.0';
             const lastVersion = localStorage.getItem('app_version');
             
-            // Si es una versión diferente o primera carga, limpiar todo
-            if (lastVersion !== currentVersion) {
-                console.log('Forzando actualización completa...');
-                
-                // Limpiar localStorage y sessionStorage
-                localStorage.clear();
-                sessionStorage.clear();
-                
-                // Eliminar todos los caches del navegador
-                if ('caches' in window) {
-                    caches.keys().then(function(names) {
-                        names.forEach(function(name) {
-                            caches.delete(name);
-                        });
-                    });
-                }
-                
-                // Desregistrar todos los service workers existentes
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                        registrations.forEach(function(registration) {
-                            registration.unregister();
-                        });
-                        
-                        // Después de desregistrar, recargar la página
-                        setTimeout(function() {
-                            localStorage.setItem('app_version', currentVersion);
-                            window.location.reload(true);
-                        }, 1000);
-                    });
-                } else {
-                    localStorage.setItem('app_version', currentVersion);
-                    window.location.reload(true);
-                }
+            // Solo marcar la versión si no existe, sin forzar recarga
+            if (!lastVersion) {
+                console.log('Primera carga - estableciendo versión 3.0');
+                localStorage.setItem('app_version', currentVersion);
             }
         })();
     </script>

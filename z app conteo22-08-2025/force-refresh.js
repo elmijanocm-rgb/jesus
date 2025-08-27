@@ -100,19 +100,29 @@
         window.location.replace(url.toString());
     }
     
-    // Verificar si necesita limpieza
-    const lastVersion = localStorage.getItem('app_version');
-    const currentVersion = '3.0';
-    
-    if (lastVersion !== currentVersion) {
-        console.log(`🔄 Actualizando de versión ${lastVersion || 'desconocida'} a ${currentVersion}`);
-        
-        clearEverything().then(() => {
-            setTimeout(forceReload, 1000);
-        });
-    } else {
-        console.log('✅ Aplicación ya está en la versión más reciente');
-    }
+    // Verificar si necesita limpieza (solo una vez)
+     const lastVersion = localStorage.getItem('app_version');
+     const currentVersion = '3.0';
+     const isReloading = sessionStorage.getItem('force_reloading');
+     
+     if (lastVersion !== currentVersion && !isReloading) {
+         console.log(`🔄 Actualizando de versión ${lastVersion || 'desconocida'} a ${currentVersion}`);
+         
+         // Marcar que estamos en proceso de recarga
+         sessionStorage.setItem('force_reloading', 'true');
+         
+         clearEverything().then(() => {
+             setTimeout(forceReload, 1000);
+         });
+     } else if (isReloading) {
+         console.log('🔄 Completando actualización...');
+         // Limpiar la marca de recarga y establecer la nueva versión
+         sessionStorage.removeItem('force_reloading');
+         localStorage.setItem('app_version', currentVersion);
+         console.log('✅ Actualización completada');
+     } else {
+         console.log('✅ Aplicación ya está en la versión más reciente');
+     }
     
     // Exponer función global para uso manual
     window.forceClearAndReload = function() {
