@@ -1,22 +1,18 @@
-const CACHE_NAME = 'conteo-pwa-fresh-' + Date.now();
+const CACHE_NAME = 'conteo-app-v1';
 const urlsToCache = [
-  './',
-  './index.html',
-  './script.js?v=20250827150000',
-  './styles.css?v=20250827150000',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  '/',
+  '/index.html',
+  '/script.js',
+  '/styles.css',
+  '/manifest.json'
 ];
 
 // Instalar el service worker y cachear archivos
 self.addEventListener('install', event => {
-  // Saltar la espera para activar inmediatamente
-  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Cache abierto con nombre:', CACHE_NAME);
+        console.log('Cache abierto');
         return cache.addAll(urlsToCache);
       })
   );
@@ -25,20 +21,15 @@ self.addEventListener('install', event => {
 // Interceptar requests y servir desde cache
 self.addEventListener('fetch', event => {
   event.respondWith(
-    fetch(event.request)
+    caches.match(event.request)
       .then(response => {
-        // Siempre intentar obtener la versión más reciente primero
-        const responseClone = response.clone();
-        caches.open(CACHE_NAME)
-          .then(cache => {
-            cache.put(event.request, responseClone);
-          });
-        return response;
-      })
-      .catch(() => {
-        // Solo usar cache si falla la red
-        return caches.match(event.request);
-      })
+        // Devolver desde cache si existe, sino hacer fetch
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      }
+    )
   );
 });
 
@@ -54,18 +45,8 @@ self.addEventListener('activate', event => {
           }
         })
       );
-    }).then(() => {
-      // Forzar que todos los clientes usen la nueva versión
-      return self.clients.claim();
     })
   );
-});
-
-// Forzar actualización cuando hay nueva versión disponible
-self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
 });
 
 // Manejar notificaciones push (opcional)

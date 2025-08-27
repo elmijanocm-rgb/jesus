@@ -1,0 +1,38 @@
+# Headers for GitHub Pages PWA
+/*
+  # Security headers
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  
+  # PWA headers
+  Cache-Control: public, max-age=31536000, immutable
+  
+  # Service Worker headers
+  Service-Worker-Allowed: /
+
+# Specific headers for HTML files
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+  
+# Specific headers for Service Worker
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+  Service-Worker-Allowed: /
+  
+# Specific headers for manifest
+/manifest.json
+  Content-Type: application/manifest+json
+  Cache-Control: public, max-age=86400
+  
+# Specific headers for icons
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+  
+# Specific headers for CSS and JS
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+  
+/*.js
+  Cache-Control: public, max-age=31536000, immutable

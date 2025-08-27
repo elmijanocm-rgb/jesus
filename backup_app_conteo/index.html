@@ -3,42 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplicación PWA de Conteo de Cajas | Gestión Eficiente de Inventario</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Aplicación web progresiva moderna para el conteo eficiente de cajas y palets con sistema de bloques automático y totales en tiempo real. Optimizada para dispositivos móviles y escritorio.">
-    <meta name="keywords" content="conteo, cajas, palets, inventario, PWA, aplicación web, gestión, logística, almacén">
-    <meta name="author" content="Desarrollador PWA">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Aplicación PWA de Conteo de Cajas">
-    <meta property="og:description" content="Aplicación web progresiva moderna para el conteo eficiente de cajas y palets con sistema de bloques automático y totales en tiempo real.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://tu-usuario.github.io/nombre-repositorio/">
-    <meta property="og:image" content="./icon-512.png">
-    <meta property="og:locale" content="es_ES">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Aplicación PWA de Conteo de Cajas">
-    <meta name="twitter:description" content="Aplicación web progresiva moderna para el conteo eficiente de cajas y palets.">
-    <meta name="twitter:image" content="./icon-512.png">
+    <title>App de Conteo de Cajas</title>
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#4f46e5">
+    <meta name="description" content="Aplicación para conteo de cajas y palets">
+    <meta name="theme-color" content="#007bff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Conteo PWA">
+    <meta name="apple-mobile-web-app-title" content="Conteo">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Conteo PWA">
-    <meta name="msapplication-TileColor" content="#4f46e5">
-    <meta name="msapplication-config" content="./browserconfig.xml">
-    
-    <!-- Cache Control -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -49,7 +22,7 @@
     <link rel="apple-touch-icon" href="icon-192.png">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.css?v=20250827150000">
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Scripts -->
@@ -450,50 +423,7 @@
         </main>
     </div>
 
-    <!-- Cache Buster Script -->
-    <script>
-        // Limpiar cache inmediatamente al cargar
-        (function() {
-            console.log('Iniciando limpieza de cache...');
-            
-            // Limpiar localStorage y sessionStorage
-            try {
-                localStorage.clear();
-                sessionStorage.clear();
-                console.log('Storage limpiado');
-            } catch(e) {
-                console.log('Error limpiando storage:', e);
-            }
-            
-            // Limpiar todos los caches si están disponibles
-            if ('caches' in window) {
-                caches.keys().then(function(cacheNames) {
-                    console.log('Caches encontrados:', cacheNames);
-                    return Promise.all(
-                        cacheNames.map(function(cacheName) {
-                            console.log('Eliminando cache:', cacheName);
-                            return caches.delete(cacheName);
-                        })
-                    );
-                }).then(function() {
-                    console.log('Todos los caches eliminados');
-                });
-            }
-            
-            // Desregistrar service workers existentes
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                    registrations.forEach(function(registration) {
-                        console.log('Desregistrando SW:', registration);
-                        registration.unregister();
-                    });
-                });
-            }
-        })();
-    </script>
-    
-    <!-- Main Script -->
-    <script src="script.js?v=20250827150000"></script>
+    <script src="script.js"></script>
     
     <!-- PWA Service Worker Registration -->
     <script>
@@ -528,48 +458,6 @@
                     deferredPrompt = null;
                 });
             }
-        }
-
-        // Forzar actualización completa del Service Worker
-        if ('serviceWorker' in navigator) {
-            // Primero desregistrar todos los service workers existentes
-            navigator.serviceWorker.getRegistrations().then(registrations => {
-                registrations.forEach(registration => {
-                    console.log('Desregistrando SW anterior:', registration);
-                    registration.unregister();
-                });
-                
-                // Limpiar todos los caches
-                if ('caches' in window) {
-                    caches.keys().then(cacheNames => {
-                        cacheNames.forEach(cacheName => {
-                            console.log('Eliminando cache:', cacheName);
-                            caches.delete(cacheName);
-                        });
-                    });
-                }
-                
-                // Esperar un momento y registrar nuevo SW
-                setTimeout(() => {
-                    navigator.serviceWorker.register('./sw.js?v=' + Date.now())
-                        .then(registration => {
-                            console.log('Nuevo SW registrado:', registration);
-                            // Forzar activación inmediata
-                            if (registration.waiting) {
-                                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-                            }
-                        })
-                        .catch(error => {
-                            console.log('Error registrando nuevo SW:', error);
-                        });
-                }, 1000);
-            });
-            
-            // Recargar cuando cambie el controller
-            navigator.serviceWorker.addEventListener('controllerchange', () => {
-                console.log('Controller cambió, recargando...');
-                window.location.reload(true);
-            });
         }
     </script>
 

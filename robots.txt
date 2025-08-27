@@ -1,0 +1,26 @@
+# Robots.txt para Aplicación PWA de Conteo de Cajas
+# https://tu-usuario.github.io/nombre-repositorio/robots.txt
+
+User-agent: *
+Allow: /
+
+# Permitir acceso a archivos PWA importantes
+Allow: /manifest.json
+Allow: /sw.js
+Allow: /icon-*.png
+
+# Disallow backup folder
+Disallow: /backup_app_conteo/
+
+# Disallow configuration files
+Disallow: /_config.yml
+Disallow: /.github/
+Disallow: /.gitignore
+Disallow: /browserconfig.xml
+Disallow: /_headers
+
+# Sitemap location
+Sitemap: https://tu-usuario.github.io/nombre-repositorio/sitemap.xml
+
+# Crawl-delay (opcional)
+Crawl-delay: 1

@@ -1033,8 +1033,6 @@ function agregarConteoAlHistorial() {
         return;
     }
     
-
-    
     // Calcular total solo de cajas normales (excluyendo palets)
     const cajasNormales = userCreatedBoxes.filter(box => !box.nombre.toLowerCase().includes('palet'));
     const totalCajasNormales = cajasNormales.reduce((total, box) => total + (box.cantidad || 0), 0);

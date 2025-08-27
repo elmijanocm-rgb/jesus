@@ -1,0 +1,57 @@
+# GitHub Pages Configuration
+title: "Aplicación PWA de Conteo de Cajas"
+description: "Aplicación web progresiva moderna para el conteo eficiente de cajas y palets con sistema de bloques automático y totales en tiempo real"
+url: "https://tu-usuario.github.io"
+baseurl: "/nombre-repositorio"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Plugins
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - LICENSE
+  - .gitignore
+  - backup_app_conteo/
+  - node_modules/
+  - vendor/
+  - .bundle/
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+
+# Include files
+include:
+  - _headers
+  - _redirects
+
+# PWA Settings
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+# SEO
+lang: es
+author: "Desarrollador PWA"
+twitter:
+  username: tu-usuario
+  card: summary_large_image
+
+social:
+  name: "Aplicación PWA de Conteo"
+  links:
+    - "https://github.com/tu-usuario/nombre-repositorio"
+
+# Analytics (opcional)
+# google_analytics: UA-XXXXXXXX-X
