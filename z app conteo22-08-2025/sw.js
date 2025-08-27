@@ -1,12 +1,13 @@
-const CACHE_NAME = 'conteo-pwa-fresh-' + Date.now();
+// Service Worker para PWA - Versión 3.0 FORCE UPDATE
+const CACHE_NAME = 'conteo-pwa-v3.0';
 const urlsToCache = [
-  './',
-  './index.html',
-  './script.js?v=20250827150000',
-  './styles.css?v=20250827150000',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+    './',
+    './index.html',
+    './styles.css?v=30',
+    './script.js?v=30',
+    './manifest.json',
+    './icon-192.png',
+    './icon-512.png'
 ];
 
 // Instalar el service worker y cachear archivos
