@@ -506,52 +506,27 @@
             }
         }
 
-        // Registro del Service Worker - Versión 3.0
+        // Service Worker DESHABILITADO para evitar bucles de recarga
+        console.log('Service Worker deshabilitado temporalmente');
+        
+        // Limpiar cualquier SW existente
         if ('serviceWorker' in navigator) {
-            // Primero desregistrar todos los service workers existentes
             navigator.serviceWorker.getRegistrations().then(function(registrations) {
                 registrations.forEach(function(registration) {
-                    console.log('Desregistrando SW anterior:', registration);
                     registration.unregister();
+                    console.log('Service Worker desregistrado');
                 });
-                
-                // Limpiar todos los caches
-                if ('caches' in window) {
-                    caches.keys().then(function(cacheNames) {
-                        cacheNames.forEach(function(cacheName) {
-                            console.log('Eliminando cache:', cacheName);
-                            caches.delete(cacheName);
-                        });
-                    });
-                }
-                
-                // Esperar un momento y registrar nuevo SW
-                setTimeout(function() {
-                    navigator.serviceWorker.register('sw.js?v=30')
-                        .then(function(registration) {
-                            console.log('SW v3.0 registrado:', registration.scope);
-                            
-                            // Detectar actualizaciones
-                            registration.addEventListener('updatefound', function() {
-                                const newWorker = registration.installing;
-                                newWorker.addEventListener('statechange', function() {
-                                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                        newWorker.postMessage({action: 'SKIP_WAITING'});
-                                    }
-                                });
-                            });
-                        })
-                        .catch(function(error) {
-                            console.log('Error registrando SW v3.0:', error);
-                        });
-                }, 500);
             });
             
-            // Detectar cambios en el controlador
-            navigator.serviceWorker.addEventListener('controllerchange', function() {
-                console.log('Controller cambió, recargando...');
-                window.location.reload();
-            });
+            // Limpiar caches
+            if ('caches' in window) {
+                caches.keys().then(function(names) {
+                    names.forEach(function(name) {
+                        caches.delete(name);
+                        console.log('Cache eliminado:', name);
+                    });
+                });
+            }
         }
     </script>
 
