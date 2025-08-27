@@ -1,9 +1,9 @@
-const CACHE_NAME = 'conteo-pwa-v2.0';
+const CACHE_NAME = 'conteo-pwa-v2.1';
 const urlsToCache = [
   './',
   './index.html',
-  './script.js',
-  './styles.css',
+  './script.js?v=2.1',
+  './styles.css?v=2.1',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'
@@ -47,8 +47,18 @@ self.addEventListener('activate', event => {
           }
         })
       );
+    }).then(() => {
+      // Forzar que todos los clientes usen la nueva versión
+      return self.clients.claim();
     })
   );
+});
+
+// Forzar actualización cuando hay nueva versión disponible
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 // Manejar notificaciones push (opcional)
