@@ -1,18 +1,18 @@
-const CACHE_NAME = 'conteo-pwa-fresh-' + Date.now();
+// Service Worker para PWA - Versión 3.0 FORCE UPDATE
+const CACHE_NAME = 'conteo-pwa-v3.0';
 const urlsToCache = [
-  './',
-  './index.html',
-  './script.js?v=20250827150000',
-  './styles.css?v=20250827150000',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+    './',
+    './index.html',
+    './styles.css?v=30',
+    './script.js?v=30',
+    './manifest.json',
+    './icon-192.png',
+    './icon-512.png'
 ];
 
 // Instalar el service worker y cachear archivos
 self.addEventListener('install', event => {
-  // Saltar la espera para activar inmediatamente
-  self.skipWaiting();
+  // SIN skipWaiting para evitar recargas automáticas
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
@@ -22,22 +22,25 @@ self.addEventListener('install', event => {
   );
 });
 
-// Interceptar requests y servir desde cache
+// Interceptar requests y servir desde cache (estrategia Cache First)
 self.addEventListener('fetch', event => {
   event.respondWith(
-    fetch(event.request)
+    caches.match(event.request)
       .then(response => {
-        // Siempre intentar obtener la versión más reciente primero
-        const responseClone = response.clone();
-        caches.open(CACHE_NAME)
-          .then(cache => {
-            cache.put(event.request, responseClone);
+        // Si está en cache, devolverlo
+        if (response) {
+          return response;
+        }
+        // Si no está en cache, obtener de la red
+        return fetch(event.request)
+          .then(response => {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME)
+              .then(cache => {
+                cache.put(event.request, responseClone);
+              });
+            return response;
           });
-        return response;
-      })
-      .catch(() => {
-        // Solo usar cache si falla la red
-        return caches.match(event.request);
       })
   );
 });
