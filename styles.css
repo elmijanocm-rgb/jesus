@@ -4,11 +4,66 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Optimizaciones táctiles */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Permitir selección de texto en inputs y áreas de texto */
+input, textarea, [contenteditable] {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Optimizaciones para scroll suave en móviles */
+html {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+/* Mejoras para elementos interactivos */
+button, .btn, .nav-item, .keypad-btn {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
     background-color: #e8f5e8;
     color: #333;
+    /* Optimizaciones de rendimiento */
+    will-change: scroll-position;
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* Optimizaciones de rendimiento para imágenes */
+img {
+    max-width: 100%;
+    height: auto;
+    loading: lazy;
+    decoding: async;
+}
+
+/* Optimización de animaciones para móviles */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Mejoras de performance para elementos con scroll */
+.table-container, .content {
+    contain: layout style paint;
+    will-change: scroll-position;
 }
 
 .app-container {
@@ -511,21 +566,79 @@ body {
     text-transform: lowercase;
 }
 
+/* Responsive para tablets */
+@media (max-width: 1024px) {
+    .content {
+        padding: 15px;
+    }
+    
+    .nav-item {
+        width: 70px;
+        height: 60px;
+    }
+    
+    .nav-item i {
+        font-size: 1.4rem;
+    }
+    
+    .nav-item span {
+        font-size: 0.7rem;
+    }
+}
+
 /* Responsive para móviles */
 @media (max-width: 768px) {
+    .content {
+        padding: 10px;
+    }
+    
     .conteos-header {
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
     }
     
     .summary-boxes {
         justify-content: center;
         flex-wrap: wrap;
+        gap: 8px;
     }
     
     .summary-box {
         flex: 1;
-        min-width: 100px;
+        min-width: 120px;
+        padding: 15px;
+        font-size: 1.1rem;
+    }
+    
+    /* Optimización táctil para navegación */
+    .nav-item {
+        width: 80px;
+        height: 70px;
+        margin: 5px;
+    }
+    
+    .nav-item i {
+        font-size: 1.6rem;
+        margin-bottom: 4px;
+    }
+    
+    .nav-item span {
+        font-size: 0.75rem;
+    }
+    
+    /* Botones más grandes para touch */
+    .btn {
+        min-height: 48px;
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        touch-action: manipulation;
+    }
+    
+    .btn-small {
+        min-height: 40px;
+        padding: 10px 16px;
+        font-size: 1rem;
     }
 }
 
@@ -1253,26 +1366,95 @@ body {
     }
 }
 
-/* Responsive para móviles */
-@media (max-width: 480px) {
+/* Responsive para tablets - Keypad */
+@media (max-width: 1024px) {
     .numeric-keypad {
-        width: 95%;
-        max-width: none;
+        width: 90%;
+        max-width: 500px;
     }
     
     .keypad-btn {
-        padding: 15px;
-        font-size: 1.3rem;
-        min-height: 50px;
+        padding: 18px;
+        font-size: 1.4rem;
+        min-height: 60px;
+        border-radius: 8px;
     }
     
     #keypad-input {
-        font-size: 1.8rem;
-        padding: 12px;
+        font-size: 2rem;
+        padding: 15px;
+        min-height: 60px;
+    }
+}
+
+/* Responsive para móviles - Keypad */
+@media (max-width: 768px) {
+    .numeric-keypad {
+        width: 95%;
+        max-width: none;
+        margin: 10px;
+    }
+    
+    .keypad-btn {
+        padding: 20px;
+        font-size: 1.5rem;
+        min-height: 65px;
+        border-radius: 10px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .keypad-btn:active {
+        transform: scale(0.95);
+        background-color: #e0e0e0;
+    }
+    
+    #keypad-input {
+        font-size: 2.2rem;
+        padding: 18px;
+        min-height: 70px;
+        border-radius: 10px;
     }
     
     .keypad-header h3 {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+    
+    .confirm-btn {
+        font-size: 1.6rem;
+        min-height: 65px;
+        border-radius: 10px;
+    }
+    
+    #keypad-cancel {
+        font-size: 1.4rem;
+        min-height: 55px;
+        border-radius: 10px;
+    }
+}
+
+/* Responsive para móviles pequeños */
+@media (max-width: 480px) {
+    .numeric-keypad {
+        width: 98%;
+        margin: 5px;
+    }
+    
+    .keypad-btn {
+        padding: 22px;
+        font-size: 1.6rem;
+        min-height: 70px;
+    }
+    
+    #keypad-input {
+        font-size: 2.4rem;
+        padding: 20px;
+        min-height: 75px;
+    }
+    
+    .keypad-header h3 {
+        font-size: 1.4rem;
     }
 }
 
@@ -1341,16 +1523,136 @@ body {
     font-size: 0.8rem;
 }
 
+/* Optimizaciones adicionales para tablets */
+@media (max-width: 1024px) {
+    .data-table th,
+    .data-table td {
+        padding: 12px 10px;
+        font-size: 0.95rem;
+    }
+    
+    .form-container {
+        gap: 12px;
+    }
+    
+    .input-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .input-group input,
+    .input-group select {
+        min-height: 48px;
+        font-size: 1rem;
+    }
+}
+
 /* Ajustes para móviles */
 @media (max-width: 768px) {
+    /* Tablas responsive */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .data-table {
+        min-width: 600px;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 15px 8px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+    
+    /* Formularios optimizados */
+    .form-container {
+        gap: 15px;
+    }
+    
+    .input-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .input-group label {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+    
+    .input-group input,
+    .input-group select,
+    .input-group textarea {
+        min-height: 50px;
+        font-size: 1.1rem;
+        padding: 15px;
+        border-radius: 8px;
+        touch-action: manipulation;
+    }
+    
+    /* Botones de posición optimizados */
     .position-btn {
-        padding: 6px 10px;
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        min-width: 44px;
+        height: 44px;
+        margin: 2px;
+    }
+    
+    .position-btn i {
         font-size: 0.8rem;
-        min-width: 32px;
-        height: 32px;
+    }
+    
+    .move-up-btn,
+    .move-down-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        min-height: 44px;
+    }
+    
+    /* Header optimizado */
+    .header {
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .header-top {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    
+    /* Acciones de tabla */
+    .table-actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
+    }
+}
+
+/* Optimizaciones para móviles pequeños */
+@media (max-width: 480px) {
+    .position-btn {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+        min-width: 40px;
+        height: 40px;
     }
     
     .position-btn i {
         font-size: 0.7rem;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 12px 6px;
+        font-size: 0.85rem;
+    }
+    
+    .summary-box {
+        min-width: 100px;
+        padding: 12px;
+        font-size: 1rem;
     }
 }
