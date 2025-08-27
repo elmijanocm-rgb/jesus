@@ -6,20 +6,22 @@
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
   
-  # PWA headers
-  Cache-Control: public, max-age=31536000, immutable
-  
-  # Service Worker headers
-  Service-Worker-Allowed: /
+  # PWA headers - DESHABILITADO para evitar bucles
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
 
-# Specific headers for HTML files
+# Specific headers for HTML files - NO CACHE
 /*.html
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
   
-# Specific headers for Service Worker
+# Specific headers for Service Worker - DESHABILITADO
 /sw.js
-  Cache-Control: public, max-age=0, must-revalidate
-  Service-Worker-Allowed: /
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
   
 # Specific headers for manifest
 /manifest.json
@@ -30,9 +32,13 @@
 /*.png
   Cache-Control: public, max-age=31536000, immutable
   
-# Specific headers for CSS and JS
+# Specific headers for CSS and JS - NO CACHE para evitar bucles
 /*.css
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
   
 /*.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0

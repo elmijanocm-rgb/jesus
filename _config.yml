@@ -1,18 +1,9 @@
-# GitHub Pages Configuration
+# GitHub Pages Configuration - SIMPLIFICADO
 title: "Aplicación PWA de Conteo de Cajas"
-description: "Aplicación web progresiva moderna para el conteo eficiente de cajas y palets con sistema de bloques automático y totales en tiempo real"
-url: "https://tu-usuario.github.io"
-baseurl: "/nombre-repositorio"
+description: "Aplicación web progresiva moderna para el conteo eficiente de cajas y palets"
 
-# Build settings
+# Build settings - MÍNIMO
 markdown: kramdown
-highlighter: rouge
-
-# Plugins
-plugins:
-  - jekyll-sitemap
-  - jekyll-feed
-  - jekyll-seo-tag
 
 # Exclude files from processing
 exclude:
