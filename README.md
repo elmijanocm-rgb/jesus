@@ -1,13 +1,16 @@
 # 📦 Aplicación PWA de Conteo de Cajas
 
-![PWA](https://img.shields.io/badge/PWA-Ready-brightgreen)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
-![Responsive](https://img.shields.io/badge/Responsive-Design-blue)
-![Offline](https://img.shields.io/badge/Offline-Support-green)
+> Aplicación web progresiva moderna para el conteo eficiente de cajas y palets con sistema de bloques automático y totales en tiempo real.
 
-> **Aplicación web progresiva (PWA) moderna para el conteo eficiente de cajas y palets con sistema de bloques automático y totales en tiempo real.**
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen)](https://tu-usuario.github.io/nombre-repositorio/)
+[![PWA](https://img.shields.io/badge/PWA-Ready-blue)](https://web.dev/progressive-web-apps/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## 🚀 Demo en Vivo
+
+**[Ver Aplicación](https://tu-usuario.github.io/nombre-repositorio/)**
+
+*La aplicación está desplegada en GitHub Pages y lista para usar.*
 
 ## 🌟 Características Principales
 

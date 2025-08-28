@@ -586,32 +586,42 @@ img {
     }
 }
 
-/* Responsive para móviles */
+/* CONSOLIDADO: Responsive para móviles (768px y menor) */
 @media (max-width: 768px) {
-    .content {
-        padding: 10px;
+    /* INDICADOR VISUAL: Fondo ligeramente diferente para confirmar estilos móviles */
+    body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+        border-top: 5px solid #28a745 !important;
     }
     
+    /* Layout general */
+    .content {
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-radius: 10px !important;
+        margin: 10px !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+    }
+    
+    /* Header y navegación */
     .conteos-header {
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
     }
     
-    .summary-boxes {
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 8px;
+    .header {
+        gap: 10px;
+        margin-bottom: 15px;
     }
     
-    .summary-box {
-        flex: 1;
-        min-width: 120px;
-        padding: 15px;
-        font-size: 1.1rem;
+    .header-top {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
     }
     
-    /* Optimización táctil para navegación */
+    /* Navegación optimizada para touch */
     .nav-item {
         width: 80px;
         height: 70px;
@@ -627,18 +637,174 @@ img {
         font-size: 0.75rem;
     }
     
-    /* Botones más grandes para touch */
-    .btn {
-        min-height: 48px;
-        padding: 12px 20px;
+    /* Summary boxes */
+    .summary-boxes {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .summary-box {
+        flex: 1;
+        min-width: 120px;
+        padding: 15px;
         font-size: 1.1rem;
+    }
+    
+    /* Botones generales - MÓVIL EVIDENTE */
+    .btn {
+        min-height: 60px !important;
+        padding: 18px 25px !important;
+        font-size: 1.3rem !important;
         touch-action: manipulation;
+        border-radius: 12px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+        transform: scale(1.05) !important;
+    }
+    
+    .btn:hover {
+        transform: scale(1.08) !important;
     }
     
     .btn-small {
         min-height: 40px;
         padding: 10px 16px;
         font-size: 1rem;
+    }
+    
+    /* Tablas responsive */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .data-table {
+        min-width: 600px;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 15px 8px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+    
+    /* Formularios optimizados */
+    .form-container {
+        gap: 15px;
+    }
+    
+    .input-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .input-group label {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+    
+    .input-group input,
+    .input-group select,
+    .input-group textarea {
+        min-height: 50px;
+        font-size: 1.1rem;
+        padding: 15px;
+        border-radius: 8px;
+        touch-action: manipulation;
+    }
+    
+    /* Botones de posición optimizados */
+    .position-btn {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        min-width: 44px;
+        height: 44px;
+        margin: 2px;
+    }
+    
+    .position-btn i {
+        font-size: 0.8rem;
+    }
+    
+    .move-up-btn,
+    .move-down-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        min-height: 44px;
+    }
+    
+    /* Teclado numérico optimizado - SÚPER EVIDENTE */
+    .numeric-keypad {
+        width: 98% !important;
+        max-width: none;
+        margin: 5px !important;
+        border-radius: 20px !important;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.4) !important;
+        background: linear-gradient(145deg, #ffffff, #f0f0f0) !important;
+        border: 3px solid #007bff !important;
+    }
+    
+    .keypad-btn {
+        padding: 25px !important;
+        font-size: 1.8rem !important;
+        min-height: 75px !important;
+        border-radius: 15px !important;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+        background: linear-gradient(145deg, #f8f9fa, #e9ecef) !important;
+        border: 2px solid #dee2e6 !important;
+        transform: scale(1.02) !important;
+    }
+    
+    .keypad-btn:active {
+        transform: scale(0.98) !important;
+        background: linear-gradient(145deg, #e9ecef, #dee2e6) !important;
+    }
+    
+    #keypad-input {
+        font-size: 2.5rem !important;
+        padding: 22px !important;
+        min-height: 80px !important;
+        border-radius: 15px !important;
+        background: linear-gradient(145deg, #fff, #f8f9fa) !important;
+        border: 3px solid #007bff !important;
+    }
+    
+    .keypad-header h3 {
+        font-size: 1.5rem !important;
+        margin-bottom: 20px !important;
+        color: #007bff !important;
+        font-weight: 700 !important;
+    }
+    
+    .confirm-btn {
+        font-size: 1.8rem !important;
+        min-height: 75px !important;
+        border-radius: 15px !important;
+        background: linear-gradient(145deg, #28a745, #20c997) !important;
+        color: white !important;
+        font-weight: bold !important;
+        box-shadow: 0 6px 12px rgba(40, 167, 69, 0.4) !important;
+    }
+    
+    #keypad-cancel {
+        font-size: 1.6rem !important;
+        min-height: 65px !important;
+        border-radius: 15px !important;
+        background: linear-gradient(145deg, #dc3545, #c82333) !important;
+        color: white !important;
+        box-shadow: 0 6px 12px rgba(220, 53, 69, 0.4) !important;
+    }
+    
+    /* Acciones de tabla */
+    .table-actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
     }
 }
 
@@ -665,6 +831,8 @@ img {
     font-weight: 600;
     color: #333;
 }
+
+/* Todas las columnas centradas */
 
 .data-table tr:hover {
     background-color: #f9f9f9;
@@ -1387,52 +1555,7 @@ img {
     }
 }
 
-/* Responsive para móviles - Keypad */
-@media (max-width: 768px) {
-    .numeric-keypad {
-        width: 95%;
-        max-width: none;
-        margin: 10px;
-    }
-    
-    .keypad-btn {
-        padding: 20px;
-        font-size: 1.5rem;
-        min-height: 65px;
-        border-radius: 10px;
-        touch-action: manipulation;
-        -webkit-tap-highlight-color: transparent;
-    }
-    
-    .keypad-btn:active {
-        transform: scale(0.95);
-        background-color: #e0e0e0;
-    }
-    
-    #keypad-input {
-        font-size: 2.2rem;
-        padding: 18px;
-        min-height: 70px;
-        border-radius: 10px;
-    }
-    
-    .keypad-header h3 {
-        font-size: 1.3rem;
-        margin-bottom: 15px;
-    }
-    
-    .confirm-btn {
-        font-size: 1.6rem;
-        min-height: 65px;
-        border-radius: 10px;
-    }
-    
-    #keypad-cancel {
-        font-size: 1.4rem;
-        min-height: 55px;
-        border-radius: 10px;
-    }
-}
+/* ELIMINADO: Media query duplicada - ahora consolidada arriba */
 
 /* Responsive para móviles pequeños */
 @media (max-width: 480px) {
@@ -1547,89 +1670,7 @@ img {
     }
 }
 
-/* Ajustes para móviles */
-@media (max-width: 768px) {
-    /* Tablas responsive */
-    .table-container {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    .data-table {
-        min-width: 600px;
-    }
-    
-    .data-table th,
-    .data-table td {
-        padding: 15px 8px;
-        font-size: 0.9rem;
-        white-space: nowrap;
-    }
-    
-    /* Formularios optimizados */
-    .form-container {
-        gap: 15px;
-    }
-    
-    .input-group {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .input-group label {
-        font-size: 1.1rem;
-        font-weight: 600;
-    }
-    
-    .input-group input,
-    .input-group select,
-    .input-group textarea {
-        min-height: 50px;
-        font-size: 1.1rem;
-        padding: 15px;
-        border-radius: 8px;
-        touch-action: manipulation;
-    }
-    
-    /* Botones de posición optimizados */
-    .position-btn {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-        min-width: 44px;
-        height: 44px;
-        margin: 2px;
-    }
-    
-    .position-btn i {
-        font-size: 0.8rem;
-    }
-    
-    .move-up-btn,
-    .move-down-btn {
-        padding: 10px 15px;
-        font-size: 0.9rem;
-        min-height: 44px;
-    }
-    
-    /* Header optimizado */
-    .header {
-        gap: 10px;
-        margin-bottom: 15px;
-    }
-    
-    .header-top {
-        flex-direction: column;
-        gap: 10px;
-        align-items: stretch;
-    }
-    
-    /* Acciones de tabla */
-    .table-actions {
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 15px;
-    }
-}
+/* ELIMINADO: Media query duplicada - ahora consolidada arriba */
 
 /* Optimizaciones para móviles pequeños */
 @media (max-width: 480px) {

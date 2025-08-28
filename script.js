@@ -1142,7 +1142,7 @@ function displayHistorialConteos() {
         tituloRow.style.backgroundColor = '#2196F3';
         tituloRow.style.color = 'white';
         tituloRow.style.fontWeight = 'bold';
-        tituloRow.style.textAlign = 'center';
+        tituloRow.style.textAlign = 'left';
         
         const tituloCell = document.createElement('td');
         tituloCell.colSpan = ordenColumnasData.length + 2;
@@ -1272,7 +1272,7 @@ function displayHistorialConteos() {
         tituloRow.style.backgroundColor = '#4CAF50';
         tituloRow.style.color = 'white';
         tituloRow.style.fontWeight = 'bold';
-        tituloRow.style.textAlign = 'center';
+        tituloRow.style.textAlign = 'left';
         
         const tituloCell = document.createElement('td');
         tituloCell.colSpan = ordenColumnasData.length + 2;

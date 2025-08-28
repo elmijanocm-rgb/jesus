@@ -3,8 +3,8 @@ const CACHE_NAME = 'conteo-pwa-v3.0';
 const urlsToCache = [
     './',
     './index.html',
-    './styles.css?v=30',
-    './script.js?v=30',
+    './styles.css?v=40',
+    './script.js?v=40',
     './manifest.json',
     './icon-192.png',
     './icon-512.png'
