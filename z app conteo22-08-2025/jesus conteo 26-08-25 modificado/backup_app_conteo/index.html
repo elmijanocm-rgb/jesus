@@ -3,57 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>Aplicación PWA de Conteo de Cajas | Gestión Eficiente de Inventario</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Aplicación web progresiva moderna para el conteo eficiente de cajas y palets con sistema de bloques automático y totales en tiempo real. Optimizada para dispositivos móviles y escritorio.">
-    <meta name="keywords" content="conteo, cajas, palets, inventario, PWA, aplicación web, gestión, logística, almacén">
-    <meta name="author" content="Desarrollador PWA">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Aplicación PWA de Conteo de Cajas">
-    <meta property="og:description" content="Aplicación web progresiva moderna para el conteo eficiente de cajas y palets con sistema de bloques automático y totales en tiempo real.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://tu-usuario.github.io/nombre-repositorio/">
-    <meta property="og:image" content="./icon-512.png">
-    <meta property="og:locale" content="es_ES">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Aplicación PWA de Conteo de Cajas">
-    <meta name="twitter:description" content="Aplicación web progresiva moderna para el conteo eficiente de cajas y palets.">
-    <meta name="twitter:image" content="./icon-512.png">
+    <title>App de Conteo de Cajas</title>
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#4caf50">
+    <meta name="description" content="Aplicación para conteo de cajas y palets">
+    <meta name="theme-color" content="#007bff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Conteo PWA">
+    <meta name="apple-mobile-web-app-title" content="Conteo">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Conteo PWA">
-    <meta name="msapplication-TileColor" content="#4caf50">
-    <meta name="msapplication-config" content="./browserconfig.xml">
-    
-    <!-- Optimizaciones móviles adicionales -->
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-touch-fullscreen" content="yes">
-    <meta name="apple-mobile-web-app-orientations" content="portrait landscape">
-    <meta name="screen-orientation" content="natural">
-    <meta name="mobile-web-app-title" content="Conteo PWA">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="msapplication-navbutton-color" content="#4caf50">
-    
-    <!-- Cache Control AGRESIVO -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="-1">
-    <meta http-equiv="Last-Modified" content="0">
-    <meta http-equiv="If-Modified-Since" content="0">
-    <meta http-equiv="If-None-Match" content="0">
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -64,20 +22,14 @@
     <link rel="apple-touch-icon" href="icon-192.png">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.css?v=2.0.1">
-    <link rel="stylesheet" href="emergency-mobile.css?v=2.0.1">
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- SCRIPT DE LIMPIEZA FORZADA -->
-    <!-- Script force-refresh.js removido para evitar actualizaciones constantes -->
     
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
-    <!-- Debug info removed for clean appearance -->
-    
     <div class="app-container">
         <main class="content">
             <!-- Página 1: Resumen del Conteo -->
@@ -471,98 +423,21 @@
         </main>
     </div>
 
-    <!-- FORCE COMPLETE REFRESH Script -->
+    <script src="script.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
     <script>
-        // VERSION CHECK - Versión 3.0 (sin auto-reload)
-        (function() {
-            const currentVersion = '3.0';
-            const lastVersion = localStorage.getItem('app_version');
-            
-            // Solo marcar la versión si no existe, sin forzar recarga
-            if (!lastVersion) {
-                console.log('Primera carga - estableciendo versión 3.0');
-                localStorage.setItem('app_version', currentVersion);
-            }
-        })();
-    </script>
-    
-    <!-- Force Refresh Script DESHABILITADO para evitar bucles -->
-    <!-- <script src="force-refresh.js?v=30"></script> -->
-    
-    <!-- Main Script -->
-    <script src="script.js?v=2.0.1"></script>
-    
-    <!-- FORZAR ALINEACIÓN A LA IZQUIERDA - OVERRIDE ULTRA AGRESIVO -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Función para forzar alineación izquierda de títulos de bloques
-        function forceLeftAlignment() {
-            // Buscar por clase
-            const blockTitles = document.querySelectorAll('.block-title-row');
-            blockTitles.forEach(function(row) {
-                row.style.setProperty('text-align', 'left', 'important');
-                const cells = row.querySelectorAll('td');
-                cells.forEach(function(cell) {
-                    cell.style.setProperty('text-align', 'left', 'important');
-                    cell.style.setProperty('padding-left', '10px', 'important');
-                });
-            });
-            
-            // Buscar por color de fondo azul (BLOQUE ACTIVO)
-            const blueTitles = document.querySelectorAll('tr[style*="background-color: rgb(33, 150, 243)"], tr[style*="background-color: #2196F3"]');
-            blueTitles.forEach(function(row) {
-                row.style.setProperty('text-align', 'left', 'important');
-                const cells = row.querySelectorAll('td');
-                cells.forEach(function(cell) {
-                    cell.style.setProperty('text-align', 'left', 'important');
-                    cell.style.setProperty('padding-left', '10px', 'important');
-                });
-            });
-            
-            // Buscar por color de fondo verde (BLOQUE CERRADO)
-            const greenTitles = document.querySelectorAll('tr[style*="background-color: rgb(76, 175, 80)"], tr[style*="background-color: #4CAF50"]');
-            greenTitles.forEach(function(row) {
-                row.style.setProperty('text-align', 'left', 'important');
-                const cells = row.querySelectorAll('td');
-                cells.forEach(function(cell) {
-                    cell.style.setProperty('text-align', 'left', 'important');
-                    cell.style.setProperty('padding-left', '10px', 'important');
-                });
-            });
-            
-            // Buscar por contenido de texto
-            const allRows = document.querySelectorAll('tr');
-            allRows.forEach(function(row) {
-                const text = row.textContent || row.innerText;
-                if (text.includes('BLOQUE ACTIVO') || text.includes('BLOQUE') && text.includes('CERRADO')) {
-                    row.style.setProperty('text-align', 'left', 'important');
-                    const cells = row.querySelectorAll('td');
-                    cells.forEach(function(cell) {
-                        cell.style.setProperty('text-align', 'left', 'important');
-                        cell.style.setProperty('padding-left', '10px', 'important');
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registrado exitosamente:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Error al registrar Service Worker:', error);
                     });
-                }
             });
         }
-        
-        // Ejecutar inmediatamente
-        forceLeftAlignment();
-        
-        // Ejecutar cada 200ms para asegurar que se aplique
-        setInterval(forceLeftAlignment, 200);
-        
-        // Observer para detectar cambios en el DOM
-        const observer = new MutationObserver(function() {
-            setTimeout(forceLeftAlignment, 50);
-        });
-        observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true });
-    });
-    </script>
-    
-    <!-- PWA Service Worker Registration - DESHABILITADO COMPLETAMENTE -->
-    <!--
-    <script>
-        // Service Worker registration removed for clean appearance
         
         // Detectar si la app puede ser instalada
         let deferredPrompt;
@@ -585,9 +460,6 @@
             }
         }
     </script>
-    -->
-
-    <!-- Service Worker and cache management removed for clean appearance -->
 
     <!-- Modal del Teclado Numérico -->
     <div id="numeric-keypad-modal" class="modal" style="display: none;">

@@ -1,47 +1,35 @@
-// Service Worker para PWA - Versión 3.0 FORCE UPDATE
-const CACHE_NAME = 'conteo-pwa-v3.0';
+const CACHE_NAME = 'conteo-app-v1';
 const urlsToCache = [
-    './',
-    './index.html',
-    './styles.css?v=40',
-    './script.js?v=40',
-    './manifest.json',
-    './icon-192.png',
-    './icon-512.png'
+  '/',
+  '/index.html',
+  '/script.js',
+  '/styles.css',
+  '/manifest.json'
 ];
 
 // Instalar el service worker y cachear archivos
 self.addEventListener('install', event => {
-  // SIN skipWaiting para evitar recargas automáticas
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Cache abierto con nombre:', CACHE_NAME);
+        console.log('Cache abierto');
         return cache.addAll(urlsToCache);
       })
   );
 });
 
-// Interceptar requests y servir desde cache (estrategia Cache First)
+// Interceptar requests y servir desde cache
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Si está en cache, devolverlo
+        // Devolver desde cache si existe, sino hacer fetch
         if (response) {
           return response;
         }
-        // Si no está en cache, obtener de la red
-        return fetch(event.request)
-          .then(response => {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseClone);
-              });
-            return response;
-          });
-      })
+        return fetch(event.request);
+      }
+    )
   );
 });
 
@@ -57,18 +45,8 @@ self.addEventListener('activate', event => {
           }
         })
       );
-    }).then(() => {
-      // Forzar que todos los clientes usen la nueva versión
-      return self.clients.claim();
     })
   );
-});
-
-// Forzar actualización cuando hay nueva versión disponible
-self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
 });
 
 // Manejar notificaciones push (opcional)

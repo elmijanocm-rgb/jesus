@@ -1033,8 +1033,6 @@ function agregarConteoAlHistorial() {
         return;
     }
     
-
-    
     // Calcular total solo de cajas normales (excluyendo palets)
     const cajasNormales = userCreatedBoxes.filter(box => !box.nombre.toLowerCase().includes('palet'));
     const totalCajasNormales = cajasNormales.reduce((total, box) => total + (box.cantidad || 0), 0);
@@ -1142,7 +1140,7 @@ function displayHistorialConteos() {
         tituloRow.style.backgroundColor = '#2196F3';
         tituloRow.style.color = 'white';
         tituloRow.style.fontWeight = 'bold';
-        tituloRow.style.textAlign = 'left';
+        tituloRow.style.textAlign = 'center';
         
         const tituloCell = document.createElement('td');
         tituloCell.colSpan = ordenColumnasData.length + 2;
@@ -1272,7 +1270,7 @@ function displayHistorialConteos() {
         tituloRow.style.backgroundColor = '#4CAF50';
         tituloRow.style.color = 'white';
         tituloRow.style.fontWeight = 'bold';
-        tituloRow.style.textAlign = 'left';
+        tituloRow.style.textAlign = 'center';
         
         const tituloCell = document.createElement('td');
         tituloCell.colSpan = ordenColumnasData.length + 2;

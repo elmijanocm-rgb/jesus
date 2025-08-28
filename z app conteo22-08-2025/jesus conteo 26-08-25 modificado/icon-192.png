@@ -1,0 +1,29 @@
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#007bff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0056b3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo circular -->
+  <circle cx="96" cy="96" r="88" fill="url(#grad1)" stroke="#ffffff" stroke-width="4"/>
+  
+  <!-- Icono de cajas apiladas -->
+  <g transform="translate(96,96)">
+    <!-- Caja inferior -->
+    <rect x="-35" y="10" width="70" height="40" fill="#ffffff" stroke="#007bff" stroke-width="2" rx="4"/>
+    <rect x="-30" y="15" width="60" height="30" fill="#f8f9fa" stroke="#007bff" stroke-width="1" rx="2"/>
+    
+    <!-- Caja media -->
+    <rect x="-30" y="-15" width="60" height="35" fill="#ffffff" stroke="#007bff" stroke-width="2" rx="4"/>
+    <rect x="-25" y="-10" width="50" height="25" fill="#f8f9fa" stroke="#007bff" stroke-width="1" rx="2"/>
+    
+    <!-- Caja superior -->
+    <rect x="-25" y="-40" width="50" height="30" fill="#ffffff" stroke="#007bff" stroke-width="2" rx="4"/>
+    <rect x="-20" y="-35" width="40" height="20" fill="#f8f9fa" stroke="#007bff" stroke-width="1" rx="2"/>
+    
+    <!-- Números de conteo -->
+    <text x="0" y="30" text-anchor="middle" fill="#007bff" font-family="Arial, sans-serif" font-size="14" font-weight="bold">123</text>
+  </g>
+</svg>

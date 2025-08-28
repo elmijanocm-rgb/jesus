@@ -1,0 +1,263 @@
+/* ULTRA EMERGENCY MOBILE CSS - MAXIMUM OVERRIDE POWER */
+
+/* FORZAR ALINEACIÓN IZQUIERDA DE TÍTULOS DE BLOQUES */
+.block-title-row {
+    text-align: left !important;
+}
+
+.block-title-row td {
+    text-align: left !important;
+    padding-left: 10px !important;
+}
+
+/* Sobrescribir cualquier estilo de títulos de bloques */
+tr[style*="background-color: #2196F3"] {
+    text-align: left !important;
+}
+
+tr[style*="background-color: #2196F3"] td {
+    text-align: left !important;
+    padding-left: 10px !important;
+}
+
+tr[style*="background-color: #4CAF50"] {
+    text-align: left !important;
+}
+
+tr[style*="background-color: #4CAF50"] td {
+    text-align: left !important;
+    padding-left: 10px !important;
+}
+
+/* Forzar alineación para cualquier fila que contenga "BLOQUE" */
+tr:has(td:contains("BLOQUE")) {
+    text-align: left !important;
+}
+
+tr:has(td:contains("BLOQUE")) td {
+    text-align: left !important;
+    padding-left: 10px !important;
+}
+/* This CSS uses maximum specificity and !important to force mobile styles */
+
+/* ULTRA GLOBAL EMERGENCY OVERRIDES */
+html, html *, html *:before, html *:after {
+    box-sizing: border-box !important;
+}
+
+html, html body {
+    font-size: 18px !important;
+}
+
+html body, body.container, body {
+    background: #f8f9fa !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 20px !important;
+    line-height: 1.6 !important;
+    color: #333 !important;
+    min-height: 100vh !important;
+}
+
+/* Emergency banner removed for clean appearance */
+
+/* EMERGENCY CONTAINER */
+.container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: rgba(255,255,255,0.1) !important;
+    border: 5px solid #ff0000 !important;
+    border-radius: 15px !important;
+}
+
+.content {
+    background: rgba(0,0,0,0.7) !important;
+    padding: 30px !important;
+    margin: 10px !important;
+    border-radius: 20px !important;
+    border: 3px solid #00ff00 !important;
+}
+
+/* Clean button styles for mobile */
+.btn, button, input[type="button"], input[type="submit"] {
+    background: #28a745 !important;
+    color: white !important;
+    border: 1px solid #28a745 !important;
+    padding: 12px 20px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    margin: 5px !important;
+    display: inline-block !important;
+    text-decoration: none !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.btn:hover, button:hover {
+    transform: scale(1.3) !important;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.4) !important;
+}
+
+/* EMERGENCY FORMS */
+input, select, textarea {
+    min-height: 60px !important;
+    padding: 20px !important;
+    font-size: 20px !important;
+    border: 4px solid #ff6b6b !important;
+    border-radius: 10px !important;
+    background: rgba(255,255,255,0.9) !important;
+    color: #000 !important;
+    margin: 10px 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* EMERGENCY TABLES */
+table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 18px !important;
+    background: rgba(255,255,255,0.1) !important;
+    border: 3px solid #00ff00 !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+}
+
+th, td {
+    padding: 20px !important;
+    border: 2px solid #ffffff !important;
+    text-align: center !important;
+    font-size: 18px !important;
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8) !important;
+}
+
+th {
+    background: rgba(255,107,107,0.8) !important;
+    font-weight: bold !important;
+    font-size: 20px !important;
+}
+
+/* EMERGENCY KEYPAD */
+.keypad-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0,0,0,0.9) !important;
+    z-index: 10000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.keypad {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    padding: 40px !important;
+    border-radius: 25px !important;
+    border: 5px solid #ffffff !important;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
+    transform: scale(1.5) !important;
+}
+
+.keypad button {
+    width: 100px !important;
+    height: 100px !important;
+    font-size: 36px !important;
+    font-weight: bold !important;
+    margin: 8px !important;
+    border-radius: 20px !important;
+    border: 4px solid #ffffff !important;
+    background: linear-gradient(135deg, #ff9a9e, #fecfef) !important;
+    color: #333 !important;
+    text-shadow: none !important;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3) !important;
+    transform: none !important;
+}
+
+.keypad button:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.4) !important;
+}
+
+/* EMERGENCY TEXT */
+h1, h2, h3, h4, h5, h6 {
+    color: #ffff00 !important;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.8) !important;
+    font-size: 32px !important;
+    font-weight: bold !important;
+    margin: 20px 0 !important;
+    text-align: center !important;
+}
+
+p, span, div {
+    font-size: 20px !important;
+    color: white !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+    line-height: 1.6 !important;
+}
+
+/* Debug info styles removed for clean appearance */
+
+/* EMERGENCY RESPONSIVE OVERRIDES */
+@media screen and (max-width: 768px) {
+    body {
+        background: linear-gradient(45deg, #ff0000, #ffff00, #00ff00) !important;
+        font-size: 22px !important;
+    }
+    
+    .btn, button {
+        min-height: 100px !important;
+        font-size: 28px !important;
+        transform: scale(1.4) !important;
+    }
+    
+    input, select, textarea {
+        min-height: 80px !important;
+        font-size: 24px !important;
+    }
+    
+    h1, h2, h3 {
+        font-size: 36px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        background: linear-gradient(45deg, #ff0000, #ffffff, #0000ff) !important;
+        font-size: 24px !important;
+    }
+    
+    .btn, button {
+        min-height: 120px !important;
+        font-size: 32px !important;
+        transform: scale(1.6) !important;
+    }
+    
+    .keypad {
+        transform: scale(1.8) !important;
+    }
+    
+    .keypad button {
+        width: 120px !important;
+        height: 120px !important;
+        font-size: 42px !important;
+    }
+}
+
+/* FORCE VISIBILITY */
+.hidden {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* ULTRA EMERGENCY ANIMATIONS */
+/* Emergency animations removed for clean appearance */
+
+/* ULTRA EMERGENCY NOTICE - REMOVED OLD VERSION */
