@@ -1,13 +1,15 @@
 /* ULTRA EMERGENCY MOBILE CSS - MAXIMUM OVERRIDE POWER */
 
-/* FORZAR ALINEACIÓN IZQUIERDA DE TÍTULOS DE BLOQUES */
+/* FORZAR ALINEACIÓN IZQUIERDA DE TÍTULOS DE BLOQUES - VERSIÓN 2.0.2 */
 .block-title-row {
     text-align: left !important;
+    justify-content: flex-start !important;
 }
 
 .block-title-row td {
     text-align: left !important;
-    padding-left: 10px !important;
+    padding-left: 15px !important;
+    justify-content: flex-start !important;
 }
 
 /* Sobrescribir cualquier estilo de títulos de bloques */
