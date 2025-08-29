@@ -289,9 +289,9 @@ tr[style*="background-color: green"] td {
     
     .editable-cell {
         min-height: 44px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+        display: table-cell !important;
+        vertical-align: middle !important;
+        text-align: center !important;
         touch-action: manipulation !important;
     }
     
