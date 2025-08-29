@@ -1185,11 +1185,13 @@ function displayHistorialConteos() {
             
             cellsHTML += `<td><strong>${totalCajasNormales}</strong></td>`;
             
+            // Calcular índice del conteo una sola vez
+            const conteoIndex = historialConteos.length - filasEnBloqueActual + index;
+            
             // Agregar celdas en el orden específico
             ordenColumnasData.forEach(nombreCaja => {
                 const cantidad = (conteo.cajas && conteo.cajas[nombreCaja]) || 0;
                 // Hacer las celdas editables en el bloque activo
-                const conteoIndex = historialConteos.length - filasEnBloqueActual + index;
                 cellsHTML += `<td class="editable-cell" data-conteo-index="${conteoIndex}" data-caja-nombre="${nombreCaja}" onclick="editarCantidad(this)">${cantidad}</td>`;
                 
                 // Acumular en subtotales del bloque activo y totales generales
@@ -1206,8 +1208,7 @@ function displayHistorialConteos() {
             totalGeneral += totalCajasNormales;
             
             // Agregar botón de eliminación para filas del bloque activo
-            const conteoIndex = historialConteos.length - filasEnBloqueActual + index;
-            cellsHTML += `<td><button class="delete-btn" onclick="eliminarConteo(${conteoIndex})" title="Eliminar este conteo">🗑️</button></td>`;
+            cellsHTML += `<td><button class="delete-btn" onclick="window.eliminarConteoSimple(${conteoIndex})" title="Eliminar este conteo">❌</button></td>`;
             
             row.innerHTML = cellsHTML;
             
@@ -1458,33 +1459,18 @@ function updateSummaryBoxes(totalGeneral, totalesPalets) {
     }
 }
 
-// Función para eliminar un conteo específico
-function eliminarConteo(conteoIndex) {
-    // Confirmación antes de eliminar
-    if (!confirm('¿Estás seguro de que quieres eliminar este conteo? Esta acción no se puede deshacer.')) {
-        return;
-    }
+// Función simple para eliminar conteos
+window.eliminarConteoSimple = function(indice) {
+    if (!confirm('¿Eliminar este conteo?')) return;
     
-    // Obtener el historial actual
     let historial = JSON.parse(localStorage.getItem('historialConteos')) || [];
-    
-    // Verificar que el índice sea válido
-    if (conteoIndex < 0 || conteoIndex >= historial.length) {
-        alert('Error: Conteo no encontrado.');
-        return;
+    if (indice >= 0 && indice < historial.length) {
+        historial.splice(indice, 1);
+        localStorage.setItem('historialConteos', JSON.stringify(historial));
+        historialConteos = historial;
+        displayHistorialConteos();
+        alert('Conteo eliminado');
     }
-    
-    // Eliminar el conteo del array
-    historial.splice(conteoIndex, 1);
-    
-    // Guardar el historial actualizado
-    localStorage.setItem('historialConteos', JSON.stringify(historial));
-    
-    // Actualizar la visualización
-    displayHistorialConteos();
-    
-    // Mostrar mensaje de confirmación
-    alert('Conteo eliminado exitosamente.');
 }
 
 // Función para editar cantidades en el bloque activo

@@ -46,6 +46,30 @@ tr[style*="background-color: green"] td {
     font-weight: 600 !important;
 }
 
+/* Estilos para botones de eliminación en móvil */
+.delete-btn {
+    background-color: #f44336 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 6px 10px !important;
+    cursor: pointer !important;
+    font-size: 16px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    transition: background-color 0.3s !important;
+    z-index: 999 !important;
+    position: relative !important;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f !important;
+}
+
+.delete-btn:active {
+    background-color: #b71c1c !important;
+}
+
 /* Estilos para celdas editables en móviles */
 .editable-cell {
     cursor: pointer !important;

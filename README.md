@@ -5,7 +5,7 @@
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen)](https://elmijanocm-rgb.github.io/cuenta-de-cajas/)
 [![PWA](https://img.shields.io/badge/PWA-Ready-blue)](https://web.dev/progressive-web-apps/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-3.1.8-success)](https://github.com/elmijanocm-rgb/cuenta-de-cajas)
+[![Version](https://img.shields.io/badge/Version-3.2.0-success)](https://github.com/elmijanocm-rgb/cuenta-de-cajas)
 
 ## 🚀 Demo en Vivo
 
@@ -43,13 +43,18 @@
 - **Colores distintivos**: Verde (#2e7d32) por defecto, azul (#1565c0) al enfocar
 - **Touch-friendly**: Optimizado para dispositivos táctiles con tamaños mínimos de 44-50px
 
-### 📄 **Exportación PDF Mejorada (NUEVO v3.1.8)**
-- **Colores Corregidos**: Columna "Total" ahora muestra los colores correctos en PDF
-- **Filas Normales**: Columna Total en verde suave para mejor legibilidad
-- **Filas Subtotal**: Toda la fila en amarillo, incluyendo columna Total
-- **Filas Total General**: Toda la fila en rojo suave, incluyendo columna Total
-- **Lógica Simplificada**: Detección mejorada de tipos de fila para aplicación consistente de colores
-- **Presentación Profesional**: PDF con colores que coinciden exactamente con la interfaz web
+### 🗑️ **Eliminación de Conteos (NUEVO v3.2.0)**
+- **Botones de Eliminación**: Cada conteo individual puede ser eliminado con botón ❌
+- **Confirmación de Seguridad**: Diálogo de confirmación antes de eliminar
+- **Actualización Automática**: La tabla se refresca inmediatamente después de eliminar
+- **Funcionalidad Móvil**: Optimizado para dispositivos táctiles
+- **Solución Robusta**: Sistema simple y confiable sin conflictos de eventos
+
+### 📱 **Optimización Móvil Completa (v3.2.0)**
+- **CSS Móvil Avanzado**: Estilos específicos para dispositivos táctiles
+- **PWA Mejorada**: Configuración optimizada para instalación móvil
+- **Interfaz Táctil**: Botones y controles adaptados para touch
+- **Rendimiento Optimizado**: Carga rápida y funcionamiento fluido en móviles
 
 ### 🎯 **Sistema de Bloques Inteligente**
 - **Bloque Activo**: Las nuevas cantidades aparecen en la parte superior
@@ -142,9 +147,10 @@ http-server -p 8080
 
 ### 🔢 **Sistema de Conteo Avanzado**
 - Conteo rápido con botones intuitivos
-- Historial completo de conteos
+- Historial completo de conteos con eliminación individual
 - Exportación a PDF
 - Búsqueda y filtrado
+- Gestión completa del historial de conteos
 
 ### 📊 **Reportes y Análisis**
 - Totales generales y por categoría
