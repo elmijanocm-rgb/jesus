@@ -1,6 +1,8 @@
 # GitHub Pages Configuration - SIMPLIFICADO
-title: "Cuenta de Cajas - PWA de Conteo"
-description: "Aplicación PWA para conteo de cajas de frutas con edición de cantidades, contraste mejorado y visibilidad optimizada del texto"
+title: "App Conteo de Cajas"
+description: "Aplicación PWA para conteo de cajas con teclado numérico profesional, gestión de bloques, visibilidad optimizada del texto y edición mejorada de cantidades"
+url: "https://elmijanocm-rgb.github.io"
+baseurl: "/cuenta-de-cajas"
 
 # Build settings - MÍNIMO
 markdown: kramdown

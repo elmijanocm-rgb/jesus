@@ -234,6 +234,32 @@ tr[style*="background-color: green"] td {
         margin-bottom: 5px !important;
         font-weight: 600 !important;
     }
+    
+    /* Estilos mejorados para edición en móvil */
+    .edit-input {
+        width: 90px !important;
+        min-width: 90px !important;
+        font-size: 18px !important;
+        padding: 12px 8px !important;
+        border-radius: 10px !important;
+        transform: scale(1.1) !important;
+        touch-action: manipulation !important;
+    }
+    
+    .editable-cell {
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        touch-action: manipulation !important;
+    }
+    
+    .editable-cell:hover::after {
+        content: '✏️' !important;
+        top: -20px !important;
+        font-size: 12px !important;
+        padding: 6px 10px !important;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -277,12 +303,33 @@ tr[style*="background-color: green"] td {
     }
     
     #keypad-input {
-        font-size: 1.8rem !important;
-        padding: 14px 16px !important;
-        min-height: 60px !important;
+        font-size: 16px !important;
+        padding: 12px !important;
+        min-height: 48px !important;
         color: #1e293b !important;
         font-weight: 700 !important;
     }
+    
+    /* Estilos mejorados para edición en pantallas muy pequeñas */
+    .edit-input {
+        width: 85px !important;
+        min-width: 85px !important;
+        font-size: 20px !important;
+        padding: 14px 10px !important;
+        border-radius: 12px !important;
+        transform: scale(1.15) !important;
+        border-width: 4px !important;
+    }
+    
+    .editable-cell {
+        min-height: 50px !important;
+        font-size: 16px !important;
+    }
+    
+    .editable-cell:hover::after {
+        display: none !important;
+    }
+}
     
     .keypad-btn {
         padding: 16px 10px !important;

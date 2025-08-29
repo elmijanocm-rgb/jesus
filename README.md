@@ -5,7 +5,7 @@
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen)](https://elmijanocm-rgb.github.io/cuenta-de-cajas/)
 [![PWA](https://img.shields.io/badge/PWA-Ready-blue)](https://web.dev/progressive-web-apps/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-3.1.6-success)](https://github.com/elmijanocm-rgb/cuenta-de-cajas)
+[![Version](https://img.shields.io/badge/Version-3.1.8-success)](https://github.com/elmijanocm-rgb/cuenta-de-cajas)
 
 ## 🚀 Demo en Vivo
 
@@ -29,11 +29,27 @@
 - **Diseño Optimizado**: Colores que facilitan la identificación rápida de botones
 - **Experiencia Mejorada**: Interfaz más clara y profesional
 
-### 👁️ **Visibilidad del Texto (NUEVO v3.1.6)**
+### 👁️ **Visibilidad del Texto (v3.1.6)**
 - **Campo de entrada del teclado**: Texto ahora visible en gris oscuro (#1e293b)
 - **Peso de fuente reforzado**: Mayor legibilidad con font-weight 700
 - **Compatibilidad móvil**: Corrección aplicada en todas las resoluciones
 - **Experiencia mejorada**: Eliminada la confusión visual del texto blanco sobre fondo blanco
+
+### ✏️ **Edición Mejorada de Cantidades (v3.1.7)**
+- **Input visual mejorado**: Diseño con gradientes, sombras y bordes redondeados
+- **Tamaño optimizado**: Input más grande (80px desktop, 90px móvil) para mejor usabilidad
+- **Efectos interactivos**: Escalado dinámico (1.05x-1.15x) y transiciones suaves
+- **Indicadores visuales**: Tooltip "✏️ EDITAR" al hacer hover sobre celdas editables
+- **Colores distintivos**: Verde (#2e7d32) por defecto, azul (#1565c0) al enfocar
+- **Touch-friendly**: Optimizado para dispositivos táctiles con tamaños mínimos de 44-50px
+
+### 📄 **Exportación PDF Mejorada (NUEVO v3.1.8)**
+- **Colores Corregidos**: Columna "Total" ahora muestra los colores correctos en PDF
+- **Filas Normales**: Columna Total en verde suave para mejor legibilidad
+- **Filas Subtotal**: Toda la fila en amarillo, incluyendo columna Total
+- **Filas Total General**: Toda la fila en rojo suave, incluyendo columna Total
+- **Lógica Simplificada**: Detección mejorada de tipos de fila para aplicación consistente de colores
+- **Presentación Profesional**: PDF con colores que coinciden exactamente con la interfaz web
 
 ### 🎯 **Sistema de Bloques Inteligente**
 - **Bloque Activo**: Las nuevas cantidades aparecen en la parte superior

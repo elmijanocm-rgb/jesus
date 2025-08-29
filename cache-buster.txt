@@ -1,10 +1,10 @@
 # Cache Buster File
 # This file is used to force GitHub Pages to reload cached content
-# Last updated: 2025-01-28 21:15:42
-# Version: 3.1.6
-# Features: Professional keypad, inline menu, mobile optimization, editable quantities, improved contrast, text visibility
+# Last updated: 2025-01-29 17:45:12
+# Version: v1.0.1-20250129-1913
+# Features: Inventory management, PWA support, mobile optimization, emergency styles, text visibility, enhanced editing
 
-CACHE_VERSION=20250128211542
-FEATURES=professional_keypad,inline_menu,mobile_optimized,editable_quantities,improved_contrast,text_visibility
-LAST_MODIFIED=1756487742
-NEW_FEATURE=Texto del campo de entrada del teclado numérico ahora visible en gris oscuro
+CACHE_VERSION=3.1.7
+FEATURES=inventory_management,pwa_support,mobile_optimization,emergency_styles,text_visibility,enhanced_editing
+LAST_MODIFIED=2025-01-29T17:45:12Z
+NEW_FEATURE=Visibilidad y usabilidad mejorada del input de edición de cantidades - diseño visual mejorado con gradientes, sombras, escalado dinámico y mejor contraste para facilitar la edición en el bloque activo

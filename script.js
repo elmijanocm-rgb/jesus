@@ -1891,28 +1891,76 @@ function exportarHistorialPDF() {
         },
         didParseCell: function(data) {
             const cellText = data.cell.text[0];
+            const columnIndex = data.column.index;
+            const isColumnTotal = columnIndex === 1; // Columna "Total" es la segunda (índice 1)
             
-            // Resaltar filas de subtotal
-            if (cellText === 'SUBTOTAL') {
-                data.cell.styles.fillColor = [255, 235, 59];
-                data.cell.styles.textColor = 0;
-                data.cell.styles.fontStyle = 'bold';
+            // Detectar tipo de fila basándose en el contenido de la primera celda
+            const isSubtotalRow = cellText && cellText.toString().includes('SUBTOTAL');
+            const isTotalGeneralRow = cellText && cellText.toString().includes('TOTAL GENERAL');
+            
+            // Detectar si alguna celda de la fila contiene SUBTOTAL o TOTAL GENERAL
+            let rowHasSubtotal = false;
+            let rowHasTotalGeneral = false;
+            
+            if (data.row && data.row.raw) {
+                const rowData = data.row.raw;
+                for (let i = 0; i < rowData.length; i++) {
+                    const cellContent = rowData[i];
+                    if (cellContent && cellContent.toString().includes('SUBTOTAL')) {
+                        rowHasSubtotal = true;
+                        break;
+                    }
+                    if (cellContent && cellContent.toString().includes('TOTAL GENERAL')) {
+                        rowHasTotalGeneral = true;
+                        break;
+                    }
+                }
             }
             
-            // Resaltar fila de total general
-            if (cellText === 'TOTAL GENERAL') {
-                data.cell.styles.fillColor = [52, 152, 219];
-                data.cell.styles.textColor = 255;
+            // Aplicar estilos según el tipo de fila
+            if (isSubtotalRow || rowHasSubtotal) {
+                // Fila de subtotal - toda la fila amarilla
+                data.cell.styles.fillColor = [255, 235, 59]; // Amarillo
+                data.cell.styles.textColor = 0; // Texto negro
                 data.cell.styles.fontStyle = 'bold';
+                data.cell.styles.fontSize = 10;
+                
+                if (isColumnTotal) {
+                    data.cell.styles.fontSize = 12;
+                }
+            }
+            else if (isTotalGeneralRow || rowHasTotalGeneral) {
+                // Fila de total general - toda la fila roja suave
+                data.cell.styles.fillColor = [255, 205, 210]; // Rojo muy suave
+                data.cell.styles.textColor = 0; // Texto negro
+                data.cell.styles.fontStyle = 'bold';
+                data.cell.styles.fontSize = 11;
+                
+                if (isColumnTotal) {
+                    data.cell.styles.fontSize = 14;
+                }
+            }
+            else if (isColumnTotal && cellText !== 'Total') {
+                // Filas normales - solo la columna Total en verde
+                data.cell.styles.fillColor = [165, 214, 167]; // Verde suave
+                data.cell.styles.textColor = 0; // Texto negro
+                data.cell.styles.fontStyle = 'bold';
+                data.cell.styles.fontSize = 9;
             }
             
             // Resaltar columnas de palets en encabezados
             if (data.section === 'head') {
-                const columnIndex = data.column.index;
                 const headerText = headers[columnIndex];
                 if (cajasPaletArray.includes(headerText)) {
                     data.cell.styles.fillColor = [240, 248, 255];
                     data.cell.styles.textColor = 0;
+                }
+                
+                // Resaltar encabezado de columna Total
+                if (headerText === 'Total') {
+                    data.cell.styles.fillColor = [46, 125, 50]; // Verde oscuro
+                    data.cell.styles.textColor = 255;
+                    data.cell.styles.fontStyle = 'bold';
                 }
             }
         }
@@ -1992,6 +2040,26 @@ function exportarRegistrosPDF() {
         },
         alternateRowStyles: {
             fillColor: [245, 245, 245]
+        },
+        didParseCell: function(data) {
+            const columnIndex = data.column.index;
+            const headerText = headers[columnIndex];
+            const isColumnTotalGeneral = headerText === 'Total General';
+            
+            // Resaltar todas las cantidades en la columna Total General
+            if (isColumnTotalGeneral && data.section === 'body') {
+                data.cell.styles.fillColor = [0, 150, 136]; // Verde azulado (Teal)
+                data.cell.styles.textColor = 255; // Texto blanco
+                data.cell.styles.fontStyle = 'bold';
+                data.cell.styles.fontSize = 10;
+            }
+            
+            // Resaltar encabezado de columna Total General
+            if (data.section === 'head' && headerText === 'Total General') {
+                data.cell.styles.fillColor = [0, 77, 64]; // Verde azulado oscuro
+                data.cell.styles.textColor = 255;
+                data.cell.styles.fontStyle = 'bold';
+            }
         }
     });
     

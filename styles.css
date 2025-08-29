@@ -1366,42 +1366,76 @@ img {
 /* Estilos para celdas editables en el bloque activo */
 .editable-cell {
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border: 1px solid #dee2e6;
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+    font-weight: 600;
+    color: #495057;
 }
 
 .editable-cell:hover {
-    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-    border-color: #2196F3;
-    transform: scale(1.02);
-    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-color: #4CAF50;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+    color: #2e7d32;
+    font-weight: 700;
 }
 
 .editable-cell:hover::after {
-    content: '✏️';
+    content: '✏️ EDITAR';
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(76, 175, 80, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
     font-size: 10px;
-    opacity: 0.7;
+    font-weight: 600;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.editable-cell:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
 }
 
 .edit-input {
-    width: 60px !important;
+    width: 80px !important;
+    min-width: 80px !important;
     text-align: center !important;
-    border: 2px solid #4CAF50 !important;
-    border-radius: 4px !important;
-    font-size: 14px !important;
-    padding: 4px !important;
-    background: white !important;
+    border: 3px solid #4CAF50 !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    padding: 8px 6px !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%) !important;
     outline: none !important;
+    color: #2e7d32 !important;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3), inset 0 2px 4px rgba(255,255,255,0.8) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transform: scale(1.05) !important;
+    z-index: 100 !important;
+    position: relative !important;
 }
 
 .edit-input:focus {
     border-color: #2196F3 !important;
-    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2) !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%) !important;
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4), 0 0 0 3px rgba(33, 150, 243, 0.2), inset 0 2px 4px rgba(255,255,255,0.9) !important;
+    transform: scale(1.1) !important;
+    color: #1565c0 !important;
+}
+
+.edit-input::selection {
+    background-color: #4CAF50 !important;
+    color: white !important;
 }
 
 /* Páginas */

@@ -1,7 +1,8 @@
 {
-  "name": "Cuenta de Cajas - PWA de Conteo",
-  "short_name": "Cuenta de Cajas",
-  "description": "Aplicación PWA para conteo de cajas de frutas con edición de cantidades, contraste mejorado y visibilidad optimizada del texto",
+  "name": "App Conteo de Cajas",
+  "short_name": "Conteo Cajas",
+  "description": "Aplicación PWA para conteo de cajas con teclado numérico profesional, gestión de bloques, visibilidad optimizada del texto y edición mejorada de cantidades",
+  "version": "3.1.8",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#e8f5e8",
