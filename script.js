@@ -1011,6 +1011,8 @@ function loadHistorialConteos() {
     if (saved) {
         historialConteos = JSON.parse(saved);
     }
+    // Asegurar que los encabezados se inicialicen correctamente
+    updateHistorialHeaders();
     displayHistorialConteos();
 }
 
