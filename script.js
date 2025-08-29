@@ -1510,15 +1510,69 @@ function editarCantidad(celda) {
         celda.innerHTML = contenidoOriginal;
     }
     
-    // Event listeners
-    input.addEventListener('blur', guardarCambio);
+    // Event listeners - Mejorado para móviles
+    let cambioGuardado = false;
+    
+    // Función para guardar una sola vez
+    function guardarUnaVez() {
+        if (!cambioGuardado) {
+            cambioGuardado = true;
+            guardarCambio();
+        }
+    }
+    
+    // Eventos para desktop
+    input.addEventListener('blur', guardarUnaVez);
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
-            guardarCambio();
+            e.preventDefault();
+            guardarUnaVez();
         } else if (e.key === 'Escape') {
             cancelarEdicion();
         }
     });
+    
+    // Eventos táctiles para móviles
+    input.addEventListener('touchend', function(e) {
+        // Permitir que el input mantenga el foco
+        e.stopPropagation();
+    });
+    
+    // Agregar botón de confirmación para móviles
+    if ('ontouchstart' in window) {
+        const confirmBtn = document.createElement('button');
+        confirmBtn.textContent = '✓';
+        confirmBtn.style.cssText = `
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 1000;
+        `;
+        
+        celda.style.position = 'relative';
+        celda.appendChild(confirmBtn);
+        
+        confirmBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            guardarUnaVez();
+        });
+        
+        confirmBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            guardarUnaVez();
+        });
+    }
 }
 
 // Función para actualizar los encabezados de la tabla del historial
