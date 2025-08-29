@@ -1,6 +1,6 @@
 # GitHub Pages Configuration - SIMPLIFICADO
-title: "Aplicación PWA de Conteo de Cajas"
-description: "Aplicación web progresiva moderna para el conteo eficiente de cajas y palets"
+title: "Cuenta de Cajas - PWA de Conteo"
+description: "Aplicación web progresiva moderna para el conteo eficiente de cajas y palets con edición de cantidades y contraste mejorado para mejor accesibilidad"
 
 # Build settings - MÍNIMO
 markdown: kramdown

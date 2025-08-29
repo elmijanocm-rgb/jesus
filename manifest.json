@@ -1,7 +1,7 @@
 {
-  "name": "Aplicación PWA de Conteo de Cajas",
-  "short_name": "Conteo PWA",
-  "description": "Aplicación web progresiva moderna para el conteo eficiente de cajas y palets con sistema de bloques automático y totales en tiempo real",
+  "name": "Cuenta de Cajas - PWA de Conteo",
+  "short_name": "Cuenta de Cajas",
+  "description": "Aplicación web progresiva para el conteo eficiente de cajas con sistema de bloques inteligente, totales en tiempo real, edición de cantidades y contraste mejorado para mejor accesibilidad",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#e8f5e8",

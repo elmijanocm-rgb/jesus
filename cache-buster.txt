@@ -1,20 +1,10 @@
-CACHE BUSTER FILE - VERSION 3.0.0
-Timestamp: 1756412700
-Force GitHub Pages Cache Refresh
+# Cache Buster File
+# This file is used to force GitHub Pages to reload cached content
+# Last updated: 2025-01-28 20:30:00
+# Version: 3.1.5
+# Features: Professional keypad, inline menu, mobile optimization, editable quantities, improved contrast
 
-This file forces GitHub Pages to recognize changes.
-Update this timestamp when deploying new versions.
-
-Last Update: January 28, 2025 - 10:25 AM
-Version: 3.0.0
-Changes: Updated CSS and JS versions with aggressive cache busting
-
-Files updated:
-- index.html (v3.0.0)
-- emergency-mobile.css (v3.0.0)
-- script.js (v3.0.0)
-
-Cache parameters added:
-- Version: v=3.0.0
-- Timestamp: t=1756412700
-- Force parameter: force=true
+CACHE_VERSION=20250128203000
+FEATURES=professional_keypad,inline_menu,mobile_optimized,editable_quantities,improved_contrast
+LAST_MODIFIED=1756484200
+NEW_FEATURE=improved_keypad_button_contrast

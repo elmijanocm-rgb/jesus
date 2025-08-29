@@ -1186,7 +1186,9 @@ function displayHistorialConteos() {
             // Agregar celdas en el orden específico
             ordenColumnasData.forEach(nombreCaja => {
                 const cantidad = (conteo.cajas && conteo.cajas[nombreCaja]) || 0;
-                cellsHTML += `<td>${cantidad}</td>`;
+                // Hacer las celdas editables en el bloque activo
+                const conteoIndex = historialConteos.length - filasEnBloqueActual + index;
+                cellsHTML += `<td class="editable-cell" data-conteo-index="${conteoIndex}" data-caja-nombre="${nombreCaja}" onclick="editarCantidad(this)">${cantidad}</td>`;
                 
                 // Acumular en subtotales del bloque activo y totales generales
                 if (nombreCaja.toLowerCase().includes('palet')) {
@@ -1436,6 +1438,87 @@ function updateSummaryBoxes(totalGeneral, totalesPalets) {
     if (totalPaletsDisplay) {
         totalPaletsDisplay.textContent = totalPaletsValue;
     }
+}
+
+// Función para editar cantidades en el bloque activo
+function editarCantidad(celda) {
+    const conteoIndex = parseInt(celda.dataset.conteoIndex);
+    const cajaNombre = celda.dataset.cajaNombre;
+    const cantidadActual = parseInt(celda.textContent) || 0;
+    
+    // Crear input temporal para edición
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = '0';
+    input.value = cantidadActual;
+    input.className = 'edit-input';
+    input.style.width = '60px';
+    input.style.textAlign = 'center';
+    input.style.border = '2px solid #4CAF50';
+    input.style.borderRadius = '4px';
+    input.style.fontSize = '14px';
+    
+    // Reemplazar contenido de la celda
+    const contenidoOriginal = celda.innerHTML;
+    celda.innerHTML = '';
+    celda.appendChild(input);
+    input.focus();
+    input.select();
+    
+    // Función para guardar cambios
+    function guardarCambio() {
+        const nuevaCantidad = parseInt(input.value) || 0;
+        
+        // Actualizar el historial
+        if (!historialConteos[conteoIndex].cajas) {
+            historialConteos[conteoIndex].cajas = {};
+        }
+        
+        if (nuevaCantidad > 0) {
+            historialConteos[conteoIndex].cajas[cajaNombre] = nuevaCantidad;
+        } else {
+            delete historialConteos[conteoIndex].cajas[cajaNombre];
+        }
+        
+        // Guardar en localStorage
+        saveHistorialConteos();
+        
+        // Actualizar la pantalla
+        displayHistorialConteos();
+        
+        // Mostrar mensaje de confirmación
+        const mensaje = document.createElement('div');
+        mensaje.textContent = '✓ Cantidad actualizada';
+        mensaje.style.position = 'fixed';
+        mensaje.style.top = '20px';
+        mensaje.style.right = '20px';
+        mensaje.style.backgroundColor = '#4CAF50';
+        mensaje.style.color = 'white';
+        mensaje.style.padding = '10px 15px';
+        mensaje.style.borderRadius = '5px';
+        mensaje.style.zIndex = '9999';
+        mensaje.style.fontSize = '14px';
+        document.body.appendChild(mensaje);
+        
+        setTimeout(() => {
+            document.body.removeChild(mensaje);
+        }, 2000);
+    }
+    
+    // Función para cancelar edición
+    function cancelarEdicion() {
+        celda.innerHTML = contenidoOriginal;
+    }
+    
+    // Event listeners
+    input.addEventListener('blur', guardarCambio);
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            guardarCambio();
+        } else if (e.key === 'Escape') {
+            cancelarEdicion();
+        }
+    });
 }
 
 // Función para actualizar los encabezados de la tabla del historial
