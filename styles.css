@@ -1360,130 +1360,184 @@ img {
     display: block;
 }
 
-/* Estilos para el Teclado Numérico Modal */
+/* Estilos para el Teclado Numérico Modal - DISEÑO PROFESIONAL */
 .numeric-keypad {
-    max-width: 350px;
-    width: 90%;
+    max-width: 380px;
+    width: 92%;
     padding: 0;
-    border-radius: 15px;
+    border-radius: 20px;
     overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 25px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .keypad-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
     color: white;
-    padding: 20px;
+    padding: 25px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.keypad-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .keypad-header h3 {
     margin: 0;
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    letter-spacing: 0.5px;
 }
 
 .close-btn {
-    background: none;
-    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     cursor: pointer;
-    padding: 5px;
+    padding: 8px;
     border-radius: 50%;
-    width: 35px;
-    height: 35px;
+    width: 38px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.2s ease;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 
 .close-btn:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .keypad-display {
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
+    padding: 25px 20px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 #keypad-input {
     width: 100%;
-    padding: 15px;
-    font-size: 2rem;
+    padding: 18px 20px;
+    font-size: 2.2rem;
     text-align: center;
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    background-color: white;
-    color: #333;
-    font-weight: 600;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    border: 2px solid #e2e8f0;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    color: #1e293b;
+    font-weight: 700;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+#keypad-input:focus {
+    border-color: #4f46e5;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.08), 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 .keypad-buttons {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background-color: #dee2e6;
-    padding: 0;
+    gap: 2px;
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    padding: 2px;
 }
 
 .keypad-btn {
     border: none;
-    padding: 20px;
-    font-size: 1.5rem;
-    font-weight: 600;
+    padding: 22px 15px;
+    font-size: 1.6rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease;
-    background-color: white;
-    color: #333;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    color: #334155;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 60px;
+    min-height: 65px;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.keypad-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s;
+}
+
+.keypad-btn:hover::before {
+    left: 100%;
 }
 
 .keypad-btn:hover {
-    background-color: #f8f9fa;
-    transform: scale(0.95);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
 .keypad-btn:active {
-    transform: scale(0.9);
-    background-color: #e9ecef;
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .number-btn {
-    background-color: #ffffff;
-    color: #333;
+    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    color: #1e293b;
+    border: 1px solid rgba(226, 232, 240, 0.5);
 }
 
 .number-btn:hover {
-    background-color: #f0f8ff;
-    color: #007bff;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    color: #1d4ed8;
+    border-color: #3b82f6;
 }
 
 .action-btn {
-    background-color: #6c757d;
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
     color: white;
+    border: 1px solid rgba(100, 116, 139, 0.3);
 }
 
 .action-btn:hover {
-    background-color: #5a6268;
+    background: linear-gradient(135deg, #475569 0%, #334155 100%);
+    box-shadow: 0 8px 25px rgba(100, 116, 139, 0.3);
 }
 
 .confirm-btn {
-    background-color: #28a745;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
     grid-row: span 2;
-    font-size: 2rem;
+    font-size: 2.2rem;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    font-weight: 800;
 }
 
 .confirm-btn:hover {
-    background-color: #218838;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4);
 }
 
 .zero-btn {
@@ -1491,12 +1545,14 @@ img {
 }
 
 #keypad-cancel {
-    background-color: #dc3545;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
+    border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 #keypad-cancel:hover {
-    background-color: #c82333;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
 }
 
 /* Animaciones para el modal */
