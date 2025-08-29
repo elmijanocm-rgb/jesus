@@ -180,6 +180,8 @@ tr[style*="background-color: green"] td {
         padding: 16px 18px !important;
         border-radius: 12px !important;
         min-height: 65px !important;
+        color: #1e293b !important;
+        font-weight: 700 !important;
     }
     
     .keypad-btn {
@@ -278,6 +280,8 @@ tr[style*="background-color: green"] td {
         font-size: 1.8rem !important;
         padding: 14px 16px !important;
         min-height: 60px !important;
+        color: #1e293b !important;
+        font-weight: 700 !important;
     }
     
     .keypad-btn {

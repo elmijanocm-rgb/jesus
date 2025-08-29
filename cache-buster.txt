@@ -1,10 +1,10 @@
 # Cache Buster File
 # This file is used to force GitHub Pages to reload cached content
-# Last updated: 2025-01-28 20:30:00
-# Version: 3.1.5
-# Features: Professional keypad, inline menu, mobile optimization, editable quantities, improved contrast
+# Last updated: 2025-01-28 21:15:42
+# Version: 3.1.6
+# Features: Professional keypad, inline menu, mobile optimization, editable quantities, improved contrast, text visibility
 
-CACHE_VERSION=20250128203000
-FEATURES=professional_keypad,inline_menu,mobile_optimized,editable_quantities,improved_contrast
-LAST_MODIFIED=1756484200
-NEW_FEATURE=improved_keypad_button_contrast
+CACHE_VERSION=20250128211542
+FEATURES=professional_keypad,inline_menu,mobile_optimized,editable_quantities,improved_contrast,text_visibility
+LAST_MODIFIED=1756487742
+NEW_FEATURE=Texto del campo de entrada del teclado numérico ahora visible en gris oscuro

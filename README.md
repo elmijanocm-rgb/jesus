@@ -5,7 +5,7 @@
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen)](https://elmijanocm-rgb.github.io/cuenta-de-cajas/)
 [![PWA](https://img.shields.io/badge/PWA-Ready-blue)](https://web.dev/progressive-web-apps/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-3.1.5-success)](https://github.com/elmijanocm-rgb/cuenta-de-cajas)
+[![Version](https://img.shields.io/badge/Version-3.1.6-success)](https://github.com/elmijanocm-rgb/cuenta-de-cajas)
 
 ## 🚀 Demo en Vivo
 
@@ -28,6 +28,12 @@
 - **Mejor Accesibilidad**: Contraste mejorado para usuarios con dificultades visuales
 - **Diseño Optimizado**: Colores que facilitan la identificación rápida de botones
 - **Experiencia Mejorada**: Interfaz más clara y profesional
+
+### 👁️ **Visibilidad del Texto (NUEVO v3.1.6)**
+- **Campo de entrada del teclado**: Texto ahora visible en gris oscuro (#1e293b)
+- **Peso de fuente reforzado**: Mayor legibilidad con font-weight 700
+- **Compatibilidad móvil**: Corrección aplicada en todas las resoluciones
+- **Experiencia mejorada**: Eliminada la confusión visual del texto blanco sobre fondo blanco
 
 ### 🎯 **Sistema de Bloques Inteligente**
 - **Bloque Activo**: Las nuevas cantidades aparecen en la parte superior

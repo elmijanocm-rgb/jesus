@@ -1,7 +1,7 @@
 {
   "name": "Cuenta de Cajas - PWA de Conteo",
   "short_name": "Cuenta de Cajas",
-  "description": "Aplicación web progresiva para el conteo eficiente de cajas con sistema de bloques inteligente, totales en tiempo real, edición de cantidades y contraste mejorado para mejor accesibilidad",
+  "description": "Aplicación PWA para conteo de cajas de frutas con edición de cantidades, contraste mejorado y visibilidad optimizada del texto",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#e8f5e8",
