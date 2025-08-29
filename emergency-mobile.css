@@ -1,265 +1,304 @@
-/* ULTRA EMERGENCY MOBILE CSS - MAXIMUM OVERRIDE POWER */
+/* MOBILE OPTIMIZED CSS - VERSION 3.0.0 - TIMESTAMP: 1756412700 */
 
-/* FORZAR ALINEACIÓN IZQUIERDA DE TÍTULOS DE BLOQUES - VERSIÓN 2.0.2 */
-.block-title-row {
-    text-align: left !important;
-    justify-content: flex-start !important;
-}
-
+/* FORZAR ALINEACIÓN IZQUIERDA DE TÍTULOS DE BLOQUES */
+.block-title-row,
 .block-title-row td {
     text-align: left !important;
-    padding-left: 15px !important;
     justify-content: flex-start !important;
+    padding-left: 15px !important;
 }
 
-/* Sobrescribir cualquier estilo de títulos de bloques */
-tr[style*="background-color: #2196F3"] {
+/* Forzar alineación izquierda para filas que contengan "BLOQUE" */
+tr:has(td:contains("BLOQUE")),
+tr td:contains("BLOQUE") {
     text-align: left !important;
+    padding-left: 15px !important;
 }
 
-tr[style*="background-color: #2196F3"] td {
+/* Forzar alineación para filas con fondo azul (BLOQUE ACTIVO) */
+tr[style*="background-color: blue"],
+tr[style*="background-color: blue"] td {
     text-align: left !important;
-    padding-left: 10px !important;
+    padding-left: 15px !important;
 }
 
-tr[style*="background-color: #4CAF50"] {
+/* Forzar alineación para filas con fondo verde (BLOQUE CERRADO) */
+tr[style*="background-color: green"],
+tr[style*="background-color: green"] td {
     text-align: left !important;
+    padding-left: 15px !important;
 }
 
-tr[style*="background-color: #4CAF50"] td {
-    text-align: left !important;
-    padding-left: 10px !important;
-}
-
-/* Forzar alineación para cualquier fila que contenga "BLOQUE" */
-tr:has(td:contains("BLOQUE")) {
-    text-align: left !important;
-}
-
-tr:has(td:contains("BLOQUE")) td {
-    text-align: left !important;
-    padding-left: 10px !important;
-}
-/* This CSS uses maximum specificity and !important to force mobile styles */
-
-/* ULTRA GLOBAL EMERGENCY OVERRIDES */
-html, html *, html *:before, html *:after {
-    box-sizing: border-box !important;
-}
-
-html, html body {
-    font-size: 18px !important;
-}
-
-html body, body.container, body {
-    background: #f8f9fa !important;
-    margin: 0 !important;
-    padding: 20px !important;
-    font-family: Arial, sans-serif !important;
-    font-size: 20px !important;
-    line-height: 1.6 !important;
-    color: #333 !important;
-    min-height: 100vh !important;
-}
-
-/* Emergency banner removed for clean appearance */
-
-/* EMERGENCY CONTAINER */
-.container {
-    max-width: 100% !important;
-    width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    background: rgba(255,255,255,0.1) !important;
-    border: 5px solid #ff0000 !important;
-    border-radius: 15px !important;
-}
-
-.content {
-    background: rgba(0,0,0,0.7) !important;
-    padding: 30px !important;
-    margin: 10px !important;
-    border-radius: 20px !important;
-    border: 3px solid #00ff00 !important;
-}
-
-/* Clean button styles for mobile */
-.btn, button, input[type="button"], input[type="submit"] {
-    background: #28a745 !important;
-    color: white !important;
-    border: 1px solid #28a745 !important;
-    padding: 12px 20px !important;
-    font-size: 16px !important;
-    font-weight: 500 !important;
-    border-radius: 6px !important;
-    cursor: pointer !important;
-    margin: 5px !important;
-    display: inline-block !important;
-    text-decoration: none !important;
-    transition: background-color 0.2s ease !important;
-}
-
-.btn:hover, button:hover {
-    transform: scale(1.3) !important;
-    box-shadow: 0 12px 24px rgba(0,0,0,0.4) !important;
-}
-
-/* EMERGENCY FORMS */
-input, select, textarea {
-    min-height: 60px !important;
-    padding: 20px !important;
-    font-size: 20px !important;
-    border: 4px solid #ff6b6b !important;
-    border-radius: 10px !important;
-    background: rgba(255,255,255,0.9) !important;
-    color: #000 !important;
-    margin: 10px 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-/* EMERGENCY TABLES */
-table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    font-size: 18px !important;
-    background: rgba(255,255,255,0.1) !important;
-    border: 3px solid #00ff00 !important;
-    border-radius: 10px !important;
-    overflow: hidden !important;
-}
-
-th, td {
-    padding: 20px !important;
-    border: 2px solid #ffffff !important;
-    text-align: center !important;
-    font-size: 18px !important;
-    color: white !important;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.8) !important;
-}
-
-th {
-    background: rgba(255,107,107,0.8) !important;
-    font-weight: bold !important;
-    font-size: 20px !important;
-}
-
-/* EMERGENCY KEYPAD */
-.keypad-modal {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background: rgba(0,0,0,0.9) !important;
-    z-index: 10000 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-.keypad {
-    background: linear-gradient(135deg, #667eea, #764ba2) !important;
-    padding: 40px !important;
-    border-radius: 25px !important;
-    border: 5px solid #ffffff !important;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
-    transform: scale(1.5) !important;
-}
-
-.keypad button {
-    width: 100px !important;
-    height: 100px !important;
-    font-size: 36px !important;
-    font-weight: bold !important;
-    margin: 8px !important;
-    border-radius: 20px !important;
-    border: 4px solid #ffffff !important;
-    background: linear-gradient(135deg, #ff9a9e, #fecfef) !important;
-    color: #333 !important;
-    text-shadow: none !important;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3) !important;
-    transform: none !important;
-}
-
-.keypad button:hover {
-    transform: scale(1.1) !important;
-    box-shadow: 0 12px 24px rgba(0,0,0,0.4) !important;
-}
-
-/* EMERGENCY TEXT */
-h1, h2, h3, h4, h5, h6 {
-    color: #ffff00 !important;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.8) !important;
-    font-size: 32px !important;
-    font-weight: bold !important;
-    margin: 20px 0 !important;
-    text-align: center !important;
-}
-
-p, span, div {
-    font-size: 20px !important;
-    color: white !important;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
-    line-height: 1.6 !important;
-}
-
-/* Debug info styles removed for clean appearance */
-
-/* EMERGENCY RESPONSIVE OVERRIDES */
+/* MOBILE RESPONSIVE DESIGN */
 @media screen and (max-width: 768px) {
-    body {
-        background: linear-gradient(45deg, #ff0000, #ffff00, #00ff00) !important;
-        font-size: 22px !important;
+    /* Layout principal */
+    .content {
+        padding: 15px !important;
+        margin: 10px !important;
     }
     
-    .btn, button {
-        min-height: 100px !important;
-        font-size: 28px !important;
-        transform: scale(1.4) !important;
+    /* Header optimizado para móvil */
+    .header {
+        padding: 15px !important;
+        text-align: center !important;
     }
     
-    input, select, textarea {
-        min-height: 80px !important;
+    .header h1 {
         font-size: 24px !important;
+        margin-bottom: 10px !important;
     }
     
-    h1, h2, h3 {
-        font-size: 36px !important;
+    /* Navegación táctil */
+    .main-nav {
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        padding: 10px !important;
+    }
+    
+    .nav-item {
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 12px !important;
+        padding: 8px !important;
+    }
+    
+    .nav-item i {
+        font-size: 20px !important;
+        margin-bottom: 4px !important;
+    }
+    
+    /* Botones optimizados para touch */
+    .btn, button {
+        min-height: 48px !important;
+        font-size: 16px !important;
+        padding: 12px 16px !important;
+        margin: 5px !important;
+        border-radius: 8px !important;
+        touch-action: manipulation !important;
+    }
+    
+    /* Inputs táctiles */
+    input, select, textarea {
+        min-height: 48px !important;
+        font-size: 16px !important;
+        padding: 12px !important;
+        border-radius: 6px !important;
+    }
+    
+    /* Tabla responsive */
+    .data-table {
+        font-size: 14px !important;
+        overflow-x: auto !important;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 12px 8px !important;
+        font-size: 14px !important;
+        min-width: 80px !important;
+    }
+    
+    /* Summary boxes en móvil */
+    .summary-boxes {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .summary-box {
+        padding: 15px !important;
+        margin: 0 !important;
+        text-align: center !important;
+    }
+    
+    .summary-box .value {
+        font-size: 28px !important;
+        font-weight: bold !important;
+    }
+    
+    /* Keypad móvil */
+    .keypad {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 12px !important;
+        max-width: 280px !important;
+        margin: 20px auto !important;
+    }
+    
+    .keypad-btn {
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 20px !important;
+        border-radius: 50% !important;
+        border: none !important;
+        background: #4CAF50 !important;
+        color: white !important;
+        font-weight: bold !important;
+        touch-action: manipulation !important;
+    }
+    
+    .keypad-btn:active {
+        background: #45a049 !important;
+        transform: scale(0.95) !important;
+    }
+    
+    /* Formularios móviles */
+    .form-container {
+        padding: 15px !important;
+        margin: 10px 0 !important;
+        border-radius: 8px !important;
+    }
+    
+    .input-group {
+        margin-bottom: 15px !important;
+    }
+    
+    .input-group label {
+        font-size: 14px !important;
+        margin-bottom: 5px !important;
+        font-weight: 600 !important;
     }
 }
 
 @media screen and (max-width: 480px) {
-    body {
-        background: linear-gradient(45deg, #ff0000, #ffffff, #0000ff) !important;
+    /* Ajustes para pantallas muy pequeñas */
+    .content {
+        padding: 10px !important;
+        margin: 5px !important;
+    }
+    
+    .header h1 {
+        font-size: 20px !important;
+    }
+    
+    .nav-item {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 11px !important;
+    }
+    
+    .nav-item i {
+        font-size: 18px !important;
+    }
+    
+    .keypad {
+        max-width: 240px !important;
+        gap: 8px !important;
+    }
+    
+    .keypad-btn {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 18px !important;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 8px 4px !important;
+        font-size: 12px !important;
+        min-width: 60px !important;
+    }
+    
+    .summary-box .value {
         font-size: 24px !important;
     }
     
     .btn, button {
-        min-height: 120px !important;
-        font-size: 32px !important;
-        transform: scale(1.6) !important;
-    }
-    
-    .keypad {
-        transform: scale(1.8) !important;
-    }
-    
-    .keypad button {
-        width: 120px !important;
-        height: 120px !important;
-        font-size: 42px !important;
+        min-height: 44px !important;
+        font-size: 14px !important;
+        padding: 10px 12px !important;
     }
 }
 
-/* FORCE VISIBILITY */
-.hidden {
+/* MEJORAS DE ACCESIBILIDAD */
+.btn:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid #4CAF50 !important;
+    outline-offset: 2px !important;
+}
+
+/* OPTIMIZACIONES DE RENDIMIENTO */
+.btn, .nav-item, .keypad-btn {
+    -webkit-tap-highlight-color: transparent !important;
+    touch-action: manipulation !important;
+}
+
+/* PREVENIR ZOOM EN INPUTS */
+input, select, textarea {
+    font-size: 16px !important;
+}
+
+/* SCROLL SUAVE */
+html {
+    scroll-behavior: smooth !important;
+}
+
+/* PREVENIR SCROLL HORIZONTAL */
+html, body {
+    overflow-x: hidden !important;
+}
+
+/* MEJORAR LEGIBILIDAD */
+p, span, div, td, th {
+    line-height: 1.4 !important;
+}
+
+/* UTILIDADES MÓVILES */
+.mobile-hidden {
+    display: none !important;
+}
+
+.mobile-visible {
     display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
 }
 
-/* ULTRA EMERGENCY ANIMATIONS */
-/* Emergency animations removed for clean appearance */
+@media screen and (min-width: 769px) {
+    .mobile-hidden {
+        display: block !important;
+    }
+    
+    .mobile-visible {
+        display: none !important;
+    }
+}
 
-/* ULTRA EMERGENCY NOTICE - REMOVED OLD VERSION */
+/* ESTADOS DE CARGA */
+.loading {
+    opacity: 0.6 !important;
+    pointer-events: none !important;
+}
+
+/* ANIMACIONES SUAVES */
+.btn, .nav-item, .keypad-btn {
+    transition: all 0.2s ease !important;
+}
+
+/* MODO OSCURO */
+@media (prefers-color-scheme: dark) {
+    .content {
+        background: #2a2a2a !important;
+        color: #fff !important;
+    }
+    
+    .form-container,
+    .summary-box {
+        background: #3a3a3a !important;
+        color: #fff !important;
+    }
+    
+    input, select, textarea {
+        background: #4a4a4a !important;
+        color: #fff !important;
+        border-color: #666 !important;
+    }
+}
+
+/* REDUCIR MOVIMIENTO */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
