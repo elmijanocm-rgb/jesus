@@ -1147,7 +1147,7 @@ function displayHistorialConteos() {
         tituloRow.style.textAlign = 'left';
         
         const tituloCell = document.createElement('td');
-        tituloCell.colSpan = ordenColumnasData.length + 2;
+        tituloCell.colSpan = ordenColumnasData.length + 3; // +3 para Fecha/Hora, Total y Acciones
         tituloCell.innerHTML = `🔄 BLOQUE ACTIVO (${filasEnBloqueActual}/4 filas)`;
         tituloRow.appendChild(tituloCell);
         tbody.appendChild(tituloRow);
@@ -1205,6 +1205,10 @@ function displayHistorialConteos() {
             subtotalGeneralBloqueActual += totalCajasNormales;
             totalGeneral += totalCajasNormales;
             
+            // Agregar botón de eliminación para filas del bloque activo
+            const conteoIndex = historialConteos.length - filasEnBloqueActual + index;
+            cellsHTML += `<td><button class="delete-btn" onclick="eliminarConteo(${conteoIndex})" title="Eliminar este conteo">🗑️</button></td>`;
+            
             row.innerHTML = cellsHTML;
             
             // Agregar clase para resaltar si tiene cantidades
@@ -1241,6 +1245,9 @@ function displayHistorialConteos() {
             }
         });
         
+        // Agregar celda vacía de acciones para subtotal
+        subtotalHTML += `<td></td>`;
+        
         subtotalRow.innerHTML = subtotalHTML;
         tbody.appendChild(subtotalRow);
         
@@ -1251,7 +1258,7 @@ function displayHistorialConteos() {
             separatorRow.style.backgroundColor = '#e0e0e0';
             
             const separatorCell = document.createElement('td');
-            separatorCell.colSpan = ordenColumnasData.length + 2;
+            separatorCell.colSpan = ordenColumnasData.length + 3; // +3 para Fecha/Hora, Total y Acciones
             separatorCell.style.textAlign = 'center';
             separatorCell.style.fontWeight = 'bold';
             separatorCell.style.color = '#666';
@@ -1279,7 +1286,7 @@ function displayHistorialConteos() {
         tituloRow.style.textAlign = 'left';
         
         const tituloCell = document.createElement('td');
-        tituloCell.colSpan = ordenColumnasData.length + 2;
+        tituloCell.colSpan = ordenColumnasData.length + 3; // +3 para Fecha/Hora, Total y Acciones
         tituloCell.innerHTML = `🔒 BLOQUE ${numeroBloque} (CERRADO)`;
         tituloRow.appendChild(tituloCell);
         tbody.appendChild(tituloRow);
@@ -1335,6 +1342,9 @@ function displayHistorialConteos() {
             subtotalGeneralBloque += totalCajasNormales;
             totalGeneral += totalCajasNormales;
             
+            // Agregar celda vacía de acciones para bloques cerrados
+            cellsHTML += `<td></td>`;
+            
             row.innerHTML = cellsHTML;
             
             // Agregar clase para resaltar si tiene cantidades
@@ -1372,6 +1382,9 @@ function displayHistorialConteos() {
             }
         });
         
+        // Agregar celda vacía de acciones para subtotal
+        subtotalHTML += `<td></td>`;
+        
         subtotalRow.innerHTML = subtotalHTML;
         tbody.appendChild(subtotalRow);
         
@@ -1405,6 +1418,9 @@ function displayHistorialConteos() {
             totalHTML += `<td><strong>${totalesPorCaja[nombreCaja] || 0}</strong></td>`;
         }
     });
+    
+    // Agregar celda vacía de acciones para total general
+    totalHTML += `<td></td>`;
     
     totalRow.innerHTML = totalHTML;
     tbody.appendChild(totalRow);
@@ -1440,6 +1456,35 @@ function updateSummaryBoxes(totalGeneral, totalesPalets) {
     if (totalPaletsDisplay) {
         totalPaletsDisplay.textContent = totalPaletsValue;
     }
+}
+
+// Función para eliminar un conteo específico
+function eliminarConteo(conteoIndex) {
+    // Confirmación antes de eliminar
+    if (!confirm('¿Estás seguro de que quieres eliminar este conteo? Esta acción no se puede deshacer.')) {
+        return;
+    }
+    
+    // Obtener el historial actual
+    let historial = JSON.parse(localStorage.getItem('historialConteos')) || [];
+    
+    // Verificar que el índice sea válido
+    if (conteoIndex < 0 || conteoIndex >= historial.length) {
+        alert('Error: Conteo no encontrado.');
+        return;
+    }
+    
+    // Eliminar el conteo del array
+    historial.splice(conteoIndex, 1);
+    
+    // Guardar el historial actualizado
+    localStorage.setItem('historialConteos', JSON.stringify(historial));
+    
+    // Actualizar la visualización
+    displayHistorialConteos();
+    
+    // Mostrar mensaje de confirmación
+    alert('Conteo eliminado exitosamente.');
 }
 
 // Función para editar cantidades en el bloque activo
@@ -1594,7 +1639,8 @@ function updateHistorialHeaders() {
         'Fecha/Hora',
         'Total',
         ...cajasPalet.map(box => box.nombre),
-        ...cajasNormales.map(box => box.nombre)
+        ...cajasNormales.map(box => box.nombre),
+        'Acciones'
     ];
     
     // Crear encabezados con el orden dinámico
