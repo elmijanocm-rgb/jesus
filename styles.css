@@ -558,9 +558,9 @@ img {
 .individual-boxes-display {
     margin: 20px 0;
     padding: 20px;
-    background-color: #f8f9fa;
+    background-color: #e8f5e8;
     border-radius: 10px;
-    border: 2px solid #e9ecef;
+    border: 2px solid #d4e6d4;
 }
 
 .boxes-grid-container {
@@ -732,13 +732,13 @@ img {
     }
     
     .summary-box {
-        flex: 1;
-        min-width: 140px;
-        max-width: calc(50% - 10px);
-        padding: 15px 12px;
-        font-size: 1rem;
-        box-sizing: border-box;
-        width: 100%;
+        flex: 1 !important;
+        min-width: 140px !important;
+        max-width: calc(50% - 10px) !important;
+        padding: 15px 12px !important;
+        font-size: 1rem !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
     }
     
     .summary-title {

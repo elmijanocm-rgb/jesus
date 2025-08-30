@@ -58,6 +58,8 @@ CAMBIOS REALIZADOS:
    - Agregado fondo verde suave (#e8f5e8) a las cajas individuales
    - Mejora la apariencia visual cuando las imágenes no cargan completamente
    - Proporciona un fondo que complementa el diseño sin resaltar demasiado
+   - Se cambió el fondo del contenedor principal de las cajas individuales (.individual-boxes-display) de #f8f9fa a #e8f5e8 con borde #d4e6d4 para mantener consistencia visual
+   - Se añadió !important a los estilos móviles de las cajas de resumen (.summary-box) para asegurar que el alargamiento horizontal se aplique correctamente en dispositivos móviles
 
 Pasos para subir a GitHub:
 1. Ve a tu repositorio en github.com
