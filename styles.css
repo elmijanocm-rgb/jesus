@@ -218,7 +218,32 @@ img {
     display: flex;
     align-items: center;
     padding: 8px 0;
+    margin-bottom: 20px;
     border-bottom: 1px solid #eee;
+}
+
+/* Contenedor de imagen con total superpuesto */
+.box-image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.box-total-overlay {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #007bff;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 25px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    z-index: 10;
+    border: 2px solid white;
 }
 
 /* Cajas de usuario más compactas en administración */
@@ -522,6 +547,48 @@ img {
 }
 
 /* Estilos para los recuadros de resumen */
+/* Visualización de cajas individuales con totales */
+.individual-boxes-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 20px 0;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+}
+
+.individual-box-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+
+.individual-box-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    margin-bottom: 8px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.individual-box-total {
+    background-color: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    min-width: 40px;
+    text-align: center;
+}
+
 .summary-boxes {
     display: flex;
     gap: 15px;

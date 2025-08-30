@@ -474,7 +474,10 @@ function displayUserBoxesInHome() {
         }
         
         boxTypeElement.innerHTML = `
-            ${imageContent}
+            <div class="box-image-container">
+                ${imageContent}
+                <div class="box-total-overlay">${box.cantidad || 0}</div>
+            </div>
             <div class="box-info">
                 <span class="box-name">${box.nombre}</span>
                 <span class="box-code">${box.tipo || 'Sin tipo'}</span>
@@ -490,6 +493,7 @@ function displayUserBoxesInHome() {
         // Agregar event listener para el botón de conteo
         const countBtn = boxTypeElement.querySelector('.count-btn');
         const counterValue = boxTypeElement.querySelector('.box-count');
+        const totalOverlay = boxTypeElement.querySelector('.box-total-overlay');
         
         countBtn.addEventListener('click', function() {
             const currentValue = parseInt(counterValue.textContent);
@@ -497,6 +501,7 @@ function displayUserBoxesInHome() {
                 if (newValue !== null && !isNaN(newValue) && parseInt(newValue) >= 0) {
                     const finalValue = parseInt(newValue);
                     counterValue.textContent = finalValue;
+                    totalOverlay.textContent = finalValue; // Actualizar el total superpuesto
                     
                     // Actualizar en el array
                     const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
@@ -1085,6 +1090,68 @@ function agregarConteoAlHistorial() {
     alert('Conteo agregado al historial y cantidades reseteadas.');
 }
 
+// Función para mostrar las cajas individuales con totales
+function displayIndividualBoxesTotals() {
+    const container = document.getElementById('individual-boxes-display');
+    if (!container) return;
+    
+    // Limpiar contenido existente
+    container.innerHTML = '';
+    
+    if (historialConteos.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #666; margin: 0;">No hay conteos para mostrar</p>';
+        return;
+    }
+    
+    // Calcular totales por caja de todo el historial
+    const totalesPorCaja = {};
+    
+    // Inicializar totales
+    userCreatedBoxes.forEach(box => {
+        totalesPorCaja[box.nombre] = 0;
+    });
+    
+    // Sumar todas las cantidades del historial
+    historialConteos.forEach(conteo => {
+        if (conteo.cajas) {
+            Object.keys(conteo.cajas).forEach(nombreCaja => {
+                if (totalesPorCaja.hasOwnProperty(nombreCaja)) {
+                    totalesPorCaja[nombreCaja] += conteo.cajas[nombreCaja] || 0;
+                }
+            });
+        }
+    });
+    
+    // Crear elementos para cada caja
+    userCreatedBoxes.forEach(box => {
+        const total = totalesPorCaja[box.nombre] || 0;
+        
+        const boxItem = document.createElement('div');
+        boxItem.className = 'individual-box-item';
+        
+        // Crear imagen de la caja
+        const boxImage = document.createElement('div');
+        boxImage.className = 'individual-box-image';
+        
+        if (box.imagen) {
+            boxImage.style.backgroundImage = `url('${box.imagen}')`;
+        } else if (box.color) {
+            boxImage.style.backgroundColor = box.color;
+        } else {
+            boxImage.style.backgroundColor = '#f0f0f0';
+        }
+        
+        // Crear elemento del total
+        const boxTotal = document.createElement('div');
+        boxTotal.className = 'individual-box-total';
+        boxTotal.textContent = total;
+        
+        boxItem.appendChild(boxImage);
+        boxItem.appendChild(boxTotal);
+        container.appendChild(boxItem);
+    });
+}
+
 // Función para mostrar el historial de conteos
 function displayHistorialConteos() {
     const tbody = document.querySelector('#conteos .data-table tbody');
@@ -1092,6 +1159,9 @@ function displayHistorialConteos() {
     
     // Limpiar contenido existente
     tbody.innerHTML = '';
+    
+    // Mostrar cajas individuales con totales
+    displayIndividualBoxesTotals();
     
     if (historialConteos.length === 0) {
         tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #666;">No hay conteos guardados</td></tr>';
