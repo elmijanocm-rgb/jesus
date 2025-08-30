@@ -68,9 +68,9 @@ img {
 
 .app-container {
     min-height: 100vh;
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
-    padding: 10px;
+    padding: 15px;
 }
 
 /* Navegación */
@@ -212,11 +212,9 @@ img {
 
 /* Tipos de cajas */
 .box-types {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 15px;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .box-type {
@@ -307,8 +305,8 @@ img {
 
 
 .box-image {
-    width: 70px;
-    height: 60px;
+    width: 50px;
+    height: 40px;
     border-radius: 5px;
     margin-right: 15px;
     background-size: cover;
@@ -573,8 +571,8 @@ img {
 }
 
 .individual-box-image {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 8px;
     border: 2px solid #ddd;
     margin-bottom: 8px;
