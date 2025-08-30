@@ -610,6 +610,10 @@ img {
     display: flex;
     gap: 15px;
     flex-shrink: 0;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 .summary-box {
@@ -619,6 +623,8 @@ img {
     border-radius: 12px;
     text-align: center;
     min-width: 120px;
+    flex: 1;
+    max-width: 200px;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }

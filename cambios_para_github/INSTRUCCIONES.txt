@@ -69,6 +69,11 @@ CAMBIOS REALIZADOS:
    - Asegurado que los elementos se extiendan de lado a lado sin desbordamiento horizontal
    - Mejorado el aprovechamiento del espacio disponible en pantallas pequeñas
 
+✅ CENTRADO Y EXPANSIÓN DE CAJAS DE RESUMEN:
+   - Se centró el contenedor de cajas de resumen (.summary-boxes) con justify-content: center y width: 100%
+   - Las cajas individuales (.summary-box) ahora usan flex: 1 para expandirse equitativamente y max-width: 200px para mantener proporciones
+   - Las cajas "TOTAL GENERAL" y "TOTAL PALETS" ahora ocupan todo el ancho disponible de forma centrada y balanceada
+
 Pasos para subir a GitHub:
 1. Ve a tu repositorio en github.com
 2. Navega a cada archivo (styles.css y emergency-mobile.css)
