@@ -4,7 +4,7 @@ INSTRUCCIONES PARA SUBIR LOS CAMBIOS A GITHUB PAGES
 ARCHIVOS MODIFICADOS:
 ===================
 
-1. styles.css - Estilos principales de la aplicación
+1. styles.css - Estilos principales de la aplicación + corrección alineamiento móvil
 2. emergency-mobile.css - Estilos específicos para móvil
 3. script.js - Lógica principal de la aplicación
 4. index.html - Archivo principal con correcciones de caché
@@ -37,6 +37,12 @@ CAMBIOS REALIZADOS:
    - Lógica mejorada para mantener el orden cronológico correcto
    - Los bloques más recientes aparecen inmediatamente después del activo
    - Sistema inteligente de inserción basado en el estado del bloque
+
+✅ CORRECCIÓN DE ALINEAMIENTO MÓVIL:
+   - Corregido desplazamiento de recuadros de resumen en dispositivos móviles
+   - Los recuadros de "Total General", "Total Palets" y grid de cajas ahora se mantienen centrados
+   - Ajustado max-width y padding para evitar desbordamiento horizontal
+   - Reducido tamaño de fuentes para mejor adaptación móvil
 
 Pasos para subir a GitHub:
 1. Ve a tu repositorio en github.com
