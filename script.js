@@ -17,19 +17,6 @@ function loadUserBoxes() {
 // Cargar las cajas al iniciar
 loadUserBoxes();
 
-// Agregar una caja de prueba si no hay cajas (solo para demostración)
-if (userCreatedBoxes.length === 0) {
-    userCreatedBoxes.push({
-        nombre: "Caja de Prueba",
-        tipo: "Ejemplo",
-        descripcion: "Esta es una caja de prueba",
-        pesoTara: "1.0",
-        color: "#4CAF50",
-        cantidad: 5
-    });
-    saveUserBoxes();
-}
-
 // Función para actualizar el total de cajas
 function updateTotalBoxes() {
     let total = 0;

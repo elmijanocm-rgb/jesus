@@ -34,7 +34,7 @@ button, .btn, .nav-item, .keypad-btn {
 }
 
 body {
-    background-color: #e8f5e8;
+    background-color: #c8f7c5;
     color: #333;
     /* Optimizaciones de rendimiento */
     will-change: scroll-position;
@@ -68,6 +68,9 @@ img {
 
 .app-container {
     min-height: 100vh;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 10px;
 }
 
 /* Navegación */
@@ -134,7 +137,7 @@ img {
 
 /* Contenido principal */
 .content {
-    padding: 20px;
+    padding: 25px;
     overflow-y: auto;
 }
 
