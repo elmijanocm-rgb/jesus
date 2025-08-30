@@ -32,6 +32,12 @@ CAMBIOS REALIZADOS:
    - Forzado de recarga para asegurar que los cambios se vean
    - Versión actualizada a 3.3.0-historial-fixed
 
+✅ NUEVO ORDENAMIENTO DE BLOQUES:
+   - Los nuevos conteos ahora se insertan después del bloque activo
+   - Lógica mejorada para mantener el orden cronológico correcto
+   - Los bloques más recientes aparecen inmediatamente después del activo
+   - Sistema inteligente de inserción basado en el estado del bloque
+
 Pasos para subir a GitHub:
 1. Ve a tu repositorio en github.com
 2. Navega a cada archivo (styles.css y emergency-mobile.css)

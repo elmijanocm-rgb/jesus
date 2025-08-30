@@ -1068,8 +1068,18 @@ function agregarConteoAlHistorial() {
         }
     });
     
-    // Agregar al historial
-    historialConteos.push(nuevoConteo); // Agregar al final para que slice(-n) tome los más recientes
+    // Agregar al historial después del bloque activo
+    const filasEnBloqueActual = historialConteos.length % 4;
+    
+    if (filasEnBloqueActual === 0) {
+        // Si no hay bloque activo, agregar al final (nuevo bloque)
+        historialConteos.push(nuevoConteo);
+    } else {
+        // Si hay bloque activo, insertar después de él
+        const posicionInsercion = historialConteos.length - filasEnBloqueActual;
+        historialConteos.splice(posicionInsercion, 0, nuevoConteo);
+    }
+    
     saveHistorialConteos();
     
     // Resetear las cantidades
