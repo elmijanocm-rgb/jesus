@@ -43,6 +43,12 @@ CAMBIOS REALIZADOS:
    - Los recuadros de "Total General", "Total Palets" y grid de cajas ahora se mantienen centrados
    - Ajustado max-width y padding para evitar desbordamiento horizontal
    - Reducido tamaño de fuentes para mejor adaptación móvil
+   - Se optimizó el grid de cajas individuales (2x3) para móvil:
+     * Reducido padding del contenedor de 20px a 10px
+     * Reducido gap del grid de 20px a 10px
+     * Reducido tamaño de imágenes de 60px a 45px
+     * Ajustado padding y font-size de los totales
+     * Agregado box-sizing: border-box para prevenir desbordamiento
 
 Pasos para subir a GitHub:
 1. Ve a tu repositorio en github.com

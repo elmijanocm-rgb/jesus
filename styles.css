@@ -751,6 +751,50 @@ img {
         font-size: 9px;
     }
     
+    /* Grid de cajas individuales - MÓVIL */
+    .individual-boxes-display {
+        margin: 10px 0;
+        padding: 10px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .boxes-grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 10px;
+        justify-items: center;
+        align-items: center;
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    .individual-box-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 60px;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .individual-box-image {
+        width: 45px;
+        height: 45px;
+        margin-bottom: 6px;
+    }
+    
+    .individual-box-total {
+        padding: 3px 6px;
+        font-size: 12px;
+        min-width: 30px;
+    }
+    
     /* Botones generales - MÓVIL EVIDENTE */
     .btn {
         min-height: 60px !important;
