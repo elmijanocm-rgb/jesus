@@ -109,41 +109,66 @@ tr[style*="background-color: green"] td {
 @media screen and (max-width: 768px) {
     /* Layout principal */
     .content {
-        padding: 15px !important;
-        margin: 10px !important;
+        padding: 8px !important;
+        margin: 5px !important;
+    }
+
+    .app-container {
+        padding: 8px !important;
+    }
+
+    .card {
+        padding: 10px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .card h2 {
+        font-size: 18px !important;
+        margin-bottom: 8px !important;
     }
     
     /* Header optimizado para móvil */
     .header {
-        padding: 15px !important;
+        padding: 8px !important;
         text-align: center !important;
+        margin-bottom: 8px !important;
     }
-    
+
     .header h1 {
-        font-size: 24px !important;
-        margin-bottom: 10px !important;
+        font-size: 20px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .header-top {
+        padding: 6px !important;
+        margin-bottom: 6px !important;
     }
     
     /* Navegación táctil */
     .main-nav {
         justify-content: center !important;
         flex-wrap: nowrap !important;
-        gap: 8px !important;
-        padding: 10px !important;
+        gap: 4px !important;
+        padding: 6px !important;
         overflow-x: auto !important;
     }
-    
+
     .nav-item {
-        width: 65px !important;
-        height: 65px !important;
-        font-size: 11px !important;
-        padding: 6px !important;
+        width: 55px !important;
+        height: 55px !important;
+        font-size: 10px !important;
+        padding: 4px !important;
         flex-shrink: 0 !important;
     }
-    
+
     .nav-item i {
-        font-size: 20px !important;
-        margin-bottom: 4px !important;
+        font-size: 16px !important;
+        margin-bottom: 2px !important;
+    }
+
+    .nav-item span {
+        font-size: 9px !important;
+        line-height: 1 !important;
     }
     
     /* Botones optimizados para touch */
@@ -182,16 +207,64 @@ tr[style*="background-color: green"] td {
         flex-direction: column !important;
         gap: 10px !important;
     }
-    
+
     .summary-box {
         padding: 15px !important;
         margin: 0 !important;
         text-align: center !important;
     }
-    
+
     .summary-box .value {
         font-size: 28px !important;
         font-weight: bold !important;
+    }
+
+    /* Optimización de cajas para móvil */
+    .box-types {
+        gap: 4px !important;
+    }
+
+    .box-type {
+        padding: 4px 0 !important;
+        margin-bottom: 4px !important;
+        gap: 8px !important;
+    }
+
+    .box-info {
+        flex: 1 !important;
+        min-width: 0 !important;
+    }
+
+    .box-name {
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        color: #333 !important;
+        display: block !important;
+        margin-bottom: 1px !important;
+        line-height: 1.2 !important;
+    }
+
+    .box-code {
+        font-size: 11px !important;
+        color: #666 !important;
+        line-height: 1.1 !important;
+    }
+
+    .box-image {
+        width: 45px !important;
+        height: 45px !important;
+        border-radius: 6px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .box-controls {
+        flex-shrink: 0 !important;
+    }
+
+    .count-btn {
+        font-size: 12px !important;
+        padding: 6px 8px !important;
+        min-height: 36px !important;
     }
     
     /* Keypad móvil - DISEÑO PROFESIONAL */
