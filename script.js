@@ -17,6 +17,20 @@ function loadUserBoxes() {
 // Cargar las cajas al iniciar
 loadUserBoxes();
 
+// Eliminar específicamente la caja con cantidad 5 (elemento del círculo rojo)
+function removeBoxWithQuantity5() {
+    const initialLength = userCreatedBoxes.length;
+    userCreatedBoxes = userCreatedBoxes.filter(box => parseInt(box.cantidad) !== 5);
+    
+    if (userCreatedBoxes.length !== initialLength) {
+        saveUserBoxes();
+        console.log('Caja con cantidad 5 eliminada');
+    }
+}
+
+// Ejecutar la limpieza
+removeBoxWithQuantity5();
+
 // Función para actualizar el total de cajas
 function updateTotalBoxes() {
     let total = 0;
