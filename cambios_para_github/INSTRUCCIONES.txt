@@ -7,6 +7,7 @@ ARCHIVOS MODIFICADOS:
 1. styles.css - Estilos principales de la aplicación
 2. emergency-mobile.css - Estilos específicos para móvil
 3. script.js - Lógica principal de la aplicación
+4. index.html - Archivo principal con correcciones de caché
 
 CAMBIOS REALIZADOS:
 ==================
@@ -24,6 +25,12 @@ CAMBIOS REALIZADOS:
    - Reorganización de cajas en layout de 2 filas x 3 columnas
    - Filtrado automático para excluir palets
    - Grid responsivo y centrado
+
+✅ CORRECCIONES DE CACHÉ:
+   - Script automático de limpieza de caché del navegador
+   - Parámetros de cache-busting actualizados en CSS y JS
+   - Forzado de recarga para asegurar que los cambios se vean
+   - Versión actualizada a 3.3.0-historial-fixed
 
 Pasos para subir a GitHub:
 1. Ve a tu repositorio en github.com
