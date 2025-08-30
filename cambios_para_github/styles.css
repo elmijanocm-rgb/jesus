@@ -601,7 +601,7 @@ img {
     padding: 4px 8px;
     border-radius: 4px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 18px;
     min-width: 40px;
     text-align: center;
 }
@@ -807,7 +807,7 @@ img {
     
     .individual-box-total {
         padding: 3px 6px;
-        font-size: 12px;
+        font-size: 16px;
         min-width: 30px;
     }
     

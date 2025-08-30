@@ -61,6 +61,7 @@ CAMBIOS REALIZADOS:
    - Se cambió el fondo del contenedor principal de las cajas individuales (.individual-boxes-display) de #f8f9fa a #e8f5e8 con borde #d4e6d4 para mantener consistencia visual
    - Se añadió !important a los estilos móviles de las cajas de resumen (.summary-box) para asegurar que el alargamiento horizontal se aplique correctamente en dispositivos móviles.
 - Se ajustaron las imágenes de las cajas individuales al espacio disponible: aumentadas de 60px a 100px en escritorio (70px en móvil) y bordes redondeados de 8px a 12px para mejor visibilidad manteniendo la formación.
+- Números de totales aumentados: 18px en escritorio (antes 14px) y 16px en móvil (antes 12px) para mejor legibilidad.
 
 ✅ OPTIMIZACIÓN DE LAYOUT RESPONSIVO:
    - Agregado width: 100% y box-sizing: border-box al contenedor principal (.app-container)
