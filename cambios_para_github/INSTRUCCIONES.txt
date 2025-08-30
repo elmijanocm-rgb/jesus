@@ -1,14 +1,29 @@
 INSTRUCCIONES PARA SUBIR LOS CAMBIOS A GITHUB PAGES
 =====================================================
 
-Archivos modificados:
-- styles.css
-- emergency-mobile.css
+ARCHIVOS MODIFICADOS:
+===================
 
-Cambios realizados:
-✅ Nombres de cajas ahora visibles en móvil
-✅ Espaciado reducido para pantallas compactas
-✅ Diseño optimizado para móvil (header, navegación, tarjetas)
+1. styles.css - Estilos principales de la aplicación
+2. emergency-mobile.css - Estilos específicos para móvil
+3. script.js - Lógica principal de la aplicación
+
+CAMBIOS REALIZADOS:
+==================
+
+✅ Nombres de cajas ahora visibles con tipografía mejorada
+✅ Espaciado móvil más compacto (reducción de márgenes y padding)
+✅ Diseño móvil optimizado para evitar deslizar mucho hacia abajo
+   - Navegación ajustada
+   - Header compacto
+   - Tarjetas más pequeñas
+   - Imágenes optimizadas
+
+✅ NUEVOS CAMBIOS EN HISTORIAL DE CONTEO:
+   - Eliminada la casilla de palets del historial
+   - Reorganización de cajas en layout de 2 filas x 3 columnas
+   - Filtrado automático para excluir palets
+   - Grid responsivo y centrado
 
 Pasos para subir a GitHub:
 1. Ve a tu repositorio en github.com

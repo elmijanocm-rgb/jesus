@@ -556,15 +556,22 @@ img {
 /* Estilos para los recuadros de resumen */
 /* Visualización de cajas individuales con totales */
 .individual-boxes-display {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
     margin: 20px 0;
-    justify-content: center;
     padding: 20px;
     background-color: #f8f9fa;
     border-radius: 10px;
     border: 2px solid #e9ecef;
+}
+
+.boxes-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px;
+    justify-items: center;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .individual-box-item {
