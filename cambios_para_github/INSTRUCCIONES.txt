@@ -1,0 +1,22 @@
+INSTRUCCIONES PARA SUBIR LOS CAMBIOS A GITHUB PAGES
+=====================================================
+
+Archivos modificados:
+- styles.css
+- emergency-mobile.css
+
+Cambios realizados:
+✅ Nombres de cajas ahora visibles en móvil
+✅ Espaciado reducido para pantallas compactas
+✅ Diseño optimizado para móvil (header, navegación, tarjetas)
+
+Pasos para subir a GitHub:
+1. Ve a tu repositorio en github.com
+2. Navega a cada archivo (styles.css y emergency-mobile.css)
+3. Haz clic en el ícono de lápiz para editar
+4. Reemplaza el contenido con el de los archivos de esta carpeta
+5. Haz commit con mensaje: "Optimización móvil: nombres visibles y espaciado compacto"
+6. Espera unos minutos para que GitHub Pages se actualice
+
+Los cambios están probados y funcionando en el servidor local.
+Una vez subidos, se verán en tu página web automáticamente.
