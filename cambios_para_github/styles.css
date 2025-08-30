@@ -71,6 +71,8 @@ img {
     max-width: 600px;
     margin: 0 auto;
     padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Navegación */
@@ -582,9 +584,9 @@ img {
 }
 
 .individual-box-image {
-    width: 60px;
-    height: 60px;
-    border-radius: 8px;
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
     border: 2px solid #ddd;
     margin-bottom: 8px;
     background-size: cover;
@@ -677,11 +679,17 @@ img {
     }
     
     /* Layout general */
+    .app-container {
+        padding: 5px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
     .content {
         padding: 10px;
         background: rgba(255, 255, 255, 0.95) !important;
         border-radius: 10px !important;
-        margin: 10px !important;
+        margin: 5px !important;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
     }
     
@@ -786,8 +794,8 @@ img {
     }
     
     .individual-box-image {
-        width: 45px;
-        height: 45px;
+        width: 55px;
+        height: 55px;
         margin-bottom: 6px;
     }
     

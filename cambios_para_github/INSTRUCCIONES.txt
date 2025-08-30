@@ -59,7 +59,15 @@ CAMBIOS REALIZADOS:
    - Mejora la apariencia visual cuando las imágenes no cargan completamente
    - Proporciona un fondo que complementa el diseño sin resaltar demasiado
    - Se cambió el fondo del contenedor principal de las cajas individuales (.individual-boxes-display) de #f8f9fa a #e8f5e8 con borde #d4e6d4 para mantener consistencia visual
-   - Se añadió !important a los estilos móviles de las cajas de resumen (.summary-box) para asegurar que el alargamiento horizontal se aplique correctamente en dispositivos móviles
+   - Se añadió !important a los estilos móviles de las cajas de resumen (.summary-box) para asegurar que el alargamiento horizontal se aplique correctamente en dispositivos móviles.
+- Se ajustaron las imágenes de las cajas individuales al espacio disponible: aumentadas de 60px a 80px en escritorio (55px en móvil) y bordes redondeados de 8px a 12px para mejor aprovechamiento del espacio.
+
+✅ OPTIMIZACIÓN DE LAYOUT RESPONSIVO:
+   - Agregado width: 100% y box-sizing: border-box al contenedor principal (.app-container)
+   - En móvil: reducido padding del app-container de 15px a 5px
+   - Reducido margin del contenido de 10px a 5px en móvil
+   - Asegurado que los elementos se extiendan de lado a lado sin desbordamiento horizontal
+   - Mejorado el aprovechamiento del espacio disponible en pantallas pequeñas
 
 Pasos para subir a GitHub:
 1. Ve a tu repositorio en github.com
