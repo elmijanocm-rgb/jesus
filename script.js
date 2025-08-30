@@ -474,10 +474,7 @@ function displayUserBoxesInHome() {
         }
         
         boxTypeElement.innerHTML = `
-            <div class="box-image-container">
-                ${imageContent}
-                <div class="box-total-overlay">${box.cantidad || 0}</div>
-            </div>
+            ${imageContent}
             <div class="box-info">
                 <span class="box-name">${box.nombre}</span>
                 <span class="box-code">${box.tipo || 'Sin tipo'}</span>
@@ -493,7 +490,6 @@ function displayUserBoxesInHome() {
         // Agregar event listener para el botón de conteo
         const countBtn = boxTypeElement.querySelector('.count-btn');
         const counterValue = boxTypeElement.querySelector('.box-count');
-        const totalOverlay = boxTypeElement.querySelector('.box-total-overlay');
         
         countBtn.addEventListener('click', function() {
             const currentValue = parseInt(counterValue.textContent);
@@ -501,7 +497,6 @@ function displayUserBoxesInHome() {
                 if (newValue !== null && !isNaN(newValue) && parseInt(newValue) >= 0) {
                     const finalValue = parseInt(newValue);
                     counterValue.textContent = finalValue;
-                    totalOverlay.textContent = finalValue; // Actualizar el total superpuesto
                     
                     // Actualizar en el array
                     const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
