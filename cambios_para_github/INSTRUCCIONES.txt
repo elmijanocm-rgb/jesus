@@ -47,8 +47,12 @@ CAMBIOS REALIZADOS:
      * Reducido padding del contenedor de 20px a 10px
      * Reducido gap del grid de 20px a 10px
      * Reducido tamaño de imágenes de 60px a 45px
-     * Ajustado padding y font-size de los totales
-     * Agregado box-sizing: border-box para prevenir desbordamiento
+      * Ajustado padding y font-size de los totales
+      * Agregado box-sizing: border-box para prevenir desbordamiento
+    - Ajustado ancho de recuadros de resumen para móvil:
+      * Aumentado min-width de 100px a 140px
+      * Cambiado max-width de 33.333% a 50% para mayor extensión horizontal
+      * Aumentado padding para mejor apariencia
 
 Pasos para subir a GitHub:
 1. Ve a tu repositorio en github.com
