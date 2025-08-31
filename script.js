@@ -1363,11 +1363,17 @@ function displayHistorialConteos() {
         const finBloque = inicioBloque + 4;
         const conteosBloque = historialConteos.slice(inicioBloque, finBloque)
             .sort((a, b) => {
-                // Convertir DD/MM/YYYY a YYYY-MM-DD para ordenamiento correcto
-                const fechaA = a.fecha.split('/').reverse().join('-');
-                const fechaB = b.fecha.split('/').reverse().join('-');
-                const dateTimeA = new Date(fechaA + ' ' + (a.hora || '00:00'));
-                const dateTimeB = new Date(fechaB + ' ' + (b.hora || '00:00'));
+                // El formato es "DD/MM/YYYY HH:MM" en a.fecha
+                const [fechaA, horaA] = a.fecha.split(' ');
+                const [fechaB, horaB] = b.fecha.split(' ');
+                
+                // Convertir DD/MM/YYYY a YYYY-MM-DD
+                const fechaFormateadaA = fechaA.split('/').reverse().join('-');
+                const fechaFormateadaB = fechaB.split('/').reverse().join('-');
+                
+                const dateTimeA = new Date(fechaFormateadaA + ' ' + horaA);
+                const dateTimeB = new Date(fechaFormateadaB + ' ' + horaB);
+                
                 return dateTimeB - dateTimeA; // Más reciente primero
             });
         
