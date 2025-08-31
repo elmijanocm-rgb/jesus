@@ -1367,14 +1367,18 @@ function displayHistorialConteos() {
                 const [fechaA, horaA] = a.fecha.split(' ');
                 const [fechaB, horaB] = b.fecha.split(' ');
                 
-                // Convertir DD/MM/YYYY a YYYY-MM-DD
-                const fechaFormateadaA = fechaA.split('/').reverse().join('-');
-                const fechaFormateadaB = fechaB.split('/').reverse().join('-');
+                // Convertir DD/MM/YYYY a componentes numéricos
+                const [diaA, mesA, anoA] = fechaA.split('/').map(Number);
+                const [diaB, mesB, anoB] = fechaB.split('/').map(Number);
+                const [horaNumA, minA] = horaA.split(':').map(Number);
+                const [horaNumB, minB] = horaB.split(':').map(Number);
                 
-                const dateTimeA = new Date(fechaFormateadaA + ' ' + horaA);
-                const dateTimeB = new Date(fechaFormateadaB + ' ' + horaB);
+                // Crear objetos Date correctos
+                const dateTimeA = new Date(anoA, mesA - 1, diaA, horaNumA, minA);
+                const dateTimeB = new Date(anoB, mesB - 1, diaB, horaNumB, minB);
                 
-                return dateTimeB - dateTimeA; // Más reciente primero
+                // Ordenar descendente (más reciente primero)
+                return dateTimeB.getTime() - dateTimeA.getTime();
             });
         
         // Título del bloque cerrado
