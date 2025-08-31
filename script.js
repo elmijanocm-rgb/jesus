@@ -1361,7 +1361,7 @@ function displayHistorialConteos() {
         // Calcular desde el final del array, excluyendo el bloque activo
         const inicioBloque = historialConteos.length - filasEnBloqueActual - (bloqueIndex + 1) * 4;
         const finBloque = inicioBloque + 4;
-        const conteosBloque = historialConteos.slice(inicioBloque, finBloque);
+        const conteosBloque = historialConteos.slice(inicioBloque, finBloque).reverse();
         
         // Título del bloque cerrado
         const tituloRow = document.createElement('tr');
