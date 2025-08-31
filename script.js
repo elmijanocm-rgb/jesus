@@ -1355,11 +1355,11 @@ function displayHistorialConteos() {
         }
     }
     
-    // PASO 2: MOSTRAR BLOQUES CERRADOS (abajo) - Del más reciente al más antiguo
-    for (let bloqueIndex = bloquesCompletos - 1; bloqueIndex >= 0; bloqueIndex--) {
-        const numeroBloque = bloqueIndex + 1; // El bloque más reciente será el número más bajo
-        // Calcular desde el final del array, excluyendo el bloque activo
-        const inicioBloque = historialConteos.length - filasEnBloqueActual - (bloqueIndex + 1) * 4;
+    // PASO 2: MOSTRAR BLOQUES CERRADOS (abajo) - En orden ascendente por fecha
+    for (let bloqueIndex = 0; bloqueIndex < bloquesCompletos; bloqueIndex++) {
+        const numeroBloque = bloqueIndex + 1; // Numeración ascendente
+        // Calcular desde el inicio para orden ascendente
+        const inicioBloque = historialConteos.length - filasEnBloqueActual - (bloquesCompletos - bloqueIndex) * 4;
         const finBloque = inicioBloque + 4;
         const conteosBloque = historialConteos.slice(inicioBloque, finBloque).reverse();
         
