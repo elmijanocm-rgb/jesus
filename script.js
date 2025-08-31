@@ -1362,7 +1362,14 @@ function displayHistorialConteos() {
         const inicioBloque = historialConteos.length - filasEnBloqueActual - (bloqueIndex + 1) * 4;
         const finBloque = inicioBloque + 4;
         const conteosBloque = historialConteos.slice(inicioBloque, finBloque)
-            .sort((a, b) => new Date(b.fecha.replace(/\//, '-').replace(/\//, '-') + ' ' + (b.hora || '00:00')) - new Date(a.fecha.replace(/\//, '-').replace(/\//, '-') + ' ' + (a.hora || '00:00')));
+            .sort((a, b) => {
+                // Convertir DD/MM/YYYY a YYYY-MM-DD para ordenamiento correcto
+                const fechaA = a.fecha.split('/').reverse().join('-');
+                const fechaB = b.fecha.split('/').reverse().join('-');
+                const dateTimeA = new Date(fechaA + ' ' + (a.hora || '00:00'));
+                const dateTimeB = new Date(fechaB + ' ' + (b.hora || '00:00'));
+                return dateTimeB - dateTimeA; // Más reciente primero
+            });
         
         // Título del bloque cerrado
         const tituloRow = document.createElement('tr');
