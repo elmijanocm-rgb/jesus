@@ -1361,7 +1361,8 @@ function displayHistorialConteos() {
         // Calcular para que Bloque 1 tenga las fechas más recientes
         const inicioBloque = historialConteos.length - filasEnBloqueActual - (bloqueIndex + 1) * 4;
         const finBloque = inicioBloque + 4;
-        const conteosBloque = historialConteos.slice(inicioBloque, finBloque);
+        const conteosBloque = historialConteos.slice(inicioBloque, finBloque)
+            .sort((a, b) => new Date(b.fecha.replace(/\//, '-').replace(/\//, '-') + ' ' + (b.hora || '00:00')) - new Date(a.fecha.replace(/\//, '-').replace(/\//, '-') + ' ' + (a.hora || '00:00')));
         
         // Título del bloque cerrado
         const tituloRow = document.createElement('tr');
