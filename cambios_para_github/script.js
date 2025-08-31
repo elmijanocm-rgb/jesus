@@ -1357,7 +1357,7 @@ function displayHistorialConteos() {
     
     // PASO 2: MOSTRAR BLOQUES CERRADOS (abajo) - Del más reciente al más antiguo
     for (let bloqueIndex = bloquesCompletos - 1; bloqueIndex >= 0; bloqueIndex--) {
-        const numeroBloque = bloquesCompletos - bloqueIndex;
+        const numeroBloque = bloqueIndex + 1; // El bloque más reciente será el número más bajo
         // Calcular desde el final del array, excluyendo el bloque activo
         const inicioBloque = historialConteos.length - filasEnBloqueActual - (bloqueIndex + 1) * 4;
         const finBloque = inicioBloque + 4;
