@@ -70,10 +70,11 @@ CAMBIOS REALIZADOS:
    - Asegurado que los elementos se extiendan de lado a lado sin desbordamiento horizontal
    - Mejorado el aprovechamiento del espacio disponible en pantallas pequeñas
 
-✅ CENTRADO Y EXPANSIÓN DE CAJAS DE RESUMEN:
-   - Se centró el contenedor de cajas de resumen (.summary-boxes) con justify-content: center y width: 100%
-   - Las cajas individuales (.summary-box) ahora usan flex: 1 para expandirse equitativamente y max-width: 200px para mantener proporciones
-   - Las cajas "TOTAL GENERAL" y "TOTAL PALETS" ahora ocupan todo el ancho disponible de forma centrada y balanceada
+✅ REDISEÑO DE CAJAS DE RESUMEN EN FORMATO HORIZONTAL UNIFICADO:
+   - Cajas de resumen "TOTAL GENERAL" y "TOTAL PALETS" rediseñadas en formato horizontal unificado:
+     - .summary-boxes: contenedor único con gradiente, max-width: 600px, sin gap entre cajas
+     - .summary-box: cajas transparentes dentro del contenedor, con bordes redondeados en extremos
+     - Separador visual entre las dos cajas con borde semi-transparente
 
 Pasos para subir a GitHub:
 1. Ve a tu repositorio en github.com
