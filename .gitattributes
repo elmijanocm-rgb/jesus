@@ -1,0 +1,12 @@
+# Disable GitHub Pages processing for all files
+* -text
+*.html text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+
+# Ensure no automatic transformations
+*.js linguist-language=JavaScript
+*.html linguist-language=HTML
+*.css linguist-language=CSS
