@@ -608,21 +608,12 @@ img {
 
 .summary-boxes {
     display: flex;
-    gap: 0;
+    gap: 20px;
     flex-shrink: 0;
     justify-content: center;
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.summary-boxes:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 .summary-box {
@@ -630,19 +621,15 @@ img {
     padding: 15px 20px;
     text-align: center;
     flex: 1;
-    background: transparent;
-    box-shadow: none;
-    transition: none;
-    border-radius: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.summary-box:first-child {
-    border-radius: 12px 0 0 12px;
-}
-
-.summary-box:last-child {
-    border-radius: 0 12px 12px 0;
-    border-left: 1px solid rgba(255, 255, 255, 0.2);
+.summary-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 
@@ -749,23 +736,24 @@ img {
     /* Summary boxes */
     .summary-boxes {
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 8px;
+        gap: 20px;
         width: 100%;
-        max-width: 100%;
+        max-width: 600px;
         margin: 0 auto;
         padding: 0 5px;
         box-sizing: border-box;
     }
     
     .summary-box {
-        flex: 1 !important;
-        min-width: 140px !important;
-        max-width: calc(50% - 10px) !important;
-        padding: 15px 12px !important;
-        font-size: 1rem !important;
-        box-sizing: border-box !important;
-        width: 100% !important;
+        flex: 1;
+        min-width: 140px;
+        padding: 15px 12px;
+        font-size: 1rem;
+        box-sizing: border-box;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     
     .summary-title {

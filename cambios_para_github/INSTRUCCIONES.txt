@@ -70,11 +70,12 @@ CAMBIOS REALIZADOS:
    - Asegurado que los elementos se extiendan de lado a lado sin desbordamiento horizontal
    - Mejorado el aprovechamiento del espacio disponible en pantallas pequeñas
 
-✅ REDISEÑO DE CAJAS DE RESUMEN EN FORMATO HORIZONTAL UNIFICADO:
-   - Cajas de resumen "TOTAL GENERAL" y "TOTAL PALETS" rediseñadas en formato horizontal unificado:
-     - .summary-boxes: contenedor único con gradiente, max-width: 600px, sin gap entre cajas
-     - .summary-box: cajas transparentes dentro del contenedor, con bordes redondeados en extremos
-     - Separador visual entre las dos cajas con borde semi-transparente
+✅ REDISEÑO DE CAJAS DE RESUMEN EN UNA SOLA LÍNEA:
+   - Cajas de resumen "TOTAL GENERAL" y "TOTAL PALETS" rediseñadas en una sola línea:
+     - .summary-boxes: contenedor flex con gap de 20px, max-width: 600px
+     - .summary-box: cajas individuales con gradiente propio y bordes redondeados
+     - Cada caja tiene su propio efecto hover independiente
+     - Diseño limpio con separación visual clara entre ambas cajas
 
 Pasos para subir a GitHub:
 1. Ve a tu repositorio en github.com
