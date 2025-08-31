@@ -1358,8 +1358,8 @@ function displayHistorialConteos() {
     // PASO 2: MOSTRAR BLOQUES CERRADOS (abajo) - En orden ascendente por fecha
     for (let bloqueIndex = 0; bloqueIndex < bloquesCompletos; bloqueIndex++) {
         const numeroBloque = bloqueIndex + 1; // Numeración ascendente
-        // Calcular desde el inicio para orden ascendente
-        const inicioBloque = historialConteos.length - filasEnBloqueActual - (bloquesCompletos - bloqueIndex) * 4;
+        // Calcular para que Bloque 1 tenga las fechas más recientes
+        const inicioBloque = historialConteos.length - filasEnBloqueActual - (bloqueIndex + 1) * 4;
         const finBloque = inicioBloque + 4;
         const conteosBloque = historialConteos.slice(inicioBloque, finBloque);
         
