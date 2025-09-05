@@ -1167,8 +1167,26 @@ function displayIndividualBoxesTotals() {
     container.appendChild(gridContainer);
 }
 
-// Variable global para rastrear bloques reabiertos
+// Variable para rastrear bloques reabiertos
 let bloquesReabiertos = new Set();
+
+// Función para cargar bloques reabiertos desde localStorage
+function loadBloquesReabiertos() {
+    const saved = localStorage.getItem('bloquesReabiertos');
+    if (saved) {
+        try {
+            const array = JSON.parse(saved);
+            bloquesReabiertos = new Set(array);
+            console.log('Bloques reabiertos cargados:', [...bloquesReabiertos]);
+        } catch (e) {
+            console.error('Error cargando bloques reabiertos:', e);
+            bloquesReabiertos = new Set();
+        }
+    }
+}
+
+// Cargar bloques reabiertos al inicio
+loadBloquesReabiertos();
 
 // Función para agregar un nuevo conteo a un bloque específico
 function agregarConteoABloque(numeroBloque) {
@@ -1219,24 +1237,28 @@ function agregarConteoABloque(numeroBloque) {
 
 // Función para alternar edición de bloques cerrados
 function toggleEditarBloque(bloqueIndex, numeroBloque) {
-    const bloqueKey = `bloque_${numeroBloque}`;
+    console.log('toggleEditarBloque llamado:', bloqueIndex, numeroBloque);
     
-    // Verificar si el bloque ya está reabierto
     if (bloquesReabiertos.has(numeroBloque)) {
-        // Si está reabierto, cerrarlo
-        if (confirm(`¿Quieres cerrar el Bloque ${numeroBloque}?`)) {
-            bloquesReabiertos.delete(numeroBloque);
-            displayHistorialConteos();
-            alert(`Bloque ${numeroBloque} cerrado nuevamente.`);
-        }
-        return;
-    }
-    
-    // Si está cerrado, reabrirlo
-    if (confirm(`¿Quieres reabrir el Bloque ${numeroBloque} para editarlo?`)) {
-        bloquesReabiertos.add(numeroBloque);
+        // Cerrar el bloque
+        console.log('Cerrando bloque:', numeroBloque);
+        bloquesReabiertos.delete(numeroBloque);
+        
+        // Guardar el estado en localStorage
+        localStorage.setItem('bloquesReabiertos', JSON.stringify([...bloquesReabiertos]));
+        
         displayHistorialConteos();
-        alert(`Bloque ${numeroBloque} reabierto. Ahora puedes editarlo.`);
+        alert('Bloque cerrado. Ya no se puede editar.');
+    } else {
+        // Abrir el bloque para edición
+        console.log('Abriendo bloque para edición:', numeroBloque);
+        bloquesReabiertos.add(numeroBloque);
+        
+        // Guardar el estado en localStorage
+        localStorage.setItem('bloquesReabiertos', JSON.stringify([...bloquesReabiertos]));
+        
+        displayHistorialConteos();
+        alert('Bloque reabierto. Ahora puedes editar los conteos.');
     }
     
     conteosBloque.forEach((conteo, index) => {
