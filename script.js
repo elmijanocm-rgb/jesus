@@ -1319,6 +1319,13 @@ function editarConteoCompleto(conteoIndex) {
 
 // Función para editar un conteo específico del historial
 function editarConteoDelHistorial(conteo) {
+    // Definir arrays de cajas necesarios para el modal
+    const sortedBoxes = [...userCreatedBoxes].sort((a, b) => (a.position || 0) - (b.position || 0));
+    const cajasPalet = sortedBoxes.filter(box => box.nombre.toLowerCase().includes('palet'));
+    const cajasNormales = sortedBoxes.filter(box => !box.nombre.toLowerCase().includes('palet'));
+    const cajasNormalesArray = cajasNormales.map(box => box.nombre);
+    const cajasPaletArray = cajasPalet.map(box => box.nombre);
+    
     // Crear modal de edición
     const editModal = document.createElement('div');
     editModal.className = 'modal-editar-conteo';
