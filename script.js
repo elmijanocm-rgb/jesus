@@ -1248,7 +1248,8 @@ function toggleEditarBloque(bloqueIndex, numeroBloque) {
         localStorage.setItem('bloquesReabiertos', JSON.stringify([...bloquesReabiertos]));
         
         displayHistorialConteos();
-        alert('Bloque cerrado. Ya no se puede editar.');
+        // Mostrar mensaje visual temporal en lugar de alert
+        mostrarMensajeTemporal('Bloque cerrado', 'success');
     } else {
         // Abrir el bloque para edición
         console.log('Abriendo bloque para edición:', numeroBloque);
@@ -1258,7 +1259,8 @@ function toggleEditarBloque(bloqueIndex, numeroBloque) {
         localStorage.setItem('bloquesReabiertos', JSON.stringify([...bloquesReabiertos]));
         
         displayHistorialConteos();
-        alert('Bloque reabierto. Ahora puedes editar los conteos.');
+        // Mostrar mensaje visual temporal en lugar de alert
+        mostrarMensajeTemporal('Bloque reabierto para edición', 'success');
     }
     
     conteosBloque.forEach((conteo, index) => {
@@ -1306,11 +1308,55 @@ function toggleEditarBloque(bloqueIndex, numeroBloque) {
     };
 }
 
+// Función para mostrar mensajes temporales en lugar de alerts
+function mostrarMensajeTemporal(mensaje, tipo = 'info') {
+    // Crear elemento de notificación
+    const notificacion = document.createElement('div');
+    notificacion.textContent = mensaje;
+    notificacion.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        border-radius: 6px;
+        color: white;
+        font-weight: bold;
+        z-index: 10000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        max-width: 300px;
+        word-wrap: break-word;
+    `;
+    
+    // Colores según el tipo
+    if (tipo === 'success') {
+        notificacion.style.backgroundColor = '#4CAF50';
+    } else if (tipo === 'error') {
+        notificacion.style.backgroundColor = '#f44336';
+    } else {
+        notificacion.style.backgroundColor = '#2196F3';
+    }
+    
+    // Agregar al DOM
+    document.body.appendChild(notificacion);
+    
+    // Remover después de 3 segundos
+    setTimeout(() => {
+        notificacion.style.opacity = '0';
+        notificacion.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notificacion.parentNode) {
+                notificacion.parentNode.removeChild(notificacion);
+            }
+        }, 300);
+    }, 3000);
+}
+
 // Función para editar un conteo completo por índice
 function editarConteoCompleto(conteoIndex) {
     const conteo = historialConteos[conteoIndex];
     if (!conteo) {
-        alert('Conteo no encontrado');
+        mostrarMensajeTemporal('Conteo no encontrado', 'error');
         return;
     }
     
@@ -1408,7 +1454,7 @@ function editarConteoDelHistorial(conteo) {
             // Actualizar la visualización
             displayHistorialConteos();
             
-            alert('Conteo actualizado correctamente');
+            mostrarMensajeTemporal('Conteo actualizado correctamente', 'success');
         }
         
         cerrarModalEditarConteo();
@@ -1867,7 +1913,7 @@ window.eliminarConteoSimple = function(indice) {
         localStorage.setItem('historialConteos', JSON.stringify(historial));
         historialConteos = historial;
         displayHistorialConteos();
-        alert('Conteo eliminado');
+        mostrarMensajeTemporal('Conteo eliminado', 'success');
     }
 }
 
