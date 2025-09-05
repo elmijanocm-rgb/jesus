@@ -1167,50 +1167,77 @@ function displayIndividualBoxesTotals() {
     container.appendChild(gridContainer);
 }
 
+// Variable global para rastrear bloques reabiertos
+let bloquesReabiertos = new Set();
+
+// Función para agregar un nuevo conteo a un bloque específico
+function agregarConteoABloque(numeroBloque) {
+    // Crear un conteo temporal con las cajas actuales
+    const nuevoConteo = {
+        fecha: new Date().toLocaleString('es-ES', {
+            day: '2-digit',
+            month: '2-digit', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        }).replace(',', ''),
+        cajas: {},
+        bloque: numeroBloque
+    };
+    
+    // Inicializar todas las cajas en 0
+    [...cajasNormalesArray, ...cajasPaletArray, ...userCreatedBoxes.map(box => box.nombre)].forEach(nombreCaja => {
+        nuevoConteo.cajas[nombreCaja] = 0;
+    });
+    
+    // Encontrar la posición correcta para insertar el conteo en el bloque
+    let insertIndex = historialConteos.length;
+    for (let i = historialConteos.length - 1; i >= 0; i--) {
+        if (historialConteos[i].bloque === numeroBloque) {
+            insertIndex = i + 1;
+            break;
+        }
+        if (historialConteos[i].bloque < numeroBloque) {
+            insertIndex = i + 1;
+            break;
+        }
+        insertIndex = i;
+    }
+    
+    // Insertar el nuevo conteo
+    historialConteos.splice(insertIndex, 0, nuevoConteo);
+    
+    // Guardar y actualizar
+    saveData();
+    displayHistorialConteos();
+    
+    // Abrir automáticamente el editor para el nuevo conteo
+    setTimeout(() => {
+        editarCantidad(insertIndex);
+    }, 100);
+}
+
 // Función para alternar edición de bloques cerrados
 function toggleEditarBloque(bloqueIndex, numeroBloque) {
     const bloqueKey = `bloque_${numeroBloque}`;
-    const conteosBloque = historialConteos.filter(conteo => conteo.bloque === numeroBloque);
     
-    if (conteosBloque.length === 0) {
-        alert('No hay conteos en este bloque para editar.');
+    // Verificar si el bloque ya está reabierto
+    if (bloquesReabiertos.has(numeroBloque)) {
+        // Si está reabierto, cerrarlo
+        if (confirm(`¿Quieres cerrar el Bloque ${numeroBloque}?`)) {
+            bloquesReabiertos.delete(numeroBloque);
+            displayHistorialConteos();
+            alert(`Bloque ${numeroBloque} cerrado nuevamente.`);
+        }
         return;
     }
     
-    // Mostrar modal o interfaz de edición
-    const editarModal = document.createElement('div');
-    editarModal.className = 'modal-editar-bloque';
-    editarModal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    `;
-    
-    const modalContent = document.createElement('div');
-    modalContent.style.cssText = `
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        max-width: 90%;
-        max-height: 80%;
-        overflow-y: auto;
-    `;
-    
-    modalContent.innerHTML = `
-        <h3>Editar Bloque ${numeroBloque}</h3>
-        <p>Selecciona un conteo para editar:</p>
-        <div id="lista-conteos-bloque"></div>
-        <button onclick="cerrarModalEdicion()" style="margin-top: 15px; padding: 8px 16px;">Cerrar</button>
-    `;
-    
-    const listaConteos = modalContent.querySelector('#lista-conteos-bloque');
+    // Si está cerrado, reabrirlo
+    if (confirm(`¿Quieres reabrir el Bloque ${numeroBloque} para editarlo?`)) {
+        bloquesReabiertos.add(numeroBloque);
+        displayHistorialConteos();
+        alert(`Bloque ${numeroBloque} reabierto. Ahora puedes editarlo.`);
+    }
     
     conteosBloque.forEach((conteo, index) => {
         const conteoDiv = document.createElement('div');
@@ -1518,8 +1545,15 @@ function displayHistorialConteos() {
             }
         });
         
-        // Agregar celda vacía de acciones para subtotal
-        subtotalHTML += `<td></td>`;
+        // Agregar celda de acciones para subtotal
+        if (bloquesReabiertos.has(numeroBloque)) {
+            // Si el bloque está reabierto, mostrar botón para agregar conteo
+            subtotalHTML += `<td style="text-align: center;">
+                <button onclick="agregarConteoABloque(${numeroBloque})" style="padding: 6px 12px; background: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px;">➕ Agregar</button>
+            </td>`;
+        } else {
+            subtotalHTML += `<td></td>`;
+        }
         
         subtotalRow.innerHTML = subtotalHTML;
         tbody.appendChild(subtotalRow);
@@ -1579,21 +1613,30 @@ function displayHistorialConteos() {
         const tituloCell = document.createElement('td');
         tituloCell.colSpan = ordenColumnasData.length + 3; // +3 para Fecha/Hora, Total y Acciones
         
-        // Crear botón del candado clickeable
-        const lockButton = document.createElement('button');
-        lockButton.innerHTML = '🔒';
-        lockButton.className = 'lock-button';
-        lockButton.style.background = 'none';
-        lockButton.style.border = 'none';
-        lockButton.style.color = 'white';
-        lockButton.style.fontSize = '16px';
-        lockButton.style.cursor = 'pointer';
-        lockButton.style.marginRight = '8px';
-        lockButton.title = 'Hacer clic para editar este bloque';
-        lockButton.onclick = () => toggleEditarBloque(bloqueIndex, numeroBloque);
+        // Verificar si el bloque está reabierto
+        const estaReabierto = bloquesReabiertos.has(numeroBloque);
         
-        tituloCell.appendChild(lockButton);
-        tituloCell.appendChild(document.createTextNode(`BLOQUE ${numeroBloque} (CERRADO)`));
+        // Crear botón del candado/abrir clickeable
+        const toggleButton = document.createElement('button');
+        toggleButton.innerHTML = estaReabierto ? '🔓' : '🔒';
+        toggleButton.className = estaReabierto ? 'unlock-button' : 'lock-button';
+        toggleButton.style.background = 'none';
+        toggleButton.style.border = 'none';
+        toggleButton.style.color = 'white';
+        toggleButton.style.fontSize = '16px';
+        toggleButton.style.cursor = 'pointer';
+        toggleButton.style.marginRight = '8px';
+        toggleButton.title = estaReabierto ? 'Hacer clic para cerrar este bloque' : 'Hacer clic para reabrir este bloque';
+        toggleButton.onclick = () => toggleEditarBloque(bloqueIndex, numeroBloque);
+        
+        tituloCell.appendChild(toggleButton);
+        const estadoTexto = estaReabierto ? '(ABIERTO - EDITABLE)' : '(CERRADO)';
+        tituloCell.appendChild(document.createTextNode(`BLOQUE ${numeroBloque} ${estadoTexto}`));
+        
+        // Cambiar color de fondo si está reabierto
+        if (estaReabierto) {
+            tituloRow.style.backgroundColor = '#FF9800'; // Naranja para indicar que está abierto
+        }
         tituloRow.appendChild(tituloCell);
         tbody.appendChild(tituloRow);
         
@@ -1648,8 +1691,18 @@ function displayHistorialConteos() {
             subtotalGeneralBloque += totalCajasNormales;
             totalGeneral += totalCajasNormales;
             
-            // Agregar celda vacía de acciones para bloques cerrados
-            cellsHTML += `<td></td>`;
+            // Agregar celda de acciones
+            if (bloquesReabiertos.has(numeroBloque)) {
+                // Si el bloque está reabierto, mostrar botones de edición
+                const conteoIndex = historialConteos.indexOf(conteo);
+                cellsHTML += `<td style="text-align: center;">
+                    <button onclick="editarCantidad(${conteoIndex})" style="margin: 2px; padding: 4px 8px; background: #2196F3; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px;">✏️</button>
+                    <button onclick="eliminarConteoSimple(${conteoIndex})" style="margin: 2px; padding: 4px 8px; background: #f44336; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px;">🗑️</button>
+                </td>`;
+            } else {
+                // Celda vacía para bloques cerrados
+                cellsHTML += `<td></td>`;
+            }
             
             row.innerHTML = cellsHTML;
             
