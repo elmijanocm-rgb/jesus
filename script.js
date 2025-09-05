@@ -1167,6 +1167,193 @@ function displayIndividualBoxesTotals() {
     container.appendChild(gridContainer);
 }
 
+// Función para alternar edición de bloques cerrados
+function toggleEditarBloque(bloqueIndex, numeroBloque) {
+    const bloqueKey = `bloque_${numeroBloque}`;
+    const conteosBloque = historialConteos.filter(conteo => conteo.bloque === numeroBloque);
+    
+    if (conteosBloque.length === 0) {
+        alert('No hay conteos en este bloque para editar.');
+        return;
+    }
+    
+    // Mostrar modal o interfaz de edición
+    const editarModal = document.createElement('div');
+    editarModal.className = 'modal-editar-bloque';
+    editarModal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    `;
+    
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 90%;
+        max-height: 80%;
+        overflow-y: auto;
+    `;
+    
+    modalContent.innerHTML = `
+        <h3>Editar Bloque ${numeroBloque}</h3>
+        <p>Selecciona un conteo para editar:</p>
+        <div id="lista-conteos-bloque"></div>
+        <button onclick="cerrarModalEdicion()" style="margin-top: 15px; padding: 8px 16px;">Cerrar</button>
+    `;
+    
+    const listaConteos = modalContent.querySelector('#lista-conteos-bloque');
+    
+    conteosBloque.forEach((conteo, index) => {
+        const conteoDiv = document.createElement('div');
+        conteoDiv.style.cssText = `
+            border: 1px solid #ddd;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        `;
+        
+        let totalCajas = 0;
+        if (conteo.cajas) {
+            Object.values(conteo.cajas).forEach(cantidad => {
+                if (typeof cantidad === 'number') totalCajas += cantidad;
+            });
+        }
+        
+        conteoDiv.innerHTML = `
+            <strong>${conteo.fecha}</strong> - Total: ${totalCajas} cajas
+            <button onclick="editarConteoEspecifico('${conteo.id}')" style="margin-left: 10px; padding: 4px 8px;">Editar</button>
+        `;
+        
+        listaConteos.appendChild(conteoDiv);
+    });
+    
+    editarModal.appendChild(modalContent);
+    document.body.appendChild(editarModal);
+    
+    // Función global para cerrar modal
+    window.cerrarModalEdicion = function() {
+        document.body.removeChild(editarModal);
+        delete window.cerrarModalEdicion;
+        delete window.editarConteoEspecifico;
+    };
+    
+    // Función global para editar conteo específico
+    window.editarConteoEspecifico = function(conteoId) {
+        const conteo = historialConteos.find(c => c.id === conteoId);
+        if (conteo) {
+            editarConteoDelHistorial(conteo);
+            cerrarModalEdicion();
+        }
+    };
+}
+
+// Función para editar un conteo específico del historial
+function editarConteoDelHistorial(conteo) {
+    // Crear modal de edición
+    const editModal = document.createElement('div');
+    editModal.className = 'modal-editar-conteo';
+    editModal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1001;
+    `;
+    
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 90%;
+        max-height: 80%;
+        overflow-y: auto;
+    `;
+    
+    let formHTML = `
+        <h3>Editar Conteo - ${conteo.fecha}</h3>
+        <form id="form-editar-conteo">
+    `;
+    
+    // Agregar campos para cada tipo de caja
+    const todasLasCajas = [...cajasNormalesArray, ...cajasPaletArray];
+    todasLasCajas.forEach(nombreCaja => {
+        const cantidadActual = (conteo.cajas && conteo.cajas[nombreCaja]) || 0;
+        formHTML += `
+            <div style="margin: 10px 0;">
+                <label style="display: inline-block; width: 150px;">${nombreCaja}:</label>
+                <input type="number" name="${nombreCaja}" value="${cantidadActual}" min="0" style="width: 80px; padding: 4px;">
+            </div>
+        `;
+    });
+    
+    formHTML += `
+            <div style="margin-top: 20px;">
+                <button type="submit" style="padding: 8px 16px; margin-right: 10px; background: #4CAF50; color: white; border: none; border-radius: 4px;">Guardar Cambios</button>
+                <button type="button" onclick="cerrarModalEditarConteo()" style="padding: 8px 16px; background: #f44336; color: white; border: none; border-radius: 4px;">Cancelar</button>
+            </div>
+        </form>
+    `;
+    
+    modalContent.innerHTML = formHTML;
+    editModal.appendChild(modalContent);
+    document.body.appendChild(editModal);
+    
+    // Manejar envío del formulario
+    const form = document.getElementById('form-editar-conteo');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Recopilar nuevos valores
+        const formData = new FormData(form);
+        const nuevasCantidades = {};
+        
+        todasLasCajas.forEach(nombreCaja => {
+            const valor = parseInt(formData.get(nombreCaja)) || 0;
+            if (valor > 0) {
+                nuevasCantidades[nombreCaja] = valor;
+            }
+        });
+        
+        // Actualizar el conteo en el historial
+        const index = historialConteos.findIndex(c => c.id === conteo.id);
+        if (index !== -1) {
+            historialConteos[index].cajas = nuevasCantidades;
+            
+            // Guardar en localStorage
+            localStorage.setItem('historialConteos', JSON.stringify(historialConteos));
+            
+            // Actualizar la visualización
+            displayHistorialConteos();
+            
+            alert('Conteo actualizado correctamente');
+        }
+        
+        cerrarModalEditarConteo();
+    });
+    
+    // Función para cerrar modal
+    window.cerrarModalEditarConteo = function() {
+        document.body.removeChild(editModal);
+        delete window.cerrarModalEditarConteo;
+    };
+}
+
 // Función para mostrar el historial de conteos
 function displayHistorialConteos() {
     const tbody = document.querySelector('#conteos .data-table tbody');
@@ -1391,7 +1578,22 @@ function displayHistorialConteos() {
         
         const tituloCell = document.createElement('td');
         tituloCell.colSpan = ordenColumnasData.length + 3; // +3 para Fecha/Hora, Total y Acciones
-        tituloCell.innerHTML = `🔒 BLOQUE ${numeroBloque} (CERRADO)`;
+        
+        // Crear botón del candado clickeable
+        const lockButton = document.createElement('button');
+        lockButton.innerHTML = '🔒';
+        lockButton.className = 'lock-button';
+        lockButton.style.background = 'none';
+        lockButton.style.border = 'none';
+        lockButton.style.color = 'white';
+        lockButton.style.fontSize = '16px';
+        lockButton.style.cursor = 'pointer';
+        lockButton.style.marginRight = '8px';
+        lockButton.title = 'Hacer clic para editar este bloque';
+        lockButton.onclick = () => toggleEditarBloque(bloqueIndex, numeroBloque);
+        
+        tituloCell.appendChild(lockButton);
+        tituloCell.appendChild(document.createTextNode(`BLOQUE ${numeroBloque} (CERRADO)`));
         tituloRow.appendChild(tituloCell);
         tbody.appendChild(tituloRow);
         
