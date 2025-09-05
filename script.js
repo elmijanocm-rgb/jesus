@@ -1306,6 +1306,17 @@ function toggleEditarBloque(bloqueIndex, numeroBloque) {
     };
 }
 
+// Función para editar un conteo completo por índice
+function editarConteoCompleto(conteoIndex) {
+    const conteo = historialConteos[conteoIndex];
+    if (!conteo) {
+        alert('Conteo no encontrado');
+        return;
+    }
+    
+    editarConteoDelHistorial(conteo);
+}
+
 // Función para editar un conteo específico del historial
 function editarConteoDelHistorial(conteo) {
     // Crear modal de edición
@@ -1718,7 +1729,7 @@ function displayHistorialConteos() {
                 // Si el bloque está reabierto, mostrar botones de edición
                 const conteoIndex = historialConteos.indexOf(conteo);
                 cellsHTML += `<td style="text-align: center;">
-                    <button onclick="editarCantidad(${conteoIndex})" style="margin: 2px; padding: 4px 8px; background: #2196F3; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px;">✏️</button>
+                    <button onclick="editarConteoCompleto(${conteoIndex})" style="margin: 2px; padding: 4px 8px; background: #2196F3; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px;">✏️</button>
                     <button onclick="eliminarConteoSimple(${conteoIndex})" style="margin: 2px; padding: 4px 8px; background: #f44336; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px;">🗑️</button>
                 </td>`;
             } else {
