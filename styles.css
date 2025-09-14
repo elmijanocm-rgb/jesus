@@ -850,9 +850,9 @@ img {
     .data-table td {
         padding: 8px 4px;
         font-size: 0.8rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        white-space: normal;
+        overflow: visible;
+        word-wrap: break-word;
     }
     
     /* Hacer las columnas más compactas en móvil */
@@ -1601,7 +1601,7 @@ img {
     border-radius: 4px;
     font-size: 10px;
     font-weight: 600;
-    white-space: nowrap;
+    white-space: normal;
     z-index: 10;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
