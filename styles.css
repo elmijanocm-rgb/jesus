@@ -841,14 +841,32 @@ img {
     }
     
     .data-table {
-        min-width: 600px;
+        min-width: 100%;
+        width: 100%;
+        table-layout: fixed;
     }
     
     .data-table th,
     .data-table td {
-        padding: 15px 8px;
-        font-size: 0.9rem;
+        padding: 8px 4px;
+        font-size: 0.8rem;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Hacer las columnas más compactas en móvil */
+    .data-table th:first-child,
+    .data-table td:first-child {
+        width: 25%;
+        min-width: 80px;
+    }
+    
+    .data-table th:not(:first-child),
+    .data-table td:not(:first-child) {
+        width: auto;
+        min-width: 40px;
+        text-align: center;
     }
     
     /* Mejorar contraste para filas de bloque activo en móvil */
@@ -2052,4 +2070,30 @@ img {
 
 .delete-btn:active {
     background-color: #b71c1c;
+}
+
+/* FORZAR ALINEACIÓN A LA IZQUIERDA DE ICONOS EN TABLAS */
+table tr td div[style*="display: flex"] {
+    justify-content: flex-start !important;
+    align-items: center !important;
+    text-align: left !important;
+}
+
+table tr td div[style*="display: flex"] .btn {
+    justify-content: center !important;
+    margin-right: 5px !important;
+    margin-left: 0 !important;
+}
+
+/* Específico para filas de iconos */
+tr td[colspan] div[style*="flex"] {
+    justify-content: flex-start !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    text-align: left !important;
+}
+
+tr td[colspan] div[style*="flex"] .btn {
+    margin-right: 5px !important;
+    margin-left: 0 !important;
 }

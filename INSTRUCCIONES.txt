@@ -1,0 +1,89 @@
+INSTRUCCIONES PARA SUBIR LOS CAMBIOS A GITHUB PAGES
+=====================================================
+
+ARCHIVOS MODIFICADOS:
+===================
+
+1. styles.css - Estilos principales de la aplicación + corrección alineamiento móvil
+2. emergency-mobile.css - Estilos específicos para móvil
+3. script.js - Lógica principal de la aplicación
+4. index.html - Archivo principal con correcciones de caché
+
+CAMBIOS REALIZADOS:
+==================
+
+✅ Nombres de cajas ahora visibles con tipografía mejorada
+✅ Espaciado móvil más compacto (reducción de márgenes y padding)
+✅ Diseño móvil optimizado para evitar deslizar mucho hacia abajo
+   - Navegación ajustada
+   - Header compacto
+   - Tarjetas más pequeñas
+   - Imágenes optimizadas
+
+✅ NUEVOS CAMBIOS EN HISTORIAL DE CONTEO:
+   - Eliminada la casilla de palets del historial
+   - Reorganización de cajas en layout de 2 filas x 3 columnas
+   - Filtrado automático para excluir palets
+   - Grid responsivo y centrado
+
+✅ CORRECCIONES DE CACHÉ:
+   - Script automático de limpieza de caché del navegador
+   - Parámetros de cache-busting actualizados en CSS y JS
+   - Forzado de recarga para asegurar que los cambios se vean
+   - Versión actualizada a 3.3.0-historial-fixed
+
+✅ NUEVO ORDENAMIENTO DE BLOQUES:
+   - Los nuevos conteos ahora se insertan después del bloque activo
+   - Lógica mejorada para mantener el orden cronológico correcto
+   - Los bloques más recientes aparecen inmediatamente después del activo
+   - Sistema inteligente de inserción basado en el estado del bloque
+
+✅ CORRECCIÓN DE ALINEAMIENTO MÓVIL:
+   - Corregido desplazamiento de recuadros de resumen en dispositivos móviles
+   - Los recuadros de "Total General", "Total Palets" y grid de cajas ahora se mantienen centrados
+   - Ajustado max-width y padding para evitar desbordamiento horizontal
+   - Reducido tamaño de fuentes para mejor adaptación móvil
+   - Se optimizó el grid de cajas individuales (2x3) para móvil:
+     * Reducido padding del contenedor de 20px a 10px
+     * Reducido gap del grid de 20px a 10px
+     * Reducido tamaño de imágenes de 60px a 45px
+      * Ajustado padding y font-size de los totales
+      * Agregado box-sizing: border-box para prevenir desbordamiento
+    - Ajustado ancho de recuadros de resumen para móvil:
+      * Aumentado min-width de 100px a 140px
+      * Cambiado max-width de 33.333% a 50% para mayor extensión horizontal
+      * Aumentado padding para mejor apariencia
+
+✅ MEJORA ESTÉTICA:
+   - Agregado fondo verde suave (#e8f5e8) a las cajas individuales
+   - Mejora la apariencia visual cuando las imágenes no cargan completamente
+   - Proporciona un fondo que complementa el diseño sin resaltar demasiado
+   - Se cambió el fondo del contenedor principal de las cajas individuales (.individual-boxes-display) de #f8f9fa a #e8f5e8 con borde #d4e6d4 para mantener consistencia visual
+   - Se añadió !important a los estilos móviles de las cajas de resumen (.summary-box) para asegurar que el alargamiento horizontal se aplique correctamente en dispositivos móviles.
+- Se ajustaron las imágenes de las cajas individuales al espacio disponible: aumentadas de 60px a 100px en escritorio (70px en móvil) y bordes redondeados de 8px a 12px para mejor visibilidad manteniendo la formación.
+- Números de totales aumentados: 18px en escritorio (antes 14px) y 16px en móvil (antes 12px) para mejor legibilidad.
+
+✅ OPTIMIZACIÓN DE LAYOUT RESPONSIVO:
+   - Agregado width: 100% y box-sizing: border-box al contenedor principal (.app-container)
+   - En móvil: reducido padding del app-container de 15px a 5px
+   - Reducido margin del contenido de 10px a 5px en móvil
+   - Asegurado que los elementos se extiendan de lado a lado sin desbordamiento horizontal
+   - Mejorado el aprovechamiento del espacio disponible en pantallas pequeñas
+
+✅ REDISEÑO DE CAJAS DE RESUMEN EN UNA SOLA LÍNEA:
+   - Cajas de resumen "TOTAL GENERAL" y "TOTAL PALETS" rediseñadas en una sola línea:
+     - .summary-boxes: contenedor flex con gap de 20px, max-width: 600px
+     - .summary-box: cajas individuales con gradiente propio y bordes redondeados
+     - Cada caja tiene su propio efecto hover independiente
+     - Diseño limpio con separación visual clara entre ambas cajas
+
+Pasos para subir a GitHub:
+1. Ve a tu repositorio en github.com
+2. Navega a cada archivo (styles.css y emergency-mobile.css)
+3. Haz clic en el ícono de lápiz para editar
+4. Reemplaza el contenido con el de los archivos de esta carpeta
+5. Haz commit con mensaje: "Optimización móvil: nombres visibles y espaciado compacto"
+6. Espera unos minutos para que GitHub Pages se actualice
+
+Los cambios están probados y funcionando en el servidor local.
+Una vez subidos, se verán en tu página web automáticamente.
