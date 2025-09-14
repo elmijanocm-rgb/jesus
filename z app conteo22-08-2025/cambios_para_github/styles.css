@@ -841,9 +841,9 @@ img {
     }
     
     .data-table {
-        min-width: 100%;
-        width: 100%;
-        table-layout: fixed;
+        min-width: max-content;
+        width: auto;
+        table-layout: auto;
     }
     
     .data-table th,
@@ -855,18 +855,18 @@ img {
         word-wrap: break-word;
     }
     
-    /* Hacer las columnas más compactas en móvil */
-    .data-table th:first-child,
-    .data-table td:first-child {
-        width: 25%;
-        min-width: 80px;
+    /* Permitir que las columnas se expandan según el contenido */
+    .data-table th,
+    .data-table td {
+        width: auto;
+        min-width: max-content;
+        white-space: nowrap;
+        padding: 8px 12px;
     }
     
-    .data-table th:not(:first-child),
-    .data-table td:not(:first-child) {
-        width: auto;
-        min-width: 40px;
-        text-align: center;
+    .data-table th:first-child,
+    .data-table td:first-child {
+        min-width: max-content;
     }
     
     /* Mejorar contraste para filas de bloque activo en móvil */
