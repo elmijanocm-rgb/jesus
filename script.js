@@ -2246,8 +2246,7 @@ function eliminarRegistroArchivado(index) {
     const registro = registrosArchivados[index];
     if (!registro) return;
     
-    // Eliminar registro archivado directamente sin confirmación
-    {
+    if (confirm(`¿Estás seguro de que deseas eliminar el registro archivado del ${registro.fechaArchivo}? Esta acción no se puede deshacer.`)) {
         // Eliminar el registro del array
         registrosArchivados.splice(index, 1);
         
