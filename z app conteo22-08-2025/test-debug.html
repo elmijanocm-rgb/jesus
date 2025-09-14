@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .debug-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .error { color: red; }
+        .success { color: green; }
+        .warning { color: orange; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Debug Test - Verificación de Funciones</h1>
+    
+    <div class="debug-section">
+        <h2>1. Estado de Variables Globales</h2>
+        <div id="variables-status"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>2. Prueba de Funciones</h2>
+        <div id="functions-status"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>3. Simulación de Tabla</h2>
+        <table style="border-collapse: collapse; width: 100%; border: 1px solid #ccc;">
+            <thead>
+                <tr id="test-thead" style="background: #f0f0f0;">
+                    <!-- Headers dinámicos aquí -->
+                </tr>
+            </thead>
+            <tbody id="test-tbody">
+                <!-- Datos dinámicos aquí -->
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="debug-section">
+        <h2>4. Console Log</h2>
+        <pre id="console-log"></pre>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        let debugLog = [];
+        
+        function addDebugLog(message, type = 'info') {
+            debugLog.push(`[${new Date().toLocaleTimeString()}] ${type.toUpperCase()}: ${message}`);
+            document.getElementById('console-log').textContent = debugLog.join('\n');
+        }
+        
+        function checkVariables() {
+            const container = document.getElementById('variables-status');
+            let html = '';
+            
+            try {
+                html += `<p class="${typeof userCreatedBoxes !== 'undefined' ? 'success' : 'error'}">userCreatedBoxes: ${typeof userCreatedBoxes !== 'undefined' ? 'Definido' : 'No definido'}</p>`;
+                
+                if (typeof userCreatedBoxes !== 'undefined') {
+                    html += `<p>Longitud de userCreatedBoxes: ${userCreatedBoxes.length}</p>`;
+                    html += `<pre>${JSON.stringify(userCreatedBoxes, null, 2)}</pre>`;
+                }
+                
+                html += `<p class="${typeof historialConteos !== 'undefined' ? 'success' : 'error'}">historialConteos: ${typeof historialConteos !== 'undefined' ? 'Definido' : 'No definido'}</p>`;
+                
+                if (typeof historialConteos !== 'undefined') {
+                    html += `<p>Longitud de historialConteos: ${historialConteos.length}</p>`;
+                }
+                
+            } catch (error) {
+                html += `<p class="error">Error al verificar variables: ${error.message}</p>`;
+                addDebugLog(`Error al verificar variables: ${error.message}`, 'error');
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        function testFunctions() {
+            const container = document.getElementById('functions-status');
+            let html = '';
+            
+            try {
+                // Probar updateHistorialHeaders
+                html += `<p class="${typeof updateHistorialHeaders === 'function' ? 'success' : 'error'}">updateHistorialHeaders: ${typeof updateHistorialHeaders === 'function' ? 'Función disponible' : 'No disponible'}</p>`;
+                
+                // Probar displayHistorialConteos
+                html += `<p class="${typeof displayHistorialConteos === 'function' ? 'success' : 'error'}">displayHistorialConteos: ${typeof displayHistorialConteos === 'function' ? 'Función disponible' : 'No disponible'}</p>`;
+                
+                // Probar loadHistorialConteos
+                html += `<p class="${typeof loadHistorialConteos === 'function' ? 'success' : 'error'}">loadHistorialConteos: ${typeof loadHistorialConteos === 'function' ? 'Función disponible' : 'No disponible'}</p>`;
+                
+                // Intentar ejecutar updateHistorialHeaders en la tabla de prueba
+                if (typeof updateHistorialHeaders === 'function' && typeof userCreatedBoxes !== 'undefined') {
+                    try {
+                        // Crear una versión modificada para la tabla de prueba
+                        const testThead = document.getElementById('test-thead');
+                        if (testThead && userCreatedBoxes.length > 0) {
+                            const sortedBoxes = [...userCreatedBoxes].sort((a, b) => (a.position || 0) - (b.position || 0));
+                            const cajasPalet = sortedBoxes.filter(box => box.nombre.toLowerCase().includes('palet'));
+                            const cajasNormales = sortedBoxes.filter(box => !box.nombre.toLowerCase().includes('palet'));
+                            
+                            const ordenColumnas = [
+                                'Fecha/Hora',
+                                'Total',
+                                ...cajasPalet.map(box => box.nombre),
+                                ...cajasNormales.map(box => box.nombre)
+                            ];
+                            
+                            let headersHTML = '';
+                            ordenColumnas.forEach(columna => {
+                                headersHTML += `<th style="border: 1px solid #ccc; padding: 8px;">${columna}</th>`;
+                            });
+                            
+                            testThead.innerHTML = headersHTML;
+                            html += `<p class="success">✅ Headers generados correctamente en tabla de prueba</p>`;
+                            addDebugLog('Headers generados correctamente en tabla de prueba', 'success');
+                        } else {
+                            html += `<p class="warning">⚠️ No se pueden generar headers: userCreatedBoxes vacío</p>`;
+                            addDebugLog('No se pueden generar headers: userCreatedBoxes vacío', 'warning');
+                        }
+                    } catch (error) {
+                        html += `<p class="error">❌ Error al generar headers: ${error.message}</p>`;
+                        addDebugLog(`Error al generar headers: ${error.message}`, 'error');
+                    }
+                }
+                
+            } catch (error) {
+                html += `<p class="error">Error al probar funciones: ${error.message}</p>`;
+                addDebugLog(`Error al probar funciones: ${error.message}`, 'error');
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        // Ejecutar pruebas cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            addDebugLog('DOM Content Loaded - Iniciando pruebas', 'info');
+            
+            setTimeout(() => {
+                checkVariables();
+                testFunctions();
+            }, 1000); // Esperar 1 segundo para que script.js se cargue completamente
+        });
+    </script>
+</body>
+</html>

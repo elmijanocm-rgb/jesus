@@ -1,20 +1,10 @@
-CACHE BUSTER FILE - VERSION 3.0.0
-Timestamp: 1756412700
-Force GitHub Pages Cache Refresh
+# Cache Buster File
+# This file is used to force GitHub Pages to reload cached content
+# Last updated: 2025-01-29 17:45:12
+# Version: v1.0.1-20250129-1913
+# Features: Inventory management, PWA support, mobile optimization, emergency styles, text visibility, enhanced editing
 
-This file forces GitHub Pages to recognize changes.
-Update this timestamp when deploying new versions.
-
-Last Update: January 28, 2025 - 10:25 AM
-Version: 3.0.0
-Changes: Updated CSS and JS versions with aggressive cache busting
-
-Files updated:
-- index.html (v3.0.0)
-- emergency-mobile.css (v3.0.0)
-- script.js (v3.0.0)
-
-Cache parameters added:
-- Version: v=3.0.0
-- Timestamp: t=1756412700
-- Force parameter: force=true
+CACHE_VERSION=3.1.7
+FEATURES=inventory_management,pwa_support,mobile_optimization,emergency_styles,text_visibility,enhanced_editing
+LAST_MODIFIED=2025-01-29T17:45:12Z
+NEW_FEATURE=Visibilidad y usabilidad mejorada del input de edición de cantidades - diseño visual mejorado con gradientes, sombras, escalado dinámico y mejor contraste para facilitar la edición en el bloque activo

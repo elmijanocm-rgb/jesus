@@ -1,18 +1,60 @@
-# 📦 Aplicación PWA de Conteo de Cajas
+# 📦 Cuenta de Cajas - Aplicación PWA de Conteo
 
-> Aplicación web progresiva moderna para el conteo eficiente de cajas y palets con sistema de bloques automático y totales en tiempo real.
+> Aplicación web progresiva moderna para el conteo eficiente de cajas y palets con sistema de bloques automático, edición de cantidades y totales en tiempo real.
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen)](https://tu-usuario.github.io/nombre-repositorio/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen)](https://elmijanocm-rgb.github.io/cuenta-de-cajas/)
 [![PWA](https://img.shields.io/badge/PWA-Ready-blue)](https://web.dev/progressive-web-apps/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/Version-3.2.0-success)](https://github.com/elmijanocm-rgb/cuenta-de-cajas)
 
 ## 🚀 Demo en Vivo
 
-**[Ver Aplicación](https://tu-usuario.github.io/nombre-repositorio/)**
+**[🌐 Ver Aplicación](https://elmijanocm-rgb.github.io/cuenta-de-cajas/)**
 
-*La aplicación está desplegada en GitHub Pages y lista para usar.*
+*La aplicación está desplegada en GitHub Pages y lista para usar en cualquier dispositivo.*
 
 ## 🌟 Características Principales
+
+### ✏️ **Edición de Cantidades (v3.1.4)**
+- **Celdas Editables**: Haz clic en cualquier cantidad del bloque activo para editarla
+- **Validación Automática**: Solo acepta números positivos
+- **Guardado Instantáneo**: Los cambios se guardan automáticamente
+- **Recálculo Automático**: Totales y subtotales se actualizan al instante
+- **Feedback Visual**: Confirmación visual de cambios guardados
+- **Optimizado para Móvil**: Funciona perfectamente en dispositivos táctiles
+
+### 🎨 **Contraste Mejorado (NUEVO v3.1.5)**
+- **Botones Más Visibles**: Teclado numérico con colores más distintivos
+- **Mejor Accesibilidad**: Contraste mejorado para usuarios con dificultades visuales
+- **Diseño Optimizado**: Colores que facilitan la identificación rápida de botones
+- **Experiencia Mejorada**: Interfaz más clara y profesional
+
+### 👁️ **Visibilidad del Texto (v3.1.6)**
+- **Campo de entrada del teclado**: Texto ahora visible en gris oscuro (#1e293b)
+- **Peso de fuente reforzado**: Mayor legibilidad con font-weight 700
+- **Compatibilidad móvil**: Corrección aplicada en todas las resoluciones
+- **Experiencia mejorada**: Eliminada la confusión visual del texto blanco sobre fondo blanco
+
+### ✏️ **Edición Mejorada de Cantidades (v3.1.7)**
+- **Input visual mejorado**: Diseño con gradientes, sombras y bordes redondeados
+- **Tamaño optimizado**: Input más grande (80px desktop, 90px móvil) para mejor usabilidad
+- **Efectos interactivos**: Escalado dinámico (1.05x-1.15x) y transiciones suaves
+- **Indicadores visuales**: Tooltip "✏️ EDITAR" al hacer hover sobre celdas editables
+- **Colores distintivos**: Verde (#2e7d32) por defecto, azul (#1565c0) al enfocar
+- **Touch-friendly**: Optimizado para dispositivos táctiles con tamaños mínimos de 44-50px
+
+### 🗑️ **Eliminación de Conteos (NUEVO v3.2.0)**
+- **Botones de Eliminación**: Cada conteo individual puede ser eliminado con botón ❌
+- **Confirmación de Seguridad**: Diálogo de confirmación antes de eliminar
+- **Actualización Automática**: La tabla se refresca inmediatamente después de eliminar
+- **Funcionalidad Móvil**: Optimizado para dispositivos táctiles
+- **Solución Robusta**: Sistema simple y confiable sin conflictos de eventos
+
+### 📱 **Optimización Móvil Completa (v3.2.0)**
+- **CSS Móvil Avanzado**: Estilos específicos para dispositivos táctiles
+- **PWA Mejorada**: Configuración optimizada para instalación móvil
+- **Interfaz Táctil**: Botones y controles adaptados para touch
+- **Rendimiento Optimizado**: Carga rápida y funcionamiento fluido en móviles
 
 ### 🎯 **Sistema de Bloques Inteligente**
 - **Bloque Activo**: Las nuevas cantidades aparecen en la parte superior
@@ -37,7 +79,7 @@
 
 ### 📱 **Acceso Directo (GitHub Pages)**
 ```
-🌐 https://tu-usuario.github.io/nombre-repositorio
+🌐 https://elmijanocm-rgb.github.io/cuenta-de-cajas/
 ```
 
 ### 💻 **Desarrollo Local**
@@ -45,8 +87,8 @@
 #### Opción 1: Servidor PowerShell (Recomendado)
 ```powershell
 # Clonar el repositorio
-git clone https://github.com/tu-usuario/nombre-repositorio.git
-cd nombre-repositorio
+git clone https://github.com/elmijanocm-rgb/cuenta-de-cajas.git
+cd cuenta-de-cajas
 
 # Iniciar servidor local
 $listener = New-Object System.Net.HttpListener
@@ -105,9 +147,10 @@ http-server -p 8080
 
 ### 🔢 **Sistema de Conteo Avanzado**
 - Conteo rápido con botones intuitivos
-- Historial completo de conteos
+- Historial completo de conteos con eliminación individual
 - Exportación a PDF
 - Búsqueda y filtrado
+- Gestión completa del historial de conteos
 
 ### 📊 **Reportes y Análisis**
 - Totales generales y por categoría

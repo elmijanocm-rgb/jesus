@@ -1,10 +1,10 @@
-// Service Worker para PWA - Versión 3.0 FORCE UPDATE
-const CACHE_NAME = 'conteo-pwa-v3.0';
+// Service Worker para PWA - Versión 3.1.8 FORCE UPDATE
+const CACHE_NAME = 'conteo-pwa-v3.1.8';
 const urlsToCache = [
     './',
     './index.html',
-    './styles.css?v=40',
-    './script.js?v=40',
+    './styles.css?v=41',
+    './script.js?v=41',
     './manifest.json',
     './icon-192.png',
     './icon-512.png'
