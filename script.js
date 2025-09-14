@@ -2188,11 +2188,13 @@ function displayRegistrosArchivados() {
             cellsHTML += `<td>${cantidad}</td>`;
         });
         
-        // Botones de acciones
-        cellsHTML += `<td>
-            <button class="btn small-btn" onclick="verDetalleRegistro(${index})" title="Ver detalle"><i class="fas fa-eye"></i></button>
-            <button class="btn small-btn" onclick="exportarRegistroIndividualPDF(${index})" title="Exportar a PDF" style="margin-left: 5px; background-color: #28a745;"><i class="fas fa-file-pdf"></i></button>
-            <button class="btn small-btn danger-btn" onclick="eliminarRegistroArchivado(${index})" title="Eliminar registro" style="margin-left: 5px;"><i class="fas fa-trash"></i></button>
+        // Botones de acciones agrupados verticalmente
+        cellsHTML += `<td style="text-align: center;">
+            <div style="display: flex; flex-direction: column; gap: 3px; align-items: center;">
+                <button class="btn small-btn" onclick="verDetalleRegistro(${index})" title="Ver detalle" style="width: 35px; height: 35px;"><i class="fas fa-eye"></i></button>
+                <button class="btn small-btn" onclick="exportarRegistroIndividualPDF(${index})" title="Exportar a PDF" style="width: 35px; height: 35px; background-color: #28a745;"><i class="fas fa-file-pdf"></i></button>
+                <button class="btn small-btn danger-btn" onclick="eliminarRegistroArchivado(${index})" title="Eliminar registro" style="width: 35px; height: 35px;"><i class="fas fa-trash"></i></button>
+            </div>
         </td>`;
         
         row.innerHTML = cellsHTML;
