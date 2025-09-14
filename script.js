@@ -158,7 +158,8 @@ function displayUserBoxesInAdmin() {
             const boxName = this.getAttribute('data-box-name');
             const boxIndex = parseInt(this.getAttribute('data-box-index'));
             
-            if (confirm(`¿Estás seguro de que quieres eliminar la caja "${boxName}"? Esta acción no se puede deshacer.`)) {
+            // Eliminar caja directamente sin confirmación
+            {
                 userCreatedBoxes.splice(boxIndex, 1);
                 saveUserBoxes();
                 displayUserBoxesInAdmin();
@@ -357,7 +358,8 @@ function editUserBox(box) {
     
     // Eliminar caja
     editor.querySelector('.delete-box').addEventListener('click', function() {
-        if (confirm(`¿Estás seguro de que quieres eliminar la caja "${box.nombre}"? Esta acción no se puede deshacer.`)) {
+        // Eliminar caja directamente sin confirmación
+        {
             const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
             
             if (boxIndex !== -1) {
@@ -376,7 +378,8 @@ function editUserBox(box) {
 
 // Función para eliminar una caja creada por el usuario
 function deleteUserBox(box) {
-    if (confirm(`¿Estás seguro de que quieres eliminar la caja "${box.nombre}"?`)) {
+    // Eliminar caja directamente sin confirmación
+    {
         const boxIndex = userCreatedBoxes.findIndex(b => b.nombre === box.nombre);
         
         if (boxIndex !== -1) {
@@ -976,7 +979,8 @@ document.addEventListener('DOMContentLoaded', function() {
         deleteBoxButtons.forEach(button => {
             if (button.querySelector('.fa-trash')) {
                 button.addEventListener('click', function() {
-                    if (confirm('¿Estás seguro de que deseas eliminar esta caja?')) {
+                    // Eliminar caja directamente sin confirmación
+                    {
                         const boxDetail = this.closest('.box-detail');
                         const boxName = boxDetail.querySelector('.box-header h3').textContent;
                         
@@ -2187,6 +2191,7 @@ function displayRegistrosArchivados() {
         // Botones de acciones
         cellsHTML += `<td>
             <button class="btn small-btn" onclick="verDetalleRegistro(${index})" title="Ver detalle"><i class="fas fa-eye"></i></button>
+            <button class="btn small-btn" onclick="exportarRegistroIndividualPDF(${index})" title="Exportar a PDF" style="margin-left: 5px; background-color: #28a745;"><i class="fas fa-file-pdf"></i></button>
             <button class="btn small-btn danger-btn" onclick="eliminarRegistroArchivado(${index})" title="Eliminar registro" style="margin-left: 5px;"><i class="fas fa-trash"></i></button>
         </td>`;
         
@@ -2239,7 +2244,8 @@ function eliminarRegistroArchivado(index) {
     const registro = registrosArchivados[index];
     if (!registro) return;
     
-    if (confirm(`¿Estás seguro de que deseas eliminar el registro archivado del ${registro.fechaArchivo}? Esta acción no se puede deshacer.`)) {
+    // Eliminar registro archivado directamente sin confirmación
+    {
         // Eliminar el registro del array
         registrosArchivados.splice(index, 1);
         
@@ -2500,6 +2506,65 @@ function exportarHistorialPDF() {
     
     // Guardar el PDF
     doc.save(`historial-conteos-${new Date().toISOString().split('T')[0]}.pdf`);
+}
+
+// Función para exportar un registro individual a PDF
+function exportarRegistroIndividualPDF(index) {
+    const registro = registrosArchivados[index];
+    if (!registro) {
+        alert('Registro no encontrado.');
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Configuración del documento
+    doc.setFontSize(18);
+    doc.text('Registro Archivado Individual', 20, 20);
+
+    // Información del registro
+    doc.setFontSize(12);
+    doc.text(`Fecha de archivo: ${registro.fechaArchivo}`, 20, 35);
+    doc.text(`Total general: ${registro.totalGeneral} cajas`, 20, 45);
+
+    // Fecha de generación del PDF
+    const fechaGeneracion = new Date().toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    doc.setFontSize(8);
+    doc.text(`PDF generado el: ${fechaGeneracion}`, 20, 55);
+
+    // Totales por tipo de caja
+    doc.setFontSize(14);
+    doc.text('Totales por tipo de caja:', 20, 70);
+
+    let yPosition = 80;
+    doc.setFontSize(10);
+    
+    Object.keys(registro.totales).forEach(nombreCaja => {
+        const cantidad = registro.totales[nombreCaja];
+        doc.text(`• ${nombreCaja}: ${cantidad} cajas`, 25, yPosition);
+        yPosition += 8;
+    });
+
+    // Información adicional
+    yPosition += 10;
+    doc.setFontSize(12);
+    doc.text('Información adicional:', 20, yPosition);
+    yPosition += 10;
+    doc.setFontSize(10);
+    doc.text(`Número de conteos individuales: ${registro.conteos.length}`, 25, yPosition);
+
+    // Guardar el PDF
+    const nombreArchivo = `registro_${registro.fechaArchivo.replace(/[/:\s]/g, '_')}.pdf`;
+    doc.save(nombreArchivo);
+
+    mostrarMensajeTemporal('PDF del registro individual generado exitosamente', 'success');
 }
 
 // Función para exportar registros archivados a PDF
