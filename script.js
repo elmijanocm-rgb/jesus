@@ -2246,7 +2246,45 @@ function eliminarRegistroArchivado(index) {
     const registro = registrosArchivados[index];
     if (!registro) return;
     
-    if (confirm(`¿Estás seguro de que deseas eliminar el registro archivado del ${registro.fechaArchivo}? Esta acción no se puede deshacer.`)) {
+    // Crear diálogo personalizado sin el texto "Eliminar cuadros de diálogo"
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    `;
+    
+    const dialog = document.createElement('div');
+    dialog.style.cssText = `
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    `;
+    
+    dialog.innerHTML = `
+        <h3 style="margin-top: 0; color: #333;">Confirmar eliminación</h3>
+        <p style="margin: 15px 0; color: #666;">¿Estás seguro de que deseas eliminar el registro archivado del ${registro.fechaArchivo}? Esta acción no se puede deshacer.</p>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+            <button id="confirm-delete" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Aceptar</button>
+            <button id="cancel-delete" style="background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Cancelar</button>
+        </div>
+    `;
+    
+    modal.appendChild(dialog);
+    document.body.appendChild(modal);
+    
+    // Manejar eventos
+    dialog.querySelector('#confirm-delete').onclick = () => {
         // Eliminar el registro del array
         registrosArchivados.splice(index, 1);
         
@@ -2256,8 +2294,35 @@ function eliminarRegistroArchivado(index) {
         // Actualizar la visualización
         displayRegistrosArchivados();
         
-        alert('Registro eliminado exitosamente.');
-    }
+        // Mostrar mensaje de éxito
+        const successMsg = document.createElement('div');
+        successMsg.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            z-index: 10001;
+        `;
+        successMsg.textContent = 'Registro eliminado exitosamente.';
+        document.body.appendChild(successMsg);
+        setTimeout(() => successMsg.remove(), 3000);
+        
+        modal.remove();
+    };
+    
+    dialog.querySelector('#cancel-delete').onclick = () => {
+        modal.remove();
+    };
+    
+    // Cerrar al hacer clic fuera del diálogo
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    };
 }
 
 // Función para exportar historial a PDF
