@@ -2195,8 +2195,8 @@ function displayRegistrosArchivados() {
         // Fila de iconos debajo del registro
         const iconRow = document.createElement('tr');
         const totalColumns = userCreatedBoxes.length + 1; // +1 por la columna de fecha
-        iconRow.innerHTML = `<td colspan="${totalColumns}" style="text-align: center; padding: 8px; border-bottom: 2px solid #ddd;">
-            <div style="display: flex; flex-direction: row; gap: 5px; align-items: center; justify-content: center; flex-wrap: nowrap;">
+        iconRow.innerHTML = `<td colspan="${totalColumns}" style="text-align: left; padding: 8px; border-bottom: 2px solid #ddd;">
+            <div style="display: flex; flex-direction: row; gap: 5px; align-items: center; justify-content: flex-start; flex-wrap: nowrap;">
                 <button class="btn small-btn" onclick="verDetalleRegistro(${index})" title="Ver detalle" style="width: 35px; height: 35px; min-width: 35px;"><i class="fas fa-eye"></i></button>
                 <button class="btn small-btn" onclick="exportarRegistroIndividualPDF(${index})" title="Exportar a PDF" style="width: 35px; height: 35px; min-width: 35px; background-color: #28a745;"><i class="fas fa-file-pdf"></i></button>
                 <button class="btn small-btn danger-btn" onclick="eliminarRegistroArchivado(${index})" title="Eliminar registro" style="width: 35px; height: 35px; min-width: 35px;"><i class="fas fa-trash"></i></button>
