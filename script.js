@@ -2188,9 +2188,9 @@ function displayRegistrosArchivados() {
             cellsHTML += `<td>${cantidad}</td>`;
         });
         
-        // Botones de acciones agrupados verticalmente
+        // Botones de acciones agrupados horizontalmente
         cellsHTML += `<td style="text-align: center;">
-            <div style="display: flex; flex-direction: column; gap: 3px; align-items: center;">
+            <div style="display: flex; flex-direction: row; gap: 5px; align-items: center; justify-content: center;">
                 <button class="btn small-btn" onclick="verDetalleRegistro(${index})" title="Ver detalle" style="width: 35px; height: 35px;"><i class="fas fa-eye"></i></button>
                 <button class="btn small-btn" onclick="exportarRegistroIndividualPDF(${index})" title="Exportar a PDF" style="width: 35px; height: 35px; background-color: #28a745;"><i class="fas fa-file-pdf"></i></button>
                 <button class="btn small-btn danger-btn" onclick="eliminarRegistroArchivado(${index})" title="Eliminar registro" style="width: 35px; height: 35px;"><i class="fas fa-trash"></i></button>
